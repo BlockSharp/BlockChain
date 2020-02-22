@@ -7,7 +7,6 @@ namespace BlockChain.Core
         /// </summary>
         public static readonly byte[] Genesis =
         {
-            //Todo: make hash valid
             1, 0, 0, 0, //Version
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, //Hash prev block
