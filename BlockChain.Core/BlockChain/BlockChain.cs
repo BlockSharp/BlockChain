@@ -5,7 +5,6 @@ using System.Collections;
 using BlockChain.Core.Block;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Threading;
 
 namespace BlockChain.Core
 {
