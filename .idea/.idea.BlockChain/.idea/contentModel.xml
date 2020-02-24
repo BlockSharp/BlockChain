@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2019.3/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2019.3/system/resharper-host/local/Transient/ReSharperHost/v193/SolutionCaches/_BlockChain.549424222.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.2.0/build/netcoreapp1.0" t="Include">
+      <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.15.1/build/netcoreapp2.0/NUnit3.TestAdapter.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.15.1/build/netcoreapp2.0/NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.15.1/build/netcoreapp2.0/nunit.engine.api.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.15.1/build/netcoreapp2.0/nunit.engine.dll" t="Include" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="BlockChain.Cli" t="IncludeRecursive">
+        <e p="BlockChain.Cli.csproj" t="IncludeRecursive" />
+        <e p="ExampleBlockData.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="TestHelper.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="BlockChain.Cli.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="BlockChain.Core" t="IncludeRecursive">
+        <e p="Block" t="Include">
+          <e p="Block.cs" t="Include" />
+          <e p="BlockData" t="Include">
+            <e p="BlockHeader.cs" t="Include" />
+            <e p="IBlockData.cs" t="Include" />
+            <e p="Target.cs" t="Include" />
+          </e>
+          <e p="Helpers" t="Include">
+            <e p="BlockHeaderHelper.cs" t="Include" />
+            <e p="BlockHelper.cs" t="Include" />
+            <e p="BlockMiner.cs" t="Include" />
+          </e>
+        </e>
+        <e p="BlockChain.Core.csproj" t="IncludeRecursive" />
+        <e p="BlockChain.cs" t="Include" />
+        <e p="Constants.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="BlockChain.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="BlockChain.Core.Test" t="IncludeRecursive">
+        <e p="Block" t="Include">
+          <e p="BlockData" t="Include">
+            <e p="BlockHeaderTest.cs" t="Include" />
+            <e p="TargetTest.cs" t="Include" />
+            <e p="TestBlockData.cs" t="Include" />
+          </e>
+          <e p="BlockTest.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="BlockHeaderHelperTest.cs" t="Include" />
+            <e p="BlockHelperTest.cs" t="Include" />
+            <e p="BlockMinerTest.cs" t="Include" />
+          </e>
+        </e>
+        <e p="BlockChain.Core.Test.csproj" t="IncludeRecursive" />
+        <e p="BlockChainTest.cs" t="Include" />
+        <e p="TestHelper.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="BlockChain.Core.Test.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="BlockChain.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

@@ -28,5 +28,12 @@ namespace BlockChain.Core.Block
         /// <returns>Unique hash of object (32 bytes)</returns>
         public byte[] GetHashMerkleRoot(SHA256 sha256)
             => sha256.ComputeHash(ToArray());
+
+        /// <summary>
+        /// Determines if block data is valid.
+        /// Default true
+        /// </summary>
+        /// <returns>True if block is valid</returns>
+        public bool IsValid() => true;
     }
 }
