@@ -11,22 +11,19 @@ namespace BlockChain.Transactions.Scripting
     /// </summary>
     public class ExecutionStack : Stack<byte[]>
     {
-        public Script Script;
-        public Transaction Transaction;
+        public readonly Script Script;
+        public readonly Transaction Transaction;
 
         public ExecutionStack(ref Script script) => Script = script;
-        public ExecutionStack(ref Script script, ref Transaction transcation) : this(ref script) => this.Transaction = transcation;
+        public ExecutionStack(ref Script script, ref Transaction transaction) : this(ref script) => Transaction = transaction;
         
-        //Helper methods
+        //base keyword is important! Else it is recursive
+        public void Push(params byte[][] bytes) => bytes.ToList().ForEach(f => base.Push(f));
         public void Push(byte b) => Push(new [] { b });
         public void Push(short n) => Push(BitConverter.GetBytes(n));
         public void Push(uint n) => Push(BitConverter.GetBytes(n));
         public void Push(int n) => Push(BitConverter.GetBytes(n));
         public void Push(bool b) => Push(Convert.ToByte(b));
-
-        //base keyword is important! Else it is recursive
-        public void Push(params byte[][] bytes)
-            => bytes.ToList().ForEach(f => base.Push(f));
 
         public byte PopByte() => Pop()[0];
         public byte PeekByte() => Peek()[0];

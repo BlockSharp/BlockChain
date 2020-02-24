@@ -16,9 +16,10 @@ namespace BlockChain.Transactions.Scripting
     /// [OpCode(OPCODE = OPCODE.VERIFY)]
     /// public static EXECUTION_RESULT? VERIFY(ref ExecutionStack stack) {}
     /// </summary>
-    [AttributeUsage(System.AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     internal class OpCode : Attribute
     {
         public OPCODE OPCODE { get; set; }
+        public int minLengthStack { get; set; }
     }
 }

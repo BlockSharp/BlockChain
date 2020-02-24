@@ -25,7 +25,7 @@ namespace BlockChain.Transactions.Scripting
                 .Where(m => m.GetCustomAttributes().OfType<OpCode>().Any() && m.IsStatic)
                 .ToDictionary(k => (
                         (OpCode) k.GetCustomAttributes().First()).OPCODE,
-                    v => new Operation(v));
+                    v => new Operation(v,v.GetCustomAttributes().First() as OpCode));
         }
         
         /// <summary>

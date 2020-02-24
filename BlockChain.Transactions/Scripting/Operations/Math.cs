@@ -10,15 +10,15 @@ namespace Operations
     internal static class Math
     {
         [OpCode(OPCODE = OPCODE.ABS)]
-        public static void ABS(ref ExecutionStack stack) 
+        public static void ABS(ref ExecutionStack stack)
             => stack.Push(System.Math.Abs(stack.PopShort()));
 
-        [OpCode(OPCODE = OPCODE.MAX)]
-        public static void MAX(ref ExecutionStack stack) 
+        [OpCode(OPCODE = OPCODE.MAX, minLengthStack = 2)]
+        public static void MAX(ref ExecutionStack stack)
             => stack.Push(System.Math.Max(stack.PopShort(), stack.PopShort()));
 
-        [OpCode(OPCODE = OPCODE.MIN)]
-        public static void MIN(ref ExecutionStack stack) 
+        [OpCode(OPCODE = OPCODE.MIN, minLengthStack = 2)]
+        public static void MIN(ref ExecutionStack stack)
             => stack.Push(System.Math.Min(stack.PopShort(), stack.PopShort()));
 
         [OpCode(OPCODE = OPCODE.MULTIPLY)]
@@ -27,35 +27,35 @@ namespace Operations
         public static EXECUTION_RESULT? DISABLED(ref ExecutionStack stack)
             => EXECUTION_RESULT.DISABLED_CODE;
 
-        [OpCode(OPCODE = OPCODE.ADD)]
+        [OpCode(OPCODE = OPCODE.ADD, minLengthStack = 2)]
         public static void ADD(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() + stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.SUBSTRACT)]
+        [OpCode(OPCODE = OPCODE.SUBSTRACT, minLengthStack = 2)]
         public static void SUBSTRACT(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() - stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.LESSTHAN)]
+        [OpCode(OPCODE = OPCODE.LESSTHAN, minLengthStack = 2)]
         public static void LESSTHAN(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() < stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.LESSOREQUAL)]
+        [OpCode(OPCODE = OPCODE.LESSOREQUAL, minLengthStack = 2)]
         public static void LESSOREQUAL(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() <= stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.GREATERTHAN)]
+        [OpCode(OPCODE = OPCODE.GREATERTHAN, minLengthStack = 2)]
         public static void GREATERTHAN(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() > stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.GREATEROREQUAL)]
+        [OpCode(OPCODE = OPCODE.GREATEROREQUAL, minLengthStack = 2)]
         public static void GREATEROREQUAL(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() >= stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.EQ_NUM)]
+        [OpCode(OPCODE = OPCODE.EQ_NUM, minLengthStack = 2)]
         public static void EQ_NUM(ref ExecutionStack stack)
             => stack.Push(stack.PopShort() == stack.PopShort());
 
-        [OpCode(OPCODE = OPCODE.EQ_VERIFY_NUM)]
+        [OpCode(OPCODE = OPCODE.EQ_VERIFY_NUM, minLengthStack = 2)]
         public static EXECUTION_RESULT? EQ_VERIFY_NUM(ref ExecutionStack stack)
         {
             stack.Push(stack.PopShort() == stack.PopShort());

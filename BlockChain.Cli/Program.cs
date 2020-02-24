@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using BlockChain.Transactions.Scripting;
+﻿using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
 using BlockChain.Transactions.Scripting.Scripts;
 
@@ -12,15 +10,15 @@ namespace BlockChain.Cli
         {
             var script = new Script();
             script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
+            script.Add(OPCODE.OP_2);
+            script.Add(OPCODE.MAX);
             Interpreter.Initialize();
+            var r = script.Run();
+            var r2 =script.Run();
 
-            var sw = Stopwatch.StartNew();
-            for (int i = 0; i < 1000000; i++) script.Run();
-            Console.WriteLine(sw.ElapsedMilliseconds);
+            //var sw = Stopwatch.StartNew();
+            //for (int i = 0; i < 1000000; i++) script.Run();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
             /*
             var blockChain = new BlockChain<ExampleBlockData>("blockchain.db");
             //for(int i = 0;i<5000000;i++) 

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using BlockChain.Transactions.Scripting.Enums;
 
@@ -17,10 +18,12 @@ namespace BlockChain.Transactions.Scripting
 
         private readonly bool _hasReturnType;
         private readonly System.Delegate _operation;
+        private readonly OpCode _opCode;
 
-        public Operation(MethodInfo methodInfo)
+        public Operation(MethodInfo methodInfo, OpCode opCode)
         {
             _hasReturnType = methodInfo.ReturnType == typeof(EXECUTION_RESULT?);
+            _opCode = opCode;
             _operation = System.Delegate.CreateDelegate(_hasReturnType ? typeof(ReturnDelegate) : typeof(Delegate),
                 methodInfo);
         }
@@ -32,6 +35,8 @@ namespace BlockChain.Transactions.Scripting
         /// <returns>null or an EXECUTION_RESULT if method has a return type and didn't return null</returns>
         public EXECUTION_RESULT? Execute(ref ExecutionStack stack)
         {
+            if (_opCode.minLengthStack != 0 && _opCode.minLengthStack > stack.Count) return EXECUTION_RESULT.INVALID_STACK;
+
             if (_hasReturnType) return (_operation as ReturnDelegate)?.Invoke(ref stack);
             (_operation as Delegate)?.Invoke(ref stack);
             return null;

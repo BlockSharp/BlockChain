@@ -19,7 +19,7 @@ namespace Operations
          * This method needs at least a stack with 2 items. The first one (pubkey) 84 bytes the second (signature) 64.
          * stack: { [84], [64], ... }
          */
-        [OpCode(OPCODE = OPCODE.CHECKSIG)]
+        [OpCode(OPCODE = OPCODE.CHECKSIG, minLengthStack = 2)]
         public static EXECUTION_RESULT? CHECKSIG(ref ExecutionStack stack)
         {
             if (stack.Transaction == null) return EXECUTION_RESULT.NO_TRANSACTION_GIVEN;
