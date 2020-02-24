@@ -424,3 +424,14 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/rider,visualstudio
 
+### DotnetCore ###
+# .NET Core build folders
+/bin
+/obj
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
+
+# End of https://www.gitignore.io/api/dotnetcore
