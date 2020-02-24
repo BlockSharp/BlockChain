@@ -9,10 +9,13 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Constants.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/TransactionList.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/BlockTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/BlockChain/Helpers/AddHelpers.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Transaction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/BlockChain/Helpers/VerifyHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/BlockChainTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/BlockData/BlockHeader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/BlockData/IBlockData.cs" root0="FORCE_HIGHLIGHTING" />
@@ -45,6 +48,9 @@
         <option value="$PROJECT_DIR$/BlockChain.Core/Block/Helpers/BlockMiner.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/Helpers/VerifyHelperTest.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Core/BlockChain/Helpers/VerifyHelper.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Transaction.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/TransactionList.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" />
       </list>
     </option>
   </component>
@@ -85,7 +91,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1582532292350</updated>
-      <workItem from="1582532293612" duration="6792000" />
+      <workItem from="1582532293612" duration="7354000" />
     </task>
     <servers />
   </component>
@@ -174,6 +180,14 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1876" height="367" key="GridCell.Tab.4.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
+    <state x="73" y="252" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1582539253926">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="73" y="252" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582539253926" />
+    <state x="755" y="217" width="399" height="571" key="RiderGenerateDialog" timestamp="1582539402217">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="755" y="217" width="399" height="571" key="RiderGenerateDialog/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582539402217" />
     <state x="623" y="228" width="672" height="678" key="search.everywhere.popup" timestamp="1582533134609">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

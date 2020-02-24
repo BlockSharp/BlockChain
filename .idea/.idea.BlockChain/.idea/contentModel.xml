@@ -89,6 +89,29 @@
           </e>
         </e>
       </e>
+      <e p="BlockChain.Transactions" t="IncludeRecursive">
+        <e p="BlockChain.Transactions.csproj" t="IncludeRecursive" />
+        <e p="Scripting" t="Include">
+          <e p="Enums" t="Include">
+            <e p="EXECUTION_RESULT.cs" t="Include" />
+            <e p="OPCODE.cs" t="Include" />
+            <e p="SCRIPTTYPE.cs" t="Include" />
+          </e>
+          <e p="InterPreter" t="Include" />
+          <e p="Operations" t="Include" />
+          <e p="Scripts" t="Include" />
+        </e>
+        <e p="Transaction.cs" t="Include" />
+        <e p="TransactionList.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="BlockChain.Transactions.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
       <e p="BlockChain.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
     </e>

@@ -1,0 +1,50 @@
+﻿{
+  "version": "1.0.0",
+  "restore": {
+    "projectUniqueName": "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj",
+    "projectName": "BlockChain.Transactions",
+    "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj",
+    "outputPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/obj/",
+    "projectStyle": "PackageReference",
+    "originalTargetFrameworks": [
+      "netcoreapp3.1"
+    ],
+    "sources": {
+      "https://api.nuget.org/v3/index.json": {}
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "projectReferences": {
+          "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj": {
+            "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj"
+          }
+        }
+      }
+    },
+    "warningProperties": {
+      "warnAsError": [
+        "NU1605"
+      ]
+    }
+  },
+  "frameworks": {
+    "netcoreapp3.1": {
+      "imports": [
+        "net461",
+        "net462",
+        "net47",
+        "net471",
+        "net472",
+        "net48"
+      ],
+      "assetTargetFallback": true,
+      "warn": true,
+      "frameworkReferences": {
+        "Microsoft.NETCore.App": {
+          "privateAssets": "all"
+        }
+      },
+      "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+    }
+  }
+}
