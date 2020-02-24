@@ -7,7 +7,7 @@ using BlockChain.Core.Block;
 using BlockChain.Core.Test.Block;
 using NUnit.Framework;
 
-namespace BlockChain.Core.Test
+namespace BlockChain.Core.Test.BlockChain
 {
     public class BlockChainTest
     {
@@ -38,11 +38,15 @@ namespace BlockChain.Core.Test
             
             var token = new CancellationTokenSource();
             token.CancelAfter(TimeSpan.FromSeconds(TimeoutInSec));
-            block.Mine(token.Token);
+            var m =block.Mine(token.Token);
+            m.Wait();
+            block = m.Result;
             
             blockChain.Add(block);
 
-            Assert.IsTrue(TestHelper.ArrayEquals(block.ToArray(),blockChain.First().ToArray()),"Block is not added to the blockchain, or could not read the blockchain");
+            Assert.IsTrue(TestHelper.ArrayEquals(block.ToArray(),blockChain.First().ToArray()),
+                "Block is not added to the blockchain, or could not read the blockchain");
+            Assert.IsTrue(blockChain.First().IsValid(prevBlock.Hash(sha256),sha256),"Added block is not valid");
 
         }
     }

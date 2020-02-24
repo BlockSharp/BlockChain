@@ -11,9 +11,23 @@ namespace BlockChain.Core
 {
     public class BlockChain<T> : IEnumerable<Block<T>> where T : IBlockData, new()
     {
+        /// <summary>
+        /// Path to blockchain file
+        /// </summary>
         private readonly string _file;
+        
+        /// <summary>
+        /// Hashing algorithm instance used by blockchain and the helper methods of blockchain
+        /// </summary>
         private readonly SHA256 _sha256;
+        public SHA256 GetHashingAlgorithm() => _sha256;
 
+        /// <summary>
+        /// Create new instance of blockchain,
+        /// if file does not exists file will be created
+        /// </summary>
+        /// <param name="file">path to blockchain file</param>
+        /// <param name="sha256">sha256 instance to use</param>
         public BlockChain(string file, SHA256 sha256 = null)
         {
             _file = file;
@@ -22,8 +36,12 @@ namespace BlockChain.Core
             if (!File.Exists(_file)) File.WriteAllBytes(_file, Constants.Genesis);
         }
 
+        /// <summary>
+        /// Implement IEnumerable methods
+        /// ! First item is the last added item !
+        /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
         public IEnumerator<Block<T>> GetEnumerator()
         {
             using var stream = new FileStream(_file, FileMode.Open);
@@ -44,26 +62,18 @@ namespace BlockChain.Core
             } while (stream.Position != blockSize);
         }
 
+        /// <summary>
+        /// Add new block to the blockchain
+        /// </summary>
+        /// <param name="block">Block to add to the blockchain</param>
         public void Add(Block<T> block)
         {
-            if (block.IsValid(this.First().ToArray(), _sha256))
+            if (!block.IsValid(this.First().Hash(_sha256), _sha256))
                 throw new InvalidDataException("Could not add block to blockchain, block is invalid.");
 
             byte[] data = block.ToArray();
             using var stream = new FileStream(_file, FileMode.Append);
             stream.Write(data, 0, data.Length);
         }
-        
-        /* ToDo: Add test for this method.
-        public async void Add(T data, Target target = null, CancellationToken token = new CancellationToken())
-        {
-            using var sha256 = SHA256.Create();
-            var prevBlock = this.First();
-            target ??= prevBlock.GetBlockHeader().GetTarget();
-            var block = Block<T>.Create(prevBlock.Hash(sha256),data,target, sha256);
-            
-            await block.Mine(token);
-            Add(block);
-        }*/
     }
 }

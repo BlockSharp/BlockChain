@@ -1,0 +1,8 @@
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/bin/Debug/netcoreapp3.1/BlockChain.Core.deps.json
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/bin/Debug/netcoreapp3.1/BlockChain.Core.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/bin/Debug/netcoreapp3.1/BlockChain.Core.pdb
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/obj/Debug/netcoreapp3.1/BlockChain.Core.csprojAssemblyReference.cache
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/obj/Debug/netcoreapp3.1/BlockChain.Core.AssemblyInfoInputs.cache
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/obj/Debug/netcoreapp3.1/BlockChain.Core.AssemblyInfo.cs
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/obj/Debug/netcoreapp3.1/BlockChain.Core.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Core/obj/Debug/netcoreapp3.1/BlockChain.Core.pdb

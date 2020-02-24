@@ -39,8 +39,14 @@
             <e p="BlockMiner.cs" t="Include" />
           </e>
         </e>
+        <e p="BlockChain" t="Include">
+          <e p="BlockChain.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="AddHelpers.cs" t="Include" />
+            <e p="VerifyHelper.cs" t="Include" />
+          </e>
+        </e>
         <e p="BlockChain.Core.csproj" t="IncludeRecursive" />
-        <e p="BlockChain.cs" t="Include" />
         <e p="Constants.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
@@ -65,8 +71,14 @@
             <e p="BlockMinerTest.cs" t="Include" />
           </e>
         </e>
+        <e p="BlockChain" t="Include">
+          <e p="BlockChainTest.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="AddHelpersTest.cs" t="Include" />
+            <e p="VerifyHelperTest.cs" t="Include" />
+          </e>
+        </e>
         <e p="BlockChain.Core.Test.csproj" t="IncludeRecursive" />
-        <e p="BlockChainTest.cs" t="Include" />
         <e p="TestHelper.cs" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">

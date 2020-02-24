@@ -60,7 +60,7 @@ namespace BlockChain.Core.Block
         /// </summary>
         /// <param name="hashPrevBlock">Hash from previous block</param>
         /// <param name="data">Data of this block</param>
-        /// <param name="target">Target of this block, will be saved as bits</param>
+        /// <param name="target">Target of this block, will be saved as bits in blockheader</param>
         /// <param name="sha256">sha256 instance to create hash of blockData</param>
         /// <returns>New instance of a Block</returns>
         public static Block<TD> Create<TD>(byte[] hashPrevBlock, TD data, Target target, SHA256 sha256)
