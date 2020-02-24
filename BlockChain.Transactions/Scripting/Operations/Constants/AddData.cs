@@ -1,13 +1,14 @@
 using System.Linq;
 using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
+using BlockChain.Transactions.Scripting.Scripts;
 
 namespace Operations.Constants
 {
     internal static class AddData
     {
         [OpCode(OPCODE = OPCODE.OP_1)]
-        public static void OP_1(ref ExecutionStack stack)=>stack.Push((short) 1);
+        public static void OP_1(ref ExecutionStack stack) => stack.Push((short) 1);
 
         [OpCode(OPCODE = OPCODE.OP_2)]
         public static void OP_2(ref ExecutionStack stack) => stack.Push((short) 2);
@@ -53,5 +54,41 @@ namespace Operations.Constants
 
         [OpCode(OPCODE = OPCODE.OP_16)]
         public static void OP_16(ref ExecutionStack stack) => stack.Push((short) 16);
+
+        [OpCode(OPCODE = OPCODE.PUSHDATA_1)]
+        public static void PUSHDATA_1(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(stack.Script.Dequeue()));
+
+        [OpCode(OPCODE = OPCODE.PUSHDATA_2)]
+        public static void PUSHDATA_2(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(System.BitConverter.ToInt16(stack.Script.DequeueRange(2))));
+
+        [OpCode(OPCODE = OPCODE.PUSHDATA_4)]
+        public static void PUSHDATA_4(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(System.BitConverter.ToInt32(stack.Script.DequeueRange(4))));
+
+        [OpCode(OPCODE = OPCODE.PUSH_INT)]
+        public static void PUSH_INT(ref ExecutionStack stack)
+            => stack.Push(System.BitConverter.ToInt32(stack.Script.DequeueRange(4)));
+
+        [OpCode(OPCODE = OPCODE.PUSH_UINT)]
+        public static void PUSH_UINT(ref ExecutionStack stack)
+            => stack.Push(System.BitConverter.ToUInt32(stack.Script.DequeueRange(4)));
+
+        [OpCode(OPCODE = OPCODE.PUSH_SHORT)]
+        public static void PUSH_SHORT(ref ExecutionStack stack)
+            => stack.Push(System.BitConverter.ToInt16(stack.Script.DequeueRange(2)));
+
+        [OpCode(OPCODE = OPCODE.PUBKEY)]
+        public static void PUBKEY(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(Script.PubKeySize));
+
+        [OpCode(OPCODE = OPCODE.SIGNATURE)]
+        public static void SIGNATURE(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(Script.SignatureSize));
+
+        [OpCode(OPCODE = OPCODE.PUBKEY_HASH)]
+        public static void PUBKEY_HASH(ref ExecutionStack stack)
+            => stack.Push(stack.Script.DequeueRange(Script.AddressSize));
     }
 }

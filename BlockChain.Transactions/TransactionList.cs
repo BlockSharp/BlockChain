@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BlockChain.Transactions;
 using BlockChain.Core.Block;
 
 namespace BlockChain.Transactions
