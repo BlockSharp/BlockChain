@@ -65,7 +65,6 @@
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/SCRIPTTYPE.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/InterPreter/Interpreter.cs" />
-        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Scripts/Script.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/OPCODE.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/ExecutionStack.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Opcode.cs" />
@@ -77,6 +76,7 @@
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Verify.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions.Test/Scripting/BasicScriptingTest.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Cli/Program.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Scripts/Script.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Interpreter.cs" />
       </list>
     </option>
@@ -120,6 +120,7 @@
       <updated>1582532292350</updated>
       <workItem from="1582532293612" duration="9821000" />
       <workItem from="1582543577966" duration="342000" />
+      <workItem from="1582544065647" duration="241000" />
     </task>
     <servers />
   </component>
@@ -128,22 +129,22 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="410" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582541765893" />
-    <state width="1876" height="298" key="GridCell.Tab.0.bottom" timestamp="1582542115400">
+    <state width="1876" height="298" key="GridCell.Tab.0.bottom" timestamp="1582544368324">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115400" />
-    <state width="1876" height="298" key="GridCell.Tab.0.center" timestamp="1582542115399">
+    <state width="1876" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582544368324" />
+    <state width="1876" height="298" key="GridCell.Tab.0.center" timestamp="1582544368324">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="298" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115399" />
-    <state width="1876" height="298" key="GridCell.Tab.0.left" timestamp="1582542115399">
+    <state width="1876" height="298" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582544368324" />
+    <state width="1876" height="298" key="GridCell.Tab.0.left" timestamp="1582544368323">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="298" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115399" />
-    <state width="1876" height="298" key="GridCell.Tab.0.right" timestamp="1582542115400">
+    <state width="1876" height="298" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582544368323" />
+    <state width="1876" height="298" key="GridCell.Tab.0.right" timestamp="1582544368324">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="298" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115400" />
+    <state width="1876" height="298" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582544368324" />
     <state width="1876" height="367" key="GridCell.Tab.1.bottom" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

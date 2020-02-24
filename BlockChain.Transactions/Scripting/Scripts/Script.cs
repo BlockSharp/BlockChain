@@ -8,7 +8,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
     /// Basic script object,
     /// Extend for custom scripts
     /// </summary>
-    public class Script : Stack<OPCODE>
+    public class Script : Queue<OPCODE>
     {
         public Script()
         {
@@ -18,6 +18,6 @@ namespace BlockChain.Transactions.Scripting.Scripts
         {
         }
 
-        public new byte[] ToArray() => this.Select(x => (byte) x).Reverse().ToArray();
+        public new byte[] ToArray() => this.Select(x => (byte) x).ToArray();
     }
 }

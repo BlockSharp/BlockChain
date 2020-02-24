@@ -40,7 +40,7 @@ namespace BlockChain.Transactions.Scripting
             {
                 while (script.Any())
                 {
-                    var result = Operations[script.Pop()].Execute(ref executionStack);
+                    var result = Operations[script.Dequeue()].Execute(ref executionStack);
                     if (result != null) return (EXECUTION_RESULT) result;
                 }
             }

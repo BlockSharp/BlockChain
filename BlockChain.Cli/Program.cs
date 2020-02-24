@@ -14,11 +14,11 @@ namespace BlockChain.Cli
         static void Main(string[] args)
         {
             var script = new Script();
-            script.Push(OPCODE.OP_1);
-            script.Push(OPCODE.OP_2);
-            script.Push(OPCODE.OP_3);
-            script.Push(OPCODE.OP_4);
-            script.Push(OPCODE.OP_5);
+            script.Enqueue(OPCODE.OP_1);
+            script.Enqueue(OPCODE.OP_2);
+            script.Enqueue(OPCODE.OP_3);
+            script.Enqueue(OPCODE.OP_4);
+            script.Enqueue(OPCODE.OP_5);
             Interpreter.Initialize();
 
             var sw = Stopwatch.StartNew();
