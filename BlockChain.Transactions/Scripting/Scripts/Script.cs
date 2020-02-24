@@ -8,16 +8,18 @@ namespace BlockChain.Transactions.Scripting.Scripts
     /// Basic script object,
     /// Extend for custom scripts
     /// </summary>
-    public class Script : Queue<OPCODE>
+    public class Script : Queue<byte>
     {
         public Script()
         {
         }
 
-        public Script(byte[] script) : base(script.Select(x => (OPCODE) x))
+        public void Add(OPCODE code)
+            =>Enqueue((byte)code);
+
+        public Script(byte[] script) : base(script.Select(x => x))
         {
         }
-
-        public new byte[] ToArray() => this.Select(x => (byte) x).ToArray();
+        public new byte[] ToArray() => this.Select(x => x).ToArray();
     }
 }

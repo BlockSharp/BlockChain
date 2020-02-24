@@ -35,12 +35,12 @@ namespace BlockChain.Transactions.Scripting
         /// <returns>Result of script</returns>
         public static EXECUTION_RESULT Run(this Script script)
         {
-            var executionStack = new ExecutionStack();
+            var executionStack = new ExecutionStack(ref script);
             try
             {
                 while (script.Any())
                 {
-                    var result = Operations[script.Dequeue()].Execute(ref executionStack);
+                    var result = Operations[(OPCODE)script.Dequeue()].Execute(ref executionStack);
                     if (result != null) return (EXECUTION_RESULT) result;
                 }
             }

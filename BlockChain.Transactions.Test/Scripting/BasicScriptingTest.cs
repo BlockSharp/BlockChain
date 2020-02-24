@@ -13,11 +13,10 @@ namespace BlockChain.Transactions.Test.Scripting
         public void ScriptingTest1()
         {
             var script = new Script();
-            script.Enqueue(OPCODE.OP_1);
-            script.Enqueue(OPCODE.OP_2);
-            script.Enqueue(OPCODE.OP_3);
-            script.Enqueue(OPCODE.OP_4);
-            script.Enqueue(OPCODE.OP_5);
+            script.Add(OPCODE.OP_1);
+            script.Add(OPCODE.OP_1);
+            script.Add(OPCODE.OP_1);
+            script.Add(OPCODE.OP_1);
             Interpreter.Initialize();
 
             var sw = Stopwatch.StartNew();

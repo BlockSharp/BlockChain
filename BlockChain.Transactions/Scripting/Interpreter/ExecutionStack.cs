@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BlockChain.Transactions.Scripting.Scripts;
 
 namespace BlockChain.Transactions.Scripting
 {
@@ -7,8 +8,11 @@ namespace BlockChain.Transactions.Scripting
     /// Class that will be passed to every operator method
     /// Holds all values that are used during runtime of script
     /// </summary>
-    public class ExecutionStack : Stack<byte[]>
+    public class ExecutionStack:Stack<byte[]>
     {
+        public Script Script;
+        public ExecutionStack(ref Script script) => Script = script;
+        
         public void Push(byte b) => Push(new [] { b });
         public void Push(short n) => Push(BitConverter.GetBytes(n));
         public void Push(uint n) => Push(BitConverter.GetBytes(n));

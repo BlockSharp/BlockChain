@@ -1,3 +1,4 @@
+using System.Linq;
 using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
 
@@ -6,7 +7,7 @@ namespace Operations.Constants
     internal static class AddData
     {
         [OpCode(OPCODE = OPCODE.OP_1)]
-        public static void OP_1(ref ExecutionStack stack) => stack.Push((short) 1);
+        public static void OP_1(ref ExecutionStack stack)=>stack.Push((short) 1);
 
         [OpCode(OPCODE = OPCODE.OP_2)]
         public static void OP_2(ref ExecutionStack stack) => stack.Push((short) 2);
