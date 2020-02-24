@@ -13,9 +13,8 @@
 
 using System;
 using System.Linq;
-using System.Text;
 
-namespace System.Security.Cryptography
+namespace BlockChain.Core.Cryptography
 {
     public abstract class RIPEMD160 : System.Security.Cryptography.HashAlgorithm
     {

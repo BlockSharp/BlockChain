@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Blockchain.Core.Cryptography
+namespace BlockChain.Core.Cryptography.RSA
 {
     public class RSAKey
     {

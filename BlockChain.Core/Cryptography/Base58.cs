@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Numerics;
 
-namespace Blockchain.Core.Cryptography
+namespace BlockChain.Core.Cryptography
 {
 	public static class BASE58
 	{
