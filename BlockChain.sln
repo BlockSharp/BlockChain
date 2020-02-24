@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockChain.Cli", "BlockChai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockChain.Transactions", "BlockChain.Transactions\BlockChain.Transactions.csproj", "{4988DE06-4B97-4C7E-9BB7-88F5D20A2175}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockChain.Transactions.Test", "BlockChain.Transactions.Test\BlockChain.Transactions.Test.csproj", "{61E9FCB7-E75B-40CC-B448-A13FE63F1C89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4988DE06-4B97-4C7E-9BB7-88F5D20A2175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4988DE06-4B97-4C7E-9BB7-88F5D20A2175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4988DE06-4B97-4C7E-9BB7-88F5D20A2175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E9FCB7-E75B-40CC-B448-A13FE63F1C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E9FCB7-E75B-40CC-B448-A13FE63F1C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E9FCB7-E75B-40CC-B448-A13FE63F1C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E9FCB7-E75B-40CC-B448-A13FE63F1C89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

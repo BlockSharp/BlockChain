@@ -11,6 +11,19 @@
         "runtime": {
           "bin/placeholder/BlockChain.Core.dll": {}
         }
+      },
+      "BlockChain.Transactions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "BlockChain.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/BlockChain.Transactions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BlockChain.Transactions.dll": {}
+        }
       }
     }
   },
@@ -19,11 +32,17 @@
       "type": "project",
       "path": "../BlockChain.Core/BlockChain.Core.csproj",
       "msbuildProject": "../BlockChain.Core/BlockChain.Core.csproj"
+    },
+    "BlockChain.Transactions/1.0.0": {
+      "type": "project",
+      "path": "../BlockChain.Transactions/BlockChain.Transactions.csproj",
+      "msbuildProject": "../BlockChain.Transactions/BlockChain.Transactions.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "BlockChain.Core >= 1.0.0"
+      "BlockChain.Core >= 1.0.0",
+      "BlockChain.Transactions >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -52,6 +71,9 @@
           "projectReferences": {
             "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj": {
               "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj"
+            },
+            "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj": {
+              "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj"
             }
           }
         }

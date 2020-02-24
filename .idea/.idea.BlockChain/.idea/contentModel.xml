@@ -97,9 +97,22 @@
             <e p="OPCODE.cs" t="Include" />
             <e p="SCRIPTTYPE.cs" t="Include" />
           </e>
-          <e p="InterPreter" t="Include" />
-          <e p="Operations" t="Include" />
-          <e p="Scripts" t="Include" />
+          <e p="Interpreter" t="Include">
+            <e p="ExecutionStack.cs" t="Include" />
+            <e p="Interpreter.cs" t="Include" />
+            <e p="Opcode.cs" t="Include" />
+            <e p="Operation.cs" t="Include" />
+          </e>
+          <e p="Operations" t="Include">
+            <e p="Constants" t="Include">
+              <e p="AddData.cs" t="Include" />
+            </e>
+            <e p="Math.cs" t="Include" />
+            <e p="Verify.cs" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="Script.cs" t="Include" />
+          </e>
         </e>
         <e p="Transaction.cs" t="Include" />
         <e p="TransactionList.cs" t="Include" />
@@ -108,6 +121,20 @@
           <e p="Debug" t="Include">
             <e p="netcoreapp3.1" t="Include">
               <e p="BlockChain.Transactions.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="BlockChain.Transactions.Test" t="IncludeRecursive">
+        <e p="BlockChain.Transactions.Test.csproj" t="IncludeRecursive" />
+        <e p="Scripting" t="Include">
+          <e p="BasicScriptingTest.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="BlockChain.Transactions.Test.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>

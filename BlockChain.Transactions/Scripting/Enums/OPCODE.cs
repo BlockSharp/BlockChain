@@ -1,7 +1,7 @@
 namespace BlockChain.Transactions.Scripting.Enums
 {
     /// <summary>
-    /// Enum with all the OPCODES of a script (operators)
+    /// Enum with all the OPCODES (operators)
     /// </summary>
     public enum OPCODE
     {

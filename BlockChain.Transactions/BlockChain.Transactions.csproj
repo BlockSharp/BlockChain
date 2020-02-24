@@ -5,12 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Scripting\InterPreter" />
-      <Folder Include="Scripting\Operations" />
-      <Folder Include="Scripting\Scripts" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\BlockChain.Core\BlockChain.Core.csproj" />
     </ItemGroup>
 

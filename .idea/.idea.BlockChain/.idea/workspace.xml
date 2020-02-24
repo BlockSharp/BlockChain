@@ -10,26 +10,38 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Constants.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/TransactionList.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Transaction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Cli/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/OPCODE.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/SCRIPTTYPE.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Interpreter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/ExecutionStack.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Opcode.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Operation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Scripts/Script.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/BlockData/BlockHeaderTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Math.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/Helpers/BlockHelperTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/Helpers/BlockHeaderHelperTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/Helpers/AddHelpersTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/BlockTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/BlockChain/Helpers/AddHelpers.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Transaction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/BlockChain/Helpers/VerifyHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/BlockChainTest.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/TestHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/BlockData/BlockHeader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/BlockData/IBlockData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Constants/AddData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/BlockData/Target.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/Helpers/BlockHeaderHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Verify.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/Helpers/BlockHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/Helpers/VerifyHelperTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/Helpers/BlockMiner.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/BlockData/BlockHeaderTest.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/Helpers/BlockHelperTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/Block/Block.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/Block/Helpers/BlockHeaderHelperTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BlockChain.Transactions.Test/Scripting/BasicScriptingTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BlockChain.Core/BlockChain/BlockChain.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/BlockChain.Core.Test/BlockChain/Helpers/AddHelpersTest.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -51,6 +63,21 @@
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Transaction.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/TransactionList.cs" />
         <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/EXECUTION_RESULT.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/SCRIPTTYPE.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/InterPreter/Interpreter.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Scripts/Script.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Enums/OPCODE.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/ExecutionStack.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Opcode.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Operation.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/AddData.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Constants.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Math.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Constants/AddData.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Operations/Verify.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions.Test/Scripting/BasicScriptingTest.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Cli/Program.cs" />
+        <option value="$PROJECT_DIR$/BlockChain.Transactions/Scripting/Interpreter/Interpreter.cs" />
       </list>
     </option>
   </component>
@@ -64,7 +91,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
-  <component name="RunManager" selected="181d05ac-f27f-4b9d-afa8-11d1f6eeb776">
+  <component name="RunManager">
     <configuration name="BlockChain.Cli" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -91,99 +118,100 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1582532292350</updated>
-      <workItem from="1582532293612" duration="7354000" />
+      <workItem from="1582532293612" duration="9821000" />
+      <workItem from="1582543577966" duration="342000" />
     </task>
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="412" y="143" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582537527085">
+    <state x="410" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582541765893">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="412" y="143" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582537527085" />
-    <state width="1876" height="367" key="GridCell.Tab.0.bottom" timestamp="1582538608829">
+    <state x="410" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582541765893" />
+    <state width="1876" height="298" key="GridCell.Tab.0.bottom" timestamp="1582542115400">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.0.center" timestamp="1582538608829">
+    <state width="1876" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115400" />
+    <state width="1876" height="298" key="GridCell.Tab.0.center" timestamp="1582542115399">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.0.left" timestamp="1582538608828">
+    <state width="1876" height="298" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115399" />
+    <state width="1876" height="298" key="GridCell.Tab.0.left" timestamp="1582542115399">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608828" />
-    <state width="1876" height="367" key="GridCell.Tab.0.right" timestamp="1582538608829">
+    <state width="1876" height="298" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115399" />
+    <state width="1876" height="298" key="GridCell.Tab.0.right" timestamp="1582542115400">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.1.bottom" timestamp="1582538608829">
+    <state width="1876" height="298" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115400" />
+    <state width="1876" height="367" key="GridCell.Tab.1.bottom" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.1.center" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.1.center" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.1.left" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.1.left" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.1.right" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.1.right" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.2.bottom" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.2.bottom" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.2.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.2.center" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.2.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.2.center" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.2.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.2.left" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.2.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.2.left" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.2.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.2.right" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.2.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.2.right" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.2.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.3.bottom" timestamp="1582538608830">
+    <state width="1876" height="367" key="GridCell.Tab.2.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.3.bottom" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.3.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
-    <state width="1876" height="367" key="GridCell.Tab.3.center" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.3.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.3.center" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.3.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.3.left" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.3.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.3.left" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.3.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.3.right" timestamp="1582538608829">
+    <state width="1876" height="367" key="GridCell.Tab.3.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.3.right" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608829" />
-    <state width="1876" height="367" key="GridCell.Tab.4.bottom" timestamp="1582538608830">
+    <state width="1876" height="367" key="GridCell.Tab.3.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.4.bottom" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.4.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
-    <state width="1876" height="367" key="GridCell.Tab.4.center" timestamp="1582538608830">
+    <state width="1876" height="367" key="GridCell.Tab.4.bottom/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.4.center" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.4.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
-    <state width="1876" height="367" key="GridCell.Tab.4.left" timestamp="1582538608830">
+    <state width="1876" height="367" key="GridCell.Tab.4.center/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.4.left" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.4.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
-    <state width="1876" height="367" key="GridCell.Tab.4.right" timestamp="1582538608830">
+    <state width="1876" height="367" key="GridCell.Tab.4.left/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state width="1876" height="367" key="GridCell.Tab.4.right" timestamp="1582542115394">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="1876" height="367" key="GridCell.Tab.4.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582538608830" />
-    <state x="73" y="252" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1582539253926">
+    <state width="1876" height="367" key="GridCell.Tab.4.right/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582542115394" />
+    <state x="71" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size" timestamp="1582541249192">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="73" y="252" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582539253926" />
+    <state x="71" y="236" width="804" height="518" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1080/1920.0.1360.768@0.0.1920.1080" timestamp="1582541249192" />
     <state x="755" y="217" width="399" height="571" key="RiderGenerateDialog" timestamp="1582539402217">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>

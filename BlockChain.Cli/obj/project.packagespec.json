@@ -17,6 +17,9 @@
         "projectReferences": {
           "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj": {
             "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Core/BlockChain.Core.csproj"
+          },
+          "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj": {
+            "projectPath": "/home/job/Documents/Projects/BlockChain/BlockChain.Transactions/BlockChain.Transactions.csproj"
           }
         }
       }

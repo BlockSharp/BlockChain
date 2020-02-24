@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "BlockChain.Cli/1.0.0": {
+        "dependencies": {
+          "BlockChain.Core": "1.0.0",
+          "BlockChain.Transactions": "1.0.0"
+        },
+        "runtime": {
+          "BlockChain.Cli.dll": {}
+        }
+      },
+      "BlockChain.Core/1.0.0": {
+        "runtime": {
+          "BlockChain.Core.dll": {}
+        }
+      },
+      "BlockChain.Transactions/1.0.0": {
+        "dependencies": {
+          "BlockChain.Core": "1.0.0"
+        },
+        "runtime": {
+          "BlockChain.Transactions.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BlockChain.Cli/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BlockChain.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "BlockChain.Transactions/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,16 @@
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli.deps.json
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli.runtimeconfig.json
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli.runtimeconfig.dev.json
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Cli.pdb
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Core.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Transactions.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Core.pdb
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/bin/Debug/netcoreapp3.1/BlockChain.Transactions.pdb
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.csprojAssemblyReference.cache
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.AssemblyInfoInputs.cache
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.AssemblyInfo.cs
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.csproj.CopyComplete
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.dll
+/home/job/Documents/Projects/BlockChain/BlockChain.Cli/obj/Debug/netcoreapp3.1/BlockChain.Cli.pdb
