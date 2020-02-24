@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using BlockChain.Core.Block;
-using BlockChain.Core.Test.Block;
 using NUnit.Framework;
 
 namespace BlockChain.Core.Test
@@ -54,10 +52,6 @@ namespace BlockChain.Core.Test
         [Test]
         public void TestIsValid()
         {
-            Block<TestBlockData> validBlock = new Block<TestBlockData>(Convert.FromBase64String(
-                    "AQAAAAmKCD7tIp5wWCHSYMEE9XHhXHA4AQsH0gMQiiqQkIjwHuOynzH++oBbPhLPtQl1PNwX9KnuriDiafYwR6WMlRz5B3jtcrfXCB4AAP/yBwEAMTIzNDY1NDIzNTE0M2UAAAA=")),
-                blockWithInvalidHashForTarget = new Block<TestBlockData>(Convert.FromBase64String(
-                    "AQAAAAmKCD7tIp5wWCHSYMEE9XHhXHA4AQsH0gMQiiqQkIjwHuOynzH++oBbPhLPtQl1PNwX9KnuriDiafYwR6WMlRz5B3jtcrfXCB4AAADyBwEAMTIzNDY1NDIzNTE0M2UAAAA="));
             var t = new Target(new byte[]{30,0,0,255});
             byte[] validHash = Convert.FromBase64String("QjKhmpgUjbHYbfaExjeAaiGWmSiFJ/1wGfq9IJLnAAA="),
                 invalidHash = Convert.FromBase64String("4kO6jyfbfk4xwxb6pWDt6gGJgSPcRFgF1my82DnkYTw=");

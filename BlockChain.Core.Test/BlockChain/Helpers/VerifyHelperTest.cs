@@ -10,14 +10,14 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
 {
     public class VerifyHelperTest
     {
-        const string file = "blockchain4.db";
+        const string File = "blockchain4.db";
         const int TimeoutInSec = 30;
         
         [Test]
         public async Task VerifyTest()
         {
-            if(File.Exists(file)) File.Delete(file);
-            var blockChain = new BlockChain<TestBlockData>(file);
+            if(System.IO.File.Exists(File)) System.IO.File.Delete(File);
+            var blockChain = new BlockChain<TestBlockData>(File);
             
             var data = new[] { new TestBlockData("12345678910"),new TestBlockData("12345678911230"),new TestBlockData("123455678910"),new TestBlockData("1234567891120") };
             var token = new CancellationTokenSource();
@@ -29,7 +29,7 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
             Assert.IsTrue(x,"Valid blockchain was marked invalid");
             
             //Make blockchain invalid
-            MakeBlockChainInvalid(blockChain);
+            MakeBlockChainInvalid();
             foreach (var d in data) await blockChain.Add(d, token: token.Token); //Add some random blocks
             
             //Check blockchain again
@@ -37,12 +37,12 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
             Assert.IsFalse(x,"Invalid blockchain was marked valid");
         }
 
-        private void MakeBlockChainInvalid(BlockChain<TestBlockData> blockChain)
+        private void MakeBlockChainInvalid()
         {
             var blockWithInvalidMerkleRoot = new Block<TestBlockData>(Convert.FromBase64String(
                 "AQAAAAmKCD7tIp5wWCHSYMEE9XHhXHA4AQsH0gMQiiqQkIjwHgCynzH++oBbPhLPtQl1PNwX9KnuriDiafYwR6WMlRz5B3jtcrfXCB4AAP/yBwEAMTIzNDY1NDIzNTE0M2UAAAA="));
             byte[] data = blockWithInvalidMerkleRoot.ToArray();
-            using var stream = new FileStream(file, FileMode.Append);
+            using var stream = new FileStream(File, FileMode.Append);
             stream.Write(data, 0, data.Length);
         }
     }

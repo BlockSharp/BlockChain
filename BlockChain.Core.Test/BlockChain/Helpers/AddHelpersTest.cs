@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using BlockChain.Core.Block;
@@ -10,13 +9,13 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
 {
     public class AddHelpersTest
     {
-        const string file = "blockchain3.db";
+        const string File = "blockchain3.db";
         const int TimeoutInSec = 30;
         [Test]
         public void AddTest()
         {
-            if(File.Exists(file)) File.Delete(file);
-            var blockChain = new BlockChain<TestBlockData>(file);
+            if(System.IO.File.Exists(File)) System.IO.File.Delete(File);
+            var blockChain = new BlockChain<TestBlockData>(File);
             
             var data = new TestBlockData("12345678910");
             var token = new CancellationTokenSource();

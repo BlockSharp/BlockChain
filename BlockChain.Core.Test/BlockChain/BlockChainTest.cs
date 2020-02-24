@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -11,25 +10,25 @@ namespace BlockChain.Core.Test.BlockChain
 {
     public class BlockChainTest
     {
-        private const string file = "blockchain.db";
-        private const string file2 = "blockchain.db";
+        private const string File = "blockchain.db";
+        private const string File2 = "blockchain.db";
         private const int TimeoutInSec = 30;
 
         [Test]
         public void CreateFileTest()
         {
-            if(File.Exists(file)) File.Delete(file);
-            var blockChain = new BlockChain<TestBlockData>(file);
+            if(System.IO.File.Exists(File)) System.IO.File.Delete(File);
+            var blockChain = new BlockChain<TestBlockData>(File);
             
-            Assert.IsTrue(File.Exists(file),"Blockchain did not create a new file");
+            Assert.IsTrue(System.IO.File.Exists(File),"Blockchain did not create a new file");
             Assert.IsTrue(TestHelper.ArrayEquals(blockChain.Last().ToArray(),Constants.Genesis),"Blockchain did not add genesis to new file");
         }
         
         [Test]
         public void AddAndReadTest()
         {
-            if(File.Exists(file2)) File.Delete(file2);
-            var blockChain = new BlockChain<TestBlockData>(file2);
+            if(System.IO.File.Exists(File2)) System.IO.File.Delete(File2);
+            var blockChain = new BlockChain<TestBlockData>(File2);
 
             using var sha256 = SHA256.Create();
             TestBlockData data = new TestBlockData("12345678910");

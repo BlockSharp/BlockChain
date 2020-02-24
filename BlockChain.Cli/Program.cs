@@ -1,8 +1,5 @@
 ﻿using System;
-using BlockChain.Core;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
 using BlockChain.Transactions.Scripting.Scripts;
@@ -11,7 +8,7 @@ namespace BlockChain.Cli
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var script = new Script();
             script.Enqueue(OPCODE.OP_1);
