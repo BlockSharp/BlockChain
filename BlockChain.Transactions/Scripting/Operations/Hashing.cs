@@ -1,6 +1,7 @@
 ﻿using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
 using System.Security.Cryptography;
+using BlockChain.Core.Cryptography;
 
 namespace Operations
 {
