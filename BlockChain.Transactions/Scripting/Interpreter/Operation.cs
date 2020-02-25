@@ -36,6 +36,8 @@ namespace BlockChain.Transactions.Scripting
         public EXECUTION_RESULT? Execute(ref ExecutionStack stack)
         {
             if (_opCode.minLengthStack != 0 && _opCode.minLengthStack > stack.Count) return EXECUTION_RESULT.INVALID_STACK;
+            if (_opCode.minLengthScript != 0 && _opCode.minLengthScript > stack.Script.Count) return EXECUTION_RESULT.UNKNOWN_ERROR;
+
 
             if (_hasReturnType) return (_operation as ReturnDelegate)?.Invoke(ref stack);
             (_operation as Delegate)?.Invoke(ref stack);

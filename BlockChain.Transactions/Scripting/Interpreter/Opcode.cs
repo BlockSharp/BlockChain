@@ -21,5 +21,6 @@ namespace BlockChain.Transactions.Scripting
     {
         public OPCODE OPCODE { get; set; }
         public int minLengthStack { get; set; }
+        public int minLengthScript { get; set; }
     }
 }
