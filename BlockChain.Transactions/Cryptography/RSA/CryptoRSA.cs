@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BlockChain.Core.Cryptography.RSA
+namespace BlockChain.Transactions.Cryptography.RSA
 {
     public class CryptoRSA
     {

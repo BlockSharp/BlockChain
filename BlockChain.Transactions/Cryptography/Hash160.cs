@@ -14,7 +14,7 @@
 using System;
 using System.Linq;
 
-namespace BlockChain.Core.Cryptography
+namespace BlockChain.Transactions.Cryptography
 {
     public abstract class RIPEMD160 : System.Security.Cryptography.HashAlgorithm
     {
