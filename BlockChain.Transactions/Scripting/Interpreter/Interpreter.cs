@@ -32,15 +32,25 @@ namespace BlockChain.Transactions.Scripting
         /// Run a script and return the result.
         /// </summary>
         /// <param name="script">Script to run</param>
+        /// <param name="transaction">The transaction the script refers to</param>
         /// <returns>Result of script</returns>
-        public static EXECUTION_RESULT Run(this Script script)
+        public static EXECUTION_RESULT Run(this Script script, Transaction transaction = null)
         {
-            var executionStack = new ExecutionStack(ref script);
+            var executionStack = new ExecutionStack(ref script, ref transaction);
             try
             {
                 while (script.Any())
                 {
-                    var result = Operations[(OPCODE)script.Dequeue()].Execute(ref executionStack);
+                    OPCODE current = (OPCODE)script.Dequeue();
+#if DEBUG
+                    System.Console.WriteLine("Executing: " + current.ToString());
+#endif
+                    var result = Operations[current].Execute(ref executionStack);
+
+#if DEBUG
+                    executionStack.PrintStack();
+#endif
+
                     if (result != null) return (EXECUTION_RESULT) result;
                 }
             }

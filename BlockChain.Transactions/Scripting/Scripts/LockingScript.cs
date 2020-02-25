@@ -1,4 +1,4 @@
-﻿using BlockChain.Core.Cryptography;
+﻿using BlockChain.Transactions.Cryptography;
 using BlockChain.Transactions.Scripting.Enums;
 using System;
 using System.Linq;
@@ -15,9 +15,9 @@ namespace BlockChain.Transactions.Scripting.Scripts
         public LockingScript(byte[] publicKey) : base(SCRIPTTYPE.LOCK_P2PK)
         {
             if (publicKey.Length != PubKeySize) throw new ArgumentException("Public key length is invalid. Please provide a key with keysize=512");
-            this.Add(OPCODE.CHECKSIG); //OPCODE = Check public key with signature
-            this.AddRange(publicKey);
             this.Add(OPCODE.PUBKEY);
+            this.AddRange(publicKey);
+            this.Add(OPCODE.CHECKSIG); //OPCODE = Check public key with signature
         }
 
         /// <summary>
@@ -32,12 +32,12 @@ namespace BlockChain.Transactions.Scripting.Scripts
             byte[] addressHash = BASE58.Decode(address);
             if (addressHash.Length != 20) throw new ArgumentException("Invalid address. Address byte[] size must be 20 (HASH160)");
 
-            this.Add(OPCODE.CHECKSIG); //Validate signature with the provided public key
-            this.Add(OPCODE.EQ_VERIFY); //OPCODE = Check if equal: address and hashed public key
-            this.AddRange(addressHash); //Hashed publicKey
-            this.Add(OPCODE.PUBKEY_HASH);
-            this.Add(OPCODE.HASH160); //OPCODE = Hash public key
             this.Add(OPCODE.DUP); //OPCODE = Duplicate the original public key, first instruction
+            this.Add(OPCODE.HASH160); //OPCODE = Hash public key
+            this.Add(OPCODE.PUBKEY_HASH);
+            this.AddRange(addressHash); //Hashed publicKey
+            this.Add(OPCODE.EQ_VERIFY); //OPCODE = Check if equal: address and hashed public key
+            this.Add(OPCODE.CHECKSIG); //Validate signature with the provided public key
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace BlockChain.Transactions.Scripting.Scripts
                 byte[] scriptHash = hash160.ComputeHash(script.ToArray());
                 if (scriptHash.Length > 255) throw new ArgumentException("Error: hash is too big.");
 
-                this.Add(OPCODE.EVAL_SCRIPT); //Execute (duplicated in begin) script
-                this.Add(OPCODE.EQ_VERIFY); //Verify if script hash matches created hash
-                this.AddRange(scriptHash); //Script hash
-                this.PushSizeAndCode(scriptHash.Length);
-                this.Add(OPCODE.RIPEMD160); //Hash given script
                 this.Add(OPCODE.DUP); //Duplicate unlocking script data
+                this.Add(OPCODE.RIPEMD160); //Hash given script
+                this.PushSizeAndCode(scriptHash.Length);
+                this.AddRange(scriptHash); //Script hash
+                this.Add(OPCODE.EQ_VERIFY); //Verify if script hash matches created hash
+                this.Add(OPCODE.EVAL_SCRIPT); //Execute (duplicated in begin) script
             }
         }
 
@@ -69,7 +69,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
             if (this.Type != SCRIPTTYPE.LOCK_P2PK)
                 throw new ArgumentException($"This type of script ({this.Type.ToString()}) does commonly not contain a public key");
 
-            byte size = this.Skip(1).Take(1).First();
+            byte size = Script.PubKeySize;
             return this.Skip(2).Take(size).ToArray();
         }
 

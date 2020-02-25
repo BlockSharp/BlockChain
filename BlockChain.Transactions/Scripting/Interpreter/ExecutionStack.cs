@@ -35,5 +35,34 @@ namespace BlockChain.Transactions.Scripting
         public uint PeekUInt() => Peek().Length != 4 ? 0 : BitConverter.ToUInt32(Peek());
         public int PopInt() => Peek().Length != 4 ? 0 : BitConverter.ToInt32(Pop());
         public int PeekInt() => Peek().Length != 4 ? 0 : BitConverter.ToInt32(Peek());
+
+#if DEBUG
+        /// <summary>
+        /// Helps with debugging. Prints current stack to console in human-readable format
+        /// </summary>
+        public void PrintStack()
+        {
+            Console.Write("Stack is now: [ ");
+            for (int i = 0; i < this.Count(); i++)
+            {
+                byte[] s = this.Skip(i).Take(1).First();
+                if (s.Length == 1)
+                {
+                    byte b = s[0];
+                    if (b == 0 || b == 1)
+                        Console.Write(Convert.ToBoolean(b) + " ");
+                    else
+                        Console.Write(b + " ");
+                }
+                else if (s.Length == 2)
+                    Console.Write(BitConverter.ToInt16(s, 0) + " ");
+                else if (s.Length == 4) //commonly uint
+                    Console.Write(BitConverter.ToUInt32(s, 0) + " ");
+                else
+                    Console.Write($"ARR({s.Length}) ");
+            }
+            Console.Write("]\n\n");
+        }
+#endif
     }
 }

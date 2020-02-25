@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BlockChain.Transactions.Scripting.Enums;
@@ -67,7 +68,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
         /// </summary>
         /// <param name="data">The data you want</param>
         public void AddRange(byte[] data)
-            => data.Reverse().ToList().ForEach(f => Enqueue(f));
+            => data.Reverse().ToList().ForEach(f => Add(f));
 
         /// <summary>
         /// Get range of data from the instructions

@@ -1,6 +1,10 @@
-﻿using BlockChain.Transactions.Scripting;
+﻿using BlockChain.Transactions;
+using BlockChain.Transactions.Cryptography;
+using BlockChain.Transactions.Cryptography.RSA;
+using BlockChain.Transactions.Scripting;
 using BlockChain.Transactions.Scripting.Enums;
 using BlockChain.Transactions.Scripting.Scripts;
+using System;
 
 namespace BlockChain.Cli
 {
@@ -8,13 +12,22 @@ namespace BlockChain.Cli
     {
         static void Main()
         {
-            var script = new Script();
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_2);
-            script.Add(OPCODE.MAX);
+            RSAKey key = new RSAKey(512);
+            CryptoRSA rsa = new CryptoRSA(key, true);
             Interpreter.Initialize();
-            var r = script.Run();
-            var r2 =script.Run();
+
+            Transaction t = new Transaction(new TxIn(new byte[32], 0), new TxOut(5));
+
+            byte[] pubkeyhash;
+
+            using (var rid = RIPEMD160.Create())
+                pubkeyhash = rid.ComputeHash(key.publicKey);
+
+            LockingScript ls = new LockingScript(key.publicKey);
+            UnlockingScript us = new UnlockingScript(rsa.Sign(t.Hash()), key.publicKey);
+
+            us.InsertScript(ls);
+            Console.WriteLine(us.Run(t).ToString());
 
             //var sw = Stopwatch.StartNew();
             //for (int i = 0; i < 1000000; i++) script.Run();

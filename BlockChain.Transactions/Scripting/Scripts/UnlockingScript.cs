@@ -12,8 +12,9 @@ namespace BlockChain.Transactions.Scripting.Scripts
         public UnlockingScript(byte[] signature) : base(SCRIPTTYPE.UNLOCK_P2PK)
         {
             if (signature.Length != SignatureSize) throw new ArgumentException("Signature size is invalid");
-            this.AddRange(signature);
+
             this.Add(OPCODE.SIGNATURE);
+            this.AddRange(signature);
         }
 
         /// <summary>
@@ -25,10 +26,11 @@ namespace BlockChain.Transactions.Scripting.Scripts
         {
             if (publicKey.Length != PubKeySize) throw new ArgumentException("Public key size is invalid");
             if (signature.Length != SignatureSize) throw new ArgumentException("Signature size is invalid");
-            this.AddRange(publicKey);
-            this.Add(OPCODE.PUBKEY);
-            this.AddRange(signature);
+
             this.Add(OPCODE.SIGNATURE);
+            this.AddRange(signature);
+            this.Add(OPCODE.PUBKEY);
+            this.AddRange(publicKey);
         }
 
         /// <summary>
@@ -43,10 +45,10 @@ namespace BlockChain.Transactions.Scripting.Scripts
             byte[] ls = script.ToArray();
             byte[] us = unlockScript.ToArray();
 
-            this.AddRange(ls);
-            this.PushSizeAndCode(ls.Length);
-            this.AddRange(us);
             this.PushSizeAndCode(us.Length);
+            this.AddRange(us);
+            this.PushSizeAndCode(ls.Length);
+            this.AddRange(ls);
         }
     }
 }
