@@ -11,13 +11,15 @@ namespace BlockChain.Core.Test.BlockChain
     public class BlockChainTest
     {
         private const string File = "blockchain.db";
-        private const string File2 = "blockchain.db";
+        private const string File2 = "blockchain2.db";
         private const int TimeoutInSec = 30;
 
         [Test]
         public void CreateFileTest()
         {
             if(System.IO.File.Exists(File)) System.IO.File.Delete(File);
+            if(System.IO.File.Exists($"{File}.h")) System.IO.File.Delete($"{File}.h");
+
             var blockChain = new BlockChain<TestBlockData>(File);
             
             Assert.IsTrue(System.IO.File.Exists(File),"Blockchain did not create a new file");
@@ -28,7 +30,9 @@ namespace BlockChain.Core.Test.BlockChain
         public void AddAndReadTest()
         {
             if(System.IO.File.Exists(File2)) System.IO.File.Delete(File2);
+            if(System.IO.File.Exists($"{File2}.h")) System.IO.File.Delete($"{File2}.h");
             var blockChain = new BlockChain<TestBlockData>(File2);
+            
 
             using var sha256 = SHA256.Create();
             TestBlockData data = new TestBlockData("12345678910");

@@ -17,6 +17,8 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
         public async Task VerifyTest()
         {
             if(System.IO.File.Exists(File)) System.IO.File.Delete(File);
+            if(System.IO.File.Exists($"{File}.h")) System.IO.File.Delete($"{File}.h");
+
             var blockChain = new BlockChain<TestBlockData>(File);
             
             var data = new[] { new TestBlockData("12345678910"),new TestBlockData("12345678911230"),new TestBlockData("123455678910"),new TestBlockData("1234567891120") };
@@ -43,7 +45,9 @@ namespace BlockChain.Core.Test.BlockChain.Helpers
                 "AQAAAAmKCD7tIp5wWCHSYMEE9XHhXHA4AQsH0gMQiiqQkIjwHgCynzH++oBbPhLPtQl1PNwX9KnuriDiafYwR6WMlRz5B3jtcrfXCB4AAP/yBwEAMTIzNDY1NDIzNTE0M2UAAAA="));
             byte[] data = blockWithInvalidMerkleRoot.ToArray();
             using var stream = new FileStream(File, FileMode.Append);
-            stream.Write(data, 0, data.Length);
+            using var stream2 = new FileStream($"{File}.h", FileMode.Append);
+            stream.Write(data);
+            stream2.Write(BitConverter.GetBytes(data.Length));
         }
     }
 }

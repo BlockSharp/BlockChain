@@ -17,9 +17,10 @@ namespace BlockChain.Core.Block
             var header = block.GetBlockHeader();
             var data = block.GetData();
             return (ArrayEquals(block.ToArray(), Constants.Genesis) || //Return true if block is genesis
-                   ArrayEquals(header.HashPrevBlock, hashPrevBlock)) && //Check hash prev block
+                    ArrayEquals(header.HashPrevBlock, hashPrevBlock)) && //Check hash prev block
                    ArrayEquals(header.HashMerkleRoot, data.GetHashMerkleRoot(sha256)) && //Check hash data
                    data.IsValid() && //Check if data is valid (only used if overwritten)
+                   block.GetSize() == block.ToArray().Length && // Check if block length is valid
                    header.GetTarget().IsValid(block.Hash(sha256)); //Check target
         }
 

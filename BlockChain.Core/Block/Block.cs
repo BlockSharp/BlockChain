@@ -52,7 +52,6 @@ namespace BlockChain.Core.Block
             if (blockData == null || blockData.Length < Block.BlockHeader.Size + 4)
                 throw new InvalidDataException("Invalid data size");
             _blockData = blockData;
-            if (GetSize() != _blockData.Length) throw new InvalidDataException("Block has an invalid size");
         }
 
         /// <summary>
