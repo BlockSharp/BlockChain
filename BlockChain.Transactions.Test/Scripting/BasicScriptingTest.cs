@@ -12,16 +12,11 @@ namespace BlockChain.Transactions.Test.Scripting
         [Test]
         public void ScriptingTest1()
         {
-            var script = new Script();
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
-            script.Add(OPCODE.OP_1);
+            CustomScript custom = new CustomScript();
+            custom.AddInstructions(OPCODE.OP_1, OPCODE.OP_2, OPCODE.ADD, OPCODE.OP_3, OPCODE.EQ_NUM);
             Interpreter.Initialize();
 
-            var sw = Stopwatch.StartNew();
-            for (int i = 0; i < 1000000; i++) script.Run();
-            Console.WriteLine(sw.ElapsedMilliseconds);
+            Assert.AreEqual(EXECUTION_RESULT.SUCCESS, custom.Run());
         }
     }
 }

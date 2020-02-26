@@ -29,11 +29,11 @@ namespace Operations
 
         [OpCode(OPCODE = OPCODE.ADD, minLengthStack = 2)]
         public static void ADD(ref ExecutionStack stack)
-            => stack.Push(stack.PopShort() + stack.PopShort());
+            => stack.Push((short)(stack.PopShort() + stack.PopShort()));
 
         [OpCode(OPCODE = OPCODE.SUBSTRACT, minLengthStack = 2)]
         public static void SUBSTRACT(ref ExecutionStack stack)
-            => stack.Push(stack.PopShort() - stack.PopShort());
+            => stack.Push((short)(stack.PopShort() - stack.PopShort()));
 
         [OpCode(OPCODE = OPCODE.LESSTHAN, minLengthStack = 2)]
         public static void LESSTHAN(ref ExecutionStack stack)

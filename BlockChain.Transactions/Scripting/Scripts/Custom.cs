@@ -48,24 +48,26 @@ namespace BlockChain.Transactions.Scripting.Scripts
         /// <param name="data"></param>
         public void AddData(byte[] data)
         {
-            this.AddRange(data);
             int size = data.Length;
 
             if (size <= byte.MaxValue)
             {
-                this.Enqueue((byte)size);
                 this.Add(OPCODE.PUSHDATA_1);
+                this.Enqueue((byte)size);
             }
             else if (size <= short.MaxValue)
             {
-                this.AddRange(BitConverter.GetBytes((short)size));
                 this.Add(OPCODE.PUSHDATA_2);
+                this.AddRange(BitConverter.GetBytes((short)size));
             }
             else
             {
-                this.AddRange(BitConverter.GetBytes(size));
                 this.Add(OPCODE.PUSHDATA_4);
+                this.AddRange(BitConverter.GetBytes(size));
             }
+
+            this.AddRange(data);
+
         }
 
         public void AddData(string data) => AddData(Encoding.UTF8.GetBytes(data));
