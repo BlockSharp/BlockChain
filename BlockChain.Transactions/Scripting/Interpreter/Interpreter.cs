@@ -39,6 +39,7 @@ namespace BlockChain.Transactions.Scripting
             var executionStack = new ExecutionStack(ref script, ref transaction);
             try
             {
+                System.Console.WriteLine("l:" + script.Count());
                 while (script.Any())
                 {
                     OPCODE current = (OPCODE)script.Dequeue();
@@ -54,7 +55,13 @@ namespace BlockChain.Transactions.Scripting
                     if (result != null) return (EXECUTION_RESULT) result;
                 }
             }
-            catch { return EXECUTION_RESULT.UNKNOWN_ERROR; }
+            catch(System.Exception e)
+            {
+#if DEBUG
+                throw e;
+#endif
+                return EXECUTION_RESULT.UNKNOWN_ERROR; 
+            }
 
 
             int count = executionStack.Count;

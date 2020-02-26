@@ -15,6 +15,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
         public LockingScript(byte[] publicKey) : base(SCRIPTTYPE.LOCK_P2PK)
         {
             if (publicKey.Length != PubKeySize) throw new ArgumentException("Public key length is invalid. Please provide a key with keysize=512");
+            
             this.Add(OPCODE.PUBKEY);
             this.AddRange(publicKey);
             this.Add(OPCODE.CHECKSIG); //OPCODE = Check public key with signature

@@ -11,6 +11,7 @@ namespace Operations
         public static EXECUTION_RESULT? EQUALS(ref ExecutionStack stack)
         {
             if (stack.Count < 2) return EXECUTION_RESULT.INVALID_STACK;
+
             stack.Push(System.Linq.Enumerable.SequenceEqual(stack.Pop(), stack.Pop()));
             return null;
         }

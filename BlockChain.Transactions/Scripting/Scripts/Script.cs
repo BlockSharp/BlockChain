@@ -29,7 +29,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
         /// </summary>
         /// <param name="script">Another script. For example, an unlocking script</param>
         public void InsertScript(Script script)
-            => this.AddRange(script.ToArray());
+            => this.AddRange(script.Reverse().ToArray());
 
         public new byte[] ToArray() => this.Select(x => x).ToArray();
 
@@ -93,18 +93,18 @@ namespace BlockChain.Transactions.Scripting.Scripts
         {
             if (size <= byte.MaxValue)
             {
-                this.Add((byte)size);
                 this.Add(OPCODE.PUSHDATA_1);
+                this.Add((byte)size);
             }
             else if (size <= short.MaxValue)
             {
-                this.AddRange(System.BitConverter.GetBytes((short)size));
                 this.Add(OPCODE.PUSHDATA_2);
+                this.AddRange(System.BitConverter.GetBytes((short)size));
             }
             else
             {
-                this.AddRange(System.BitConverter.GetBytes(size));
                 this.Add(OPCODE.PUSHDATA_4);
+                this.AddRange(System.BitConverter.GetBytes(size));
             }
         }
     }
