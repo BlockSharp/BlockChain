@@ -1,4 +1,4 @@
-﻿using BlockChain.Transactions.Cryptography;
+﻿using BlockChain.Core.Cryptography;
 using BlockChain.Transactions.Scripting.Enums;
 using System;
 using System.Linq;

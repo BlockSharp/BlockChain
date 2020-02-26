@@ -27,7 +27,7 @@ namespace BlockChain.Transactions.Scripting.Scripts
         /// <summary>
         /// Insert instructions of script above instructions of this script
         /// </summary>
-        /// <param name="script">Another script. For example, an unlocking script</param>
+        /// <param name="script">Another script. For example, a locking script</param>
         public void InsertScript(Script script)
             => this.AddRange(script.Reverse().ToArray());
 
