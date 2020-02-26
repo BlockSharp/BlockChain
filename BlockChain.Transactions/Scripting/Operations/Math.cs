@@ -24,6 +24,8 @@ namespace Operations
         [OpCode(OPCODE = OPCODE.MULTIPLY)]
         [OpCode(OPCODE = OPCODE.DIVIDE)]
         [OpCode(OPCODE = OPCODE.MODULO)]
+        [OpCode(OPCODE = OPCODE.NEGATE)]
+        [OpCode(OPCODE = OPCODE.SEPERATOR)]
         public static EXECUTION_RESULT? DISABLED(ref ExecutionStack stack)
             => EXECUTION_RESULT.DISABLED_CODE;
 

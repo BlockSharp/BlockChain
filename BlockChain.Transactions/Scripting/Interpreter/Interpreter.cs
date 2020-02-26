@@ -27,7 +27,7 @@ namespace BlockChain.Transactions.Scripting
                         (OpCode) k.GetCustomAttributes().First()).OPCODE,
                     v => new Operation(v,v.GetCustomAttributes().First() as OpCode));
         }
-        
+
         /// <summary>
         /// Run a script and return the result.
         /// </summary>
@@ -35,6 +35,15 @@ namespace BlockChain.Transactions.Scripting
         /// <param name="transaction">The transaction the script refers to</param>
         /// <returns>Result of script</returns>
         public static EXECUTION_RESULT Run(this Script script, Transaction transaction = null)
+            => RunAndGetStack(script, out var output, transaction);
+
+        /// <summary>
+        /// Run a script and return the result.
+        /// </summary>
+        /// <param name="script">Script to run</param>
+        /// <param name="transaction">The transaction the script refers to</param>
+        /// <returns>Result of script</returns>
+        public static EXECUTION_RESULT RunAndGetStack(this Script script, out byte[] output, Transaction transaction = null)
         {
             var executionStack = new ExecutionStack(ref script, ref transaction);
             try
@@ -51,7 +60,11 @@ namespace BlockChain.Transactions.Scripting
                     executionStack.PrintStack();
 #endif
 
-                    if (result != null) return (EXECUTION_RESULT) result;
+                    if (result != null) 
+                    {
+                        output = executionStack.FirstOrDefault();
+                        return (EXECUTION_RESULT)result;
+                    }
                 }
             }
             catch(System.Exception e)
@@ -62,6 +75,7 @@ namespace BlockChain.Transactions.Scripting
                 return EXECUTION_RESULT.UNKNOWN_ERROR; 
             }
 
+            output = executionStack.FirstOrDefault();
 
             int count = executionStack.Count;
             if (count == 0) return EXECUTION_RESULT.INVALID_STACK;

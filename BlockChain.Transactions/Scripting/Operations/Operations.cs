@@ -24,6 +24,13 @@ namespace Operations
             return DUP(ref stack);
         }
 
+        [OpCode(OPCODE = OPCODE.RETURN)]
+        public static EXECUTION_RESULT? RETURN(ref ExecutionStack stack)
+        {
+            stack.Push(stack.Script.ToArray());
+            return EXECUTION_RESULT.EXECUTION_STOPPPED;
+        }
+
         [OpCode(OPCODE = OPCODE.EVAL_SCRIPT, minLengthStack = 2)]
         public static void EVAL_SCRIPT(ref ExecutionStack stack)
         {

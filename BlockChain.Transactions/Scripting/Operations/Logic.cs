@@ -22,5 +22,25 @@ namespace Operations
             if (EQUALS(ref stack) != null) stack.Push(false);
             return Verify.VERIFY(ref stack);
         }
+
+        [OpCode(OPCODE = OPCODE.TRUE)]
+        public static void TRUE(ref ExecutionStack stack)
+            => stack.Push(true);
+
+        [OpCode(OPCODE = OPCODE.FALSE)]
+        public static void FALSE(ref ExecutionStack stack)
+            => stack.Push(false);
+
+        [OpCode(OPCODE = OPCODE.OP_AND, minLengthStack = 2)]
+        public static void AND(ref ExecutionStack stack)
+            => stack.Push(stack.PopBool() && stack.PopBool());
+
+        [OpCode(OPCODE = OPCODE.OP_OR, minLengthStack = 2)]
+        public static void OR(ref ExecutionStack stack)
+            => stack.Push(stack.PopBool() || stack.PopBool());
+
+        [OpCode(OPCODE = OPCODE.OP_NOT, minLengthStack = 1)]
+        public static void NOT(ref ExecutionStack stack)
+            => stack.Push((stack.PeekByte() <= 1) ? !stack.PopBool() : false);
     }
 }

@@ -93,5 +93,19 @@ namespace BlockChain.Core.Test.Script
 
             Assert.AreEqual(EXECUTION_RESULT.SUCCESS, us1.Run(transaction), "Execution of P2SH script failed");
         }
+
+        [Test]
+        public void TestNULLDATA()
+        {
+            CustomScript script = new CustomScript();
+            script.AddInstructions(OPCODE.OP_3, OPCODE.OP_4, OPCODE.ADD);
+            script.AddData((short)7);
+            script.AddInstructions(OPCODE.EQ_VERIFY_NUM);
+            script.AddData(System.Text.Encoding.UTF8.GetBytes("Hello, world!"));
+
+            //Execute script and get data
+            script.RunAndGetStack(out byte[] stack);
+            Assert.AreEqual("Hello, world!", System.Text.Encoding.UTF8.GetString(stack));
+        }
     }
 }

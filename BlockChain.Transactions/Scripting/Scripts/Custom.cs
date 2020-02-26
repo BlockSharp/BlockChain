@@ -74,20 +74,20 @@ namespace BlockChain.Transactions.Scripting.Scripts
 
         public void AddData(int data)
         {
-            this.AddRange(BitConverter.GetBytes(data));
             this.Add(OPCODE.PUSH_INT);
+            this.AddRange(BitConverter.GetBytes(data));
         }
 
         public void AddData(uint data)
         {
-            this.AddRange(BitConverter.GetBytes(data));
             this.Add(OPCODE.PUSH_UINT);
+            this.AddRange(BitConverter.GetBytes(data));
         }
 
         public void AddData(short data)
         {
-            this.AddRange(BitConverter.GetBytes(data));
             this.Add(OPCODE.PUSH_SHORT);
+            this.AddRange(BitConverter.GetBytes(data));
         }
     }
 }
