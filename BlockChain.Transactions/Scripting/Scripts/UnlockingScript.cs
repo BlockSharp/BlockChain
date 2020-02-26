@@ -49,8 +49,6 @@ namespace BlockChain.Transactions.Scripting.Scripts
             this.AddRange(us);
             this.PushSizeAndCode(ls.Length);
             this.AddRange(ls);
-
-            Console.WriteLine(us.Length + ls.Length + "=l");
         }
     }
 }
