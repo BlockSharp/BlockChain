@@ -136,7 +136,7 @@ namespace BlockChain.Transactions
     /// </summary>
     public class TxOut
     {
-        public long Amount { get; private set; } //8 bytes
+        public ulong Amount { get; private set; } //8 bytes
         public uint scriptLength { get; private set; } //4 bytes
         public Script script { get; set; } //unknown size <-- locks transaction
 
@@ -146,14 +146,14 @@ namespace BlockChain.Transactions
         /// Create empty TxOut without script
         /// </summary>
         /// <param name="amount">The amount</param>
-        public TxOut(long amount) : this(amount, new Script()) { }
+        public TxOut(ulong amount) : this(amount, new Script()) { }
 
         /// <summary>
         /// Create new TxOut object
         /// </summary>
         /// <param name="amount">The amount</param>
         /// <param name="lockingScript">The script that locks the transaction</param>
-        public TxOut(long amount, Script lockingScript)
+        public TxOut(ulong amount, Script lockingScript)
         {
             this.Amount = amount;
             this.script = lockingScript;
@@ -166,7 +166,7 @@ namespace BlockChain.Transactions
         /// <param name="serialized">Serialized object byte[12+]</param>
         public TxOut(byte[] serialized)
         {
-            this.Amount = BitConverter.ToInt64(serialized, 0);
+            this.Amount = BitConverter.ToUInt64(serialized, 0);
             this.scriptLength = BitConverter.ToUInt32(serialized, 8);
             this.script = new Script(serialized.Skip(12).ToArray());
         }
