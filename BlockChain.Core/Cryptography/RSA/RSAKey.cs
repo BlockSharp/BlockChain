@@ -11,12 +11,12 @@ namespace BlockChain.Core.Cryptography.RSA
         /// <summary>
         /// Create a new RSAKey object
         /// --------Key sizes:--------
+        /// [2048]:
+        /// public: 276 B, private: 1172 B, signature: 256 B
         /// [1024] (default):
         /// public: 148 B, private 596 B, signature: 128 B
         /// [512]:
         /// public: 84 B, private: 308 B, signature: 64 B
-        /// [384]:
-        /// public: 68 B, private: 236 B, signature: 32 B
         /// </summary>
         /// <param name="keySize">The keysize. Default = 1024</param>
         public RSAKey(int keySize = 1024) : this(new RSACryptoServiceProvider(keySize))

@@ -12,8 +12,8 @@ namespace BlockChain.Transactions.Scripting.Scripts
     public class Script : Queue<byte>
     {
         //Constants
-        public const int SignatureSize = 64; //Size of RSA[512] signature
-        public const int PubKeySize = 84; //Size of RSA[512] public key
+        public const int SignatureSize = 128; //Size of RSA[1024] signature
+        public const int PubKeySize = 148; //Size of RSA[1024] public key
         public const int AddressSize = 20; //Size of HASH160
 
         public SCRIPTTYPE Type { get; private set; }

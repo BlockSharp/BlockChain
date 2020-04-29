@@ -12,7 +12,7 @@ namespace BlockChain.Core.Test.Script
     public class ScriptTypesTest
     {
         private Transaction transaction = new Transaction(new TxIn(new byte[32], 0), new TxOut(10));
-        private RSAKey key = new RSAKey(512);
+        private RSAKey key = new RSAKey(1024);
 
         [Test]
         public void TestP2PK()
