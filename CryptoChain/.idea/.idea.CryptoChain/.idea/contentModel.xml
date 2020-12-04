@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_CryptoChain.1420015804.00" t="ExcludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="CryptoChain.Cli" t="IncludeRecursive">
+        <e p="CryptoChain.Cli.csproj" t="IncludeRecursive" />
+        <e p="Program.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="CryptoChain.Cli.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="CryptoChain.Core" t="IncludeRecursive">
+        <e p="Abstractions" t="Include">
+          <e p="IScript.cs" t="Include" />
+          <e p="ISerializable.cs" t="Include" />
+        </e>
+        <e p="Constants.cs" t="Include" />
+        <e p="CryptoChain.Core.csproj" t="IncludeRecursive" />
+        <e p="Cryptography" t="Include">
+          <e p="Base58.cs" t="Include" />
+          <e p="Hashing" t="Include">
+            <e p="Hash.cs" t="Include" />
+            <e p="RipeMd160.cs" t="Include" />
+          </e>
+          <e p="RSA" t="Include">
+            <e p="CryptoRsa.cs" t="Include" />
+            <e p="Mathematics.cs" t="Include" />
+            <e p="PemUtilities.cs" t="Include" />
+            <e p="PrimeUtils.cs" t="Include" />
+            <e p="RsaGenerator.cs" t="Include" />
+            <e p="RsaKey.cs" t="Include" />
+            <e p="SaltedPrimePair.cs" t="Include" />
+          </e>
+          <e p="RandomGenerator.cs" t="Include" />
+        </e>
+        <e p="Helpers" t="Include">
+          <e p="Serialization.cs" t="Include" />
+        </e>
+        <e p="Transactions" t="Include">
+          <e p="Data" t="Include">
+            <e p="TxInput.cs" t="Include" />
+            <e p="TxOutput.cs" t="Include" />
+          </e>
+          <e p="Scripting" t="Include">
+            <e p="ExecutionResult.cs" t="Include" />
+            <e p="Interpreter" t="Include">
+              <e p="ExecutionStack.cs" t="Include" />
+              <e p="Opcode.cs" t="Include" />
+              <e p="Operation.cs" t="Include" />
+              <e p="Operations" t="Include">
+                <e p="Constants.cs" t="Include" />
+                <e p="Hashing.cs" t="Include" />
+                <e p="Logic.cs" t="Include" />
+                <e p="Math.cs" t="Include" />
+                <e p="Other.cs" t="Include" />
+                <e p="Verification.cs" t="Include" />
+              </e>
+              <e p="ScriptInterprenter.cs" t="Include" />
+            </e>
+            <e p="Opcode.cs" t="Include" />
+            <e p="Script.cs" t="Include" />
+          </e>
+          <e p="Transaction.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="CryptoChain.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="CryptoChain.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
