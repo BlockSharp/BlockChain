@@ -13,10 +13,10 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
     public class ExecutionStack : Stack<byte[]>
     {
         //Script and transaction to provide information for specific OPCodes
-        public IScript CurrentScript { get; private set; }
+        public IScript CurrentScript { get; set; }
         public Transaction Transaction { get; set; }
 
-        public void SetScript(ref Script script)
+        public void SetScript(ref IScript script)
             => CurrentScript = script;
 
         //base keyword is important! Else it is recursive
@@ -47,6 +47,14 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         public int PopInt() => Peek().Length != 4 ? 0 : BitConverter.ToInt32(Pop());
         public int PeekInt() => Peek().Length != 4 ? 0 : BitConverter.ToInt32(Peek());
 
+        public List<byte[]> PopRange(int count)
+        {
+            var l = new List<byte[]>();
+            for (int i = 0; i < count; i++)
+                l.Add(Pop());
+            return l;
+        }
+
         /// <summary>
         /// Helps with debugging. Prints current stack to console in human-readable format
         /// </summary>
@@ -66,9 +74,9 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                         sb.Append(b + " ");
                 }
                 else if (s.Length == 2)
-                    sb.Append(BitConverter.ToInt16(s, 0) + " ");
-                else if (s.Length == 4) //commonly uint
-                    sb.Append(BitConverter.ToUInt32(s, 0) + " ");
+                    sb.Append(BitConverter.ToUInt16(s, 0) + " ");
+                else if (s.Length == 4) //commonly int
+                    sb.Append(BitConverter.ToInt32(s, 0) + " ");
                 else
                     sb.Append($"ARR({s.Length}) ");
             }

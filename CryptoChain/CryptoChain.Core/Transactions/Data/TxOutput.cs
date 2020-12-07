@@ -10,10 +10,22 @@ namespace CryptoChain.Core.Transactions.Data
         public int Length => 8 + 4 + LockingScript.Length;
         
         //Amount of money of the transaction.
-        public ulong Amount { get; set; }
+        public ulong Amount { get; }
         public int ScriptLength { get; private set; }
         public IScript LockingScript { get; set; }
 
+        /// <summary>
+        /// Create new TxOut
+        /// </summary>
+        /// <param name="amount">The amount of money</param>
+        /// <param name="lockScript">The script that locks the output</param>
+        public TxOutput(ulong amount, IScript lockScript)
+        {
+            Amount = amount;
+            LockingScript = lockScript;
+            ScriptLength = lockScript.Length;
+        }
+        
         public TxOutput(byte[] serialized)
         {
             Amount = BitConverter.ToUInt64(serialized);
@@ -32,6 +44,14 @@ namespace CryptoChain.Core.Transactions.Data
             idx += 4;
             Buffer.BlockCopy(LockingScript.Serialize(), 0, buffer, idx, ScriptLength);
             return buffer;
+        }
+        
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != GetType()) return false;
+            var x = (TxOutput) obj;
+            return x.Length == Length && x.Amount == Amount && x.LockingScript.Equals(LockingScript);
         }
     }
 }

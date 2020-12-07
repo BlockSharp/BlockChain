@@ -67,8 +67,10 @@
             </e>
             <e p="Opcode.cs" t="Include" />
             <e p="Script.cs" t="Include" />
+            <e p="ScriptBuilder.cs" t="Include" />
           </e>
           <e p="Transaction.cs" t="Include" />
+          <e p="TransactionList.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">

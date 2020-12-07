@@ -12,7 +12,10 @@ namespace CryptoChain.Core.Abstractions
         byte[] NextRange(int count);
         
         void Add(byte b);
-        void Add(Opcode code);
+        void Add(params Opcode[] code);
+        void Add(IScript s);
         void AddRange(byte[] bytes);
+
+        byte[] Hash();
     }
 }

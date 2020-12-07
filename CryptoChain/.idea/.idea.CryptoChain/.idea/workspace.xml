@@ -23,13 +23,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5d031f3-8cd5-465f-90fd-63b53a2a7804" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ScriptBuilder.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/TransactionList.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/CryptoRsa.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/CryptoRsa.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SaltedPrimePair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SeededPrimePair.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Abstractions/IScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Abstractions/IScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Helpers/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Helpers/Serialization.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ExecutionStack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ExecutionStack.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Hashing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Hashing.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Logic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Logic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Other.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Other.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ScriptInterprenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ScriptInterprenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Opcode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Opcode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Script.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Script.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Transaction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Transaction.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +55,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1FD95449-DB6C-4738-91D5-01EE7F6E5E44/a3/1de50779/RNGCryptoServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/BE6D6A9D-5615-46FB-BBF9-5BC23247A979/54/733d1698/Transaction.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/87DBB896-6B20-4A14-9B6A-7AB43642646D/13/6eebca26/ISerializable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/A1E59F3E-EC80-4C6C-88D8-FE62192FDE3E/92/f672ffe2/Queue`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/87DBB896-6B20-4A14-9B6A-7AB43642646D/74/a046c3a6/ValueTuple`2.cs" root0="SKIP_HIGHLIGHTING" />
@@ -48,11 +63,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/Hashing.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Opcode.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Verification.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Math.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Logic.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Hashing.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Constants.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operations/Other.cs" />
@@ -62,33 +72,21 @@
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Scripts.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Scripts/LockingScript.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Scripts/UnlockingScript.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Operation.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/Interpreter.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/ExecutionStack.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpretation/ScriptInterprenter.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interprenter/ScriptInterprenter.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ScriptInterprenter.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Opcode.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operation.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Scripts/ScriptBuilder.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ExecutionStack.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Abstractions/IScript.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Scripts/Script.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Script.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/Hashing/RipeMd160.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/Base58.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/Hashing/Hash.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Hashing.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Logic.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Other.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Constants.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Opcode.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Math.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/PemUtilities.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/PrimeUtils.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/KeySalt.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SaltedKeyPair.cs" />
@@ -96,9 +94,26 @@
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SaltedPrimePair.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/CryptoRsa.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SeededPrimePair.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" />
-        <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaKey.cs" />
         <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Constants.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaKey.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Hashing.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Constants.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Transaction.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ScriptInterprenter.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Opcode.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/ExecutionStack.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Abstractions/IScript.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Script.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Other.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ScriptBuilder.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/TransactionList.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" />
+        <option value="$PROJECT_DIR$/CryptoChain.Core/Helpers/Serialization.cs" />
       </list>
     </option>
   </component>
@@ -111,6 +126,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3498078" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.29983526" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -152,7 +169,8 @@
       <workItem from="1607110309685" duration="10000" />
       <workItem from="1607177660920" duration="373000" />
       <workItem from="1607178564248" duration="22000" />
-      <workItem from="1607348480367" duration="2307000" />
+      <workItem from="1607348480367" duration="10361000" />
+      <workItem from="1607361107695" duration="11660000" />
     </task>
     <servers />
   </component>
@@ -177,30 +195,94 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1860" height="462" key="GridCell.Tab.0.bottom" timestamp="1607350768500">
+    <state width="1860" height="291" key="GridCell.Tab.0.bottom" timestamp="1607372591855">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state width="1860" height="462" key="GridCell.Tab.0.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607350768500" />
-    <state width="1860" height="462" key="GridCell.Tab.0.center" timestamp="1607350768499">
+    <state width="1860" height="291" key="GridCell.Tab.0.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607372591855" />
+    <state width="1860" height="291" key="GridCell.Tab.0.center" timestamp="1607372591854">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state width="1860" height="462" key="GridCell.Tab.0.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607350768499" />
-    <state width="1860" height="462" key="GridCell.Tab.0.left" timestamp="1607350768499">
+    <state width="1860" height="291" key="GridCell.Tab.0.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607372591854" />
+    <state width="1860" height="291" key="GridCell.Tab.0.left" timestamp="1607372591854">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state width="1860" height="462" key="GridCell.Tab.0.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607350768499" />
-    <state width="1860" height="462" key="GridCell.Tab.0.right" timestamp="1607350768500">
+    <state width="1860" height="291" key="GridCell.Tab.0.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607372591854" />
+    <state width="1860" height="291" key="GridCell.Tab.0.right" timestamp="1607372591854">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state width="1860" height="462" key="GridCell.Tab.0.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607350768500" />
+    <state width="1860" height="291" key="GridCell.Tab.0.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607372591854" />
+    <state width="1860" height="358" key="GridCell.Tab.1.bottom" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.1.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.1.center" timestamp="1607363718885">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.1.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718885" />
+    <state width="1860" height="358" key="GridCell.Tab.1.left" timestamp="1607363718885">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.1.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718885" />
+    <state width="1860" height="358" key="GridCell.Tab.1.right" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.1.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.2.bottom" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.2.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.2.center" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.2.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.2.left" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.2.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.2.right" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.2.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.3.bottom" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.3.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.3.center" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.3.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.3.left" timestamp="1607363718886">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.3.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718886" />
+    <state width="1860" height="358" key="GridCell.Tab.3.right" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.3.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.4.bottom" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.4.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.4.center" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.4.center/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.4.left" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.4.left/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
+    <state width="1860" height="358" key="GridCell.Tab.4.right" timestamp="1607363718887">
+      <screen x="0" y="0" width="1920" height="1035" />
+    </state>
+    <state width="1860" height="358" key="GridCell.Tab.4.right/0.0.1920.1035@0.0.1920.1035" timestamp="1607363718887" />
     <state x="460" y="186" key="Rider.ProjectTemplateDialog.Size" timestamp="1607029517553">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
     <state x="460" y="186" key="Rider.ProjectTemplateDialog.Size/0.0.1920.1035@0.0.1920.1035" timestamp="1607029517553" />
-    <state x="725" y="0" key="RiderGenerateDialog" timestamp="1607108316024">
+    <state x="725" y="0" key="RiderGenerateDialog" timestamp="1607371821688">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state x="725" y="0" key="RiderGenerateDialog/0.0.1920.1035@0.0.1920.1035" timestamp="1607108316024" />
+    <state x="725" y="0" key="RiderGenerateDialog/0.0.1920.1035@0.0.1920.1035" timestamp="1607371821688" />
     <state x="329" y="61" key="SettingsEditor" timestamp="1607098417437">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
@@ -213,9 +295,9 @@
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
     <state x="540" y="230" key="run.anything.popup/0.0.1920.1035@0.0.1920.1035" timestamp="1607098499099" />
-    <state x="539" y="0" width="840" height="1033" key="search.everywhere.popup" timestamp="1607099112849">
+    <state x="539" y="0" width="840" height="1033" key="search.everywhere.popup" timestamp="1607361667333">
       <screen x="0" y="0" width="1920" height="1035" />
     </state>
-    <state x="539" y="0" width="840" height="1033" key="search.everywhere.popup/0.0.1920.1035@0.0.1920.1035" timestamp="1607099112849" />
+    <state x="539" y="0" width="840" height="1033" key="search.everywhere.popup/0.0.1920.1035@0.0.1920.1035" timestamp="1607361667333" />
   </component>
 </project>

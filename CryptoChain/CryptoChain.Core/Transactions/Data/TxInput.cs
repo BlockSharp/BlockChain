@@ -16,6 +16,14 @@ namespace CryptoChain.Core.Transactions.Data
         public int ScriptLength { get; private set; }
         public IScript UnlockingScript { get; set; }
 
+        public TxInput(byte[] transactionHash, byte selectedOutput, IScript unlockScript)
+        {
+            TxId = transactionHash;
+            VOut = selectedOutput;
+            UnlockingScript = unlockScript;
+            ScriptLength = unlockScript.Length;
+        }
+        
         public TxInput(byte[] serialized)
         {
             TxId = Serialization.FromBuffer(serialized, 0, false, Constants.TransactionHashLength);
@@ -41,6 +49,14 @@ namespace CryptoChain.Core.Transactions.Data
             idx += 4;
             Buffer.BlockCopy(UnlockingScript.Serialize(), 0, buffer, idx, ScriptLength);
             return buffer;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != GetType()) return false;
+            var x = (TxInput) obj;
+            return x.Length == Length && x.VOut == VOut && x.UnlockingScript.Equals(UnlockingScript);
         }
     }
 }

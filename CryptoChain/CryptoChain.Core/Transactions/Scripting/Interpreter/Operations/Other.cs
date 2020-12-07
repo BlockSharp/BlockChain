@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using CryptoChain.Core.Abstractions;
 
@@ -26,14 +28,21 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         public static ExecutionResult? Return(ref ExecutionStack stack)
         {
             stack.Push(stack.CurrentScript.Serialize());
-            return ExecutionResult.EXECUTION_STOPPPED;
+            return ExecutionResult.EXECUTION_STOPPED;
         }
 
         [OpCode(Opcode = Opcode.EVAL_SCRIPT, MinLengthStack = 1)]
         public static void Evaluate(ref ExecutionStack stack)
         {
-            IScript s = new Script(stack.Pop());
-            stack.CurrentScript.AddRange(s.Serialize());
+            var s = new Script(stack.Pop());
+            stack.CurrentScript.Add(s);
+        }
+
+        [OpCode(Opcode = Opcode.PUSH_TIMESTAMP)]
+        public static void PushUnixTimestamp(ref ExecutionStack stack)
+        {
+            var unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+            stack.Push(unixTimestamp);
         }
     }
 }

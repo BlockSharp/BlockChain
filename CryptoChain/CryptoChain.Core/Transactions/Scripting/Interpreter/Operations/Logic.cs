@@ -2,7 +2,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
     internal static class Logic
     {
-        [OpCode(Opcode = Opcode.EQUALS)]
+        [OpCode(Opcode = Opcode.EQUAL)]
         public static ExecutionResult? Equals(ref ExecutionStack stack)
         {
             if (stack.Count < 2) return ExecutionResult.INVALID_STACK;

@@ -1,3 +1,5 @@
+using System;
+
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
     internal static class Constants
@@ -56,22 +58,23 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 
         [OpCode(Opcode = Opcode.PUSHDATA_2)]
         public static void PushData_2(ref ExecutionStack stack)
-            => stack.Push(stack.CurrentScript.NextRange(System.BitConverter.ToInt16(stack.CurrentScript.NextRange(2))));
+            => stack.Push(stack.CurrentScript.NextRange(BitConverter.ToUInt16(stack.CurrentScript.NextRange(2))));
 
         [OpCode(Opcode = Opcode.PUSHDATA_4)]
         public static void PushData_4(ref ExecutionStack stack)
-            => stack.Push(stack.CurrentScript.NextRange(System.BitConverter.ToInt32(stack.CurrentScript.NextRange(4))));
-
+            => stack.Push(stack.CurrentScript.NextRange(BitConverter.ToInt32(stack.CurrentScript.NextRange(4))));
+        
+        
         [OpCode(Opcode = Opcode.PUSH_INT)]
         public static void PushInt(ref ExecutionStack stack)
-            => stack.Push(System.BitConverter.ToInt32(stack.CurrentScript.NextRange(4)));
+            => stack.Push(BitConverter.ToInt32(stack.CurrentScript.NextRange(4)));
 
         [OpCode(Opcode = Opcode.PUSH_UINT)]
         public static void PushUint(ref ExecutionStack stack)
-            => stack.Push(System.BitConverter.ToUInt32(stack.CurrentScript.NextRange(4)));
+            => stack.Push(BitConverter.ToUInt32(stack.CurrentScript.NextRange(4)));
 
         [OpCode(Opcode = Opcode.PUSH_SHORT)]
         public static void PushShort(ref ExecutionStack stack)
-            => stack.Push(System.BitConverter.ToInt16(stack.CurrentScript.NextRange(2)));
+            => stack.Push(BitConverter.ToInt16(stack.CurrentScript.NextRange(2)));
     }
 }

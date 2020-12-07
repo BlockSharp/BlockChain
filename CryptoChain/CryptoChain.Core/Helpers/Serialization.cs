@@ -9,6 +9,7 @@ namespace CryptoChain.Core.Helpers
     {
         /// <summary>
         /// Serializes ISerializable add adds it to a buffer
+        /// REMEMBER: If you are using withLength, dont forget to adopt your buffer to that! (4 bytes extra)
         /// </summary>
         /// <param name="buffer">The buffer</param>
         /// <param name="s">The serializable to be serialized</param>
@@ -23,14 +24,15 @@ namespace CryptoChain.Core.Helpers
                 Buffer.BlockCopy(BitConverter.GetBytes(length), 0, buffer, offset, 4);
                 offset += 4;
             }
-            
+
             Buffer.BlockCopy(s.Serialize(), 0, buffer, offset, length);
             offset += length;
             return offset;
         }
 
         /// <summary>
-        /// Add range of serializable items. 
+        /// Add range of serializable items.
+        /// WARNING: This uses withLength, dont forget to adopt your buffer to that! (4 bytes per item)
         /// </summary>
         /// <param name="buffer">The buffer</param>
         /// <param name="items">The items to be serialized</param>
@@ -69,7 +71,7 @@ namespace CryptoChain.Core.Helpers
             
             byte[] result = new byte[count];
             Buffer.BlockCopy(buffer, offset, result, 0, count);
-            outOffset = offset;
+            outOffset = offset + count;
             return result;
         }
 
@@ -81,10 +83,10 @@ namespace CryptoChain.Core.Helpers
         /// <returns>LINQ iterator with byte[]</returns>
         public static IEnumerable<byte[]> MultipleFromBuffer(byte[] buffer, int offset = 0)
         {
-            while (buffer.Length < offset + 4)
+            while (buffer.Length > offset + 4)
             {
                 byte[] result = FromBuffer(buffer, offset, out int outOffset);
-                offset += outOffset;
+                offset = outOffset;
                 yield return result;
             }
         }
