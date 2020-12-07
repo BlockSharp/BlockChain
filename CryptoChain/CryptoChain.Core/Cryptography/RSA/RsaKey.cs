@@ -5,18 +5,18 @@ using CryptoChain.Core.Abstractions;
 namespace CryptoChain.Core.Cryptography.RSA
 {
     /// <summary>
-    /// (c) 2020 maurictg, job79
     /// This class is able to generate strong RSA keys, even from a seed
     /// </summary>
     public class RsaKey : ISerializable
     {
         public RSAParameters Parameters { get; }
-        public bool IsPrivate => (Parameters.D != null);
+        public bool IsPrivate => Parameters.D != null;
 
         /// <summary>
-        /// Get RsaKey with only public information
+        /// Get the RsaKey with only the public information
         /// </summary>
-        public RsaKey PublicKey => new RsaKey(new RSAParameters { Exponent = Parameters.Exponent, Modulus = Parameters.Modulus }, KeySize);
+        public RsaKey PublicKey => 
+            new RsaKey(new RSAParameters { Exponent = Parameters.Exponent, Modulus = Parameters.Modulus }, KeySize);
 
         private int _keySize;
 
@@ -39,7 +39,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// Create new RSAKey object from generated RSAParameters
         /// </summary>
         /// <param name="parameters">Generated parameters</param>
-        /// <param name="keySize">The keySize. This must match the parameters</param>
+        /// <param name="keySize">The keySize. Optional, it can also be generated</param>
         public RsaKey(RSAParameters parameters, int keySize = 0)
         {
             Parameters = parameters;
@@ -55,6 +55,7 @@ namespace CryptoChain.Core.Cryptography.RSA
             using var csp = new RSACryptoServiceProvider();
             csp.ImportCspBlob(serialized);
             Parameters = csp.ExportParameters(!csp.PublicOnly);
+            _keySize = csp.KeySize;
             csp.Dispose();
         }
         
@@ -75,9 +76,8 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// Create RsaKey from PEM format
         /// </summary>
         /// <param name="pem">The PEM string</param>
-        /// <param name="isPrivate">Indicates if it contains the private parameters</param>
         /// <returns>RsaKey</returns>
-        public static RsaKey FromPem(string pem, bool isPrivate)
+        public static RsaKey FromPem(string pem)
             => new RsaKey(PemUtilities.FromPem(pem));
         
         
@@ -93,7 +93,7 @@ namespace CryptoChain.Core.Cryptography.RSA
             return new RsaKey(csp);
         }
 
-        public override string ToString() => ToPemString(true);
+        public override string ToString() => ToPemString();
         
         /// <summary>
         /// Converts key to XML string
@@ -116,7 +116,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         {
             using var csp = new RSACryptoServiceProvider();
             csp.ImportParameters(Parameters);
-            return (withPrivate) ? PemUtilities.ExportPrivateKey(csp) : PemUtilities.ExportPublicKey(csp);
+            return withPrivate && IsPrivate ? PemUtilities.ExportPrivateKey(csp) : PemUtilities.ExportPublicKey(csp);
         }
 
         /// <summary>
@@ -128,7 +128,42 @@ namespace CryptoChain.Core.Cryptography.RSA
         {
             using var csp = new RSACryptoServiceProvider();
             csp.ImportParameters(Parameters);
-            return csp.ExportCspBlob(withPrivate);
+            return csp.ExportCspBlob(withPrivate && IsPrivate);
+        }
+        
+        /// <summary>
+        /// Checks if a keysize is in the valid key size range
+        /// </summary>
+        /// <param name="keySize">The keysize to check</param>
+        /// <param name="throwError">Indicates if you want to throw an error if it is not</param>
+        /// <returns></returns>
+        public static bool IsValidKeySize(int keySize, bool throwError = false)
+        {
+            using var csp = new RSACryptoServiceProvider();
+            foreach (var sizes in csp.LegalKeySizes)
+            {
+                Console.WriteLine("min: "+sizes.MinSize+" max: "+sizes.MaxSize);
+                if (keySize >= sizes.MinSize && keySize <= sizes.MaxSize)
+                {
+                    if (keySize % sizes.SkipSize != 0)
+                    {
+                        if (throwError) 
+                            throw new ArgumentException("Keysize is invalid");
+                        return false;
+                    }
+                }
+                else
+                {
+                    if(throwError)
+                        throw new ArgumentException("Key is not in the legal keysize range");
+                    return false;
+                }
+                
+                return true;
+            }
+            csp.Dispose();
+
+            return true;
         }
 
         //Not a happy getter!

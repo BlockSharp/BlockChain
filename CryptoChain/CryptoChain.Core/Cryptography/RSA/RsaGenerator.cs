@@ -9,7 +9,6 @@ namespace CryptoChain.Core.Cryptography.RSA
     /// <summary>
     /// This class is able to generate RSA parameters from 2 primes using math
     /// With help from Wikipedia: https://en.wikipedia.org/wiki/RSA_(cryptosystem)
-    /// (c) 2020 maurictg and job79
     /// </summary>
     public static class RsaGenerator
     {
@@ -46,6 +45,7 @@ namespace CryptoChain.Core.Cryptography.RSA
                 }
             }
         }
+        
         
         /// <summary>
         /// This function generates RSAParameters from 2 primes!!!

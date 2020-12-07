@@ -13,14 +13,14 @@ namespace CryptoChain.Cli
     {
         static void Main(string[] args)
         {
-            var pair = new SaltedPrimePair(
+            var pair = new SeededPrimePair(
                 Convert.FromBase64String("AAgAAEn5AQC1GwEA/02AKSNnV093NwH75a0Rqw=="));
 
             var key = pair.ToRsaKey();
 
             var pubPem = key.ToPemString(true);
 
-            var pubKey = RsaKey.FromPem(pubPem, true);
+            var pubKey = RsaKey.FromPem(pubPem);
             Console.WriteLine(key.ToXmlString() == pubKey.ToXmlString());
         }
     }

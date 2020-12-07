@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_CryptoChain.1420015804.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_CryptoChain.-263441944.00" t="ExcludeRecursive" />
     <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="CryptoChain.Cli" t="IncludeRecursive">
@@ -37,7 +37,7 @@
             <e p="PrimeUtils.cs" t="Include" />
             <e p="RsaGenerator.cs" t="Include" />
             <e p="RsaKey.cs" t="Include" />
-            <e p="SaltedPrimePair.cs" t="Include" />
+            <e p="SeededPrimePair.cs" t="Include" />
           </e>
           <e p="RandomGenerator.cs" t="Include" />
         </e>

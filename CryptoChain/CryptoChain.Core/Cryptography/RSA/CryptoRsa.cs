@@ -6,8 +6,9 @@ namespace CryptoChain.Core.Cryptography.RSA
 {
     public class CryptoRsa
     {
-        private readonly RSACryptoServiceProvider provider;
-        public bool IsPrivate { get; private set; }
+        private readonly RSACryptoServiceProvider _provider;
+        public bool IsPrivate { get; }
+        public RsaKey Key => new RsaKey(_provider);
         
         /// <summary>
         /// Create new CryptoRSA object from RsaKey
@@ -15,9 +16,9 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="key">The private or public RsaKey</param>
         public CryptoRsa(RsaKey key)
         {
-            this.provider = new RSACryptoServiceProvider();
+            _provider = new RSACryptoServiceProvider();
             IsPrivate = key.IsPrivate;
-            provider.ImportParameters(key.Parameters);
+            _provider.ImportParameters(key.Parameters);
         }
         
         /// <summary>
@@ -27,8 +28,8 @@ namespace CryptoChain.Core.Cryptography.RSA
         public CryptoRsa(byte[] cspBlob) : this(new RSACryptoServiceProvider())
         {
             if (cspBlob == null) throw new ArgumentException("Invalid key, key is null.");
-            this.provider.ImportCspBlob(cspBlob);
-            this.IsPrivate = !provider.PublicOnly;
+            _provider.ImportCspBlob(cspBlob);
+            IsPrivate = !_provider.PublicOnly;
         }
 
         /// <summary>
@@ -37,8 +38,8 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="provider">The existing provider</param>
         public CryptoRsa(RSACryptoServiceProvider provider)
         {
-            this.provider = provider ?? throw new ArgumentNullException(nameof(provider));
-            this.IsPrivate = !provider.PublicOnly;
+            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            IsPrivate = !provider.PublicOnly;
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="data">The binary data</param>
         /// <returns>Encrypted data</returns>
         public byte[] Encrypt(byte[] data)
-            => provider.Encrypt(data, false);
+            => _provider.Encrypt(data, false);
 
         /// <summary>
         /// Decrypt encrypted text
@@ -73,7 +74,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="data">The encryped data</param>
         /// <returns>decrypted byte[]</returns>
         public byte[] Decrypt(byte[] data)
-            => (IsPrivate) ? provider.Decrypt(data, false) : throw new ArgumentException("Can't decrypt data with a public key");
+            => (IsPrivate) ? _provider.Decrypt(data, false) : throw new ArgumentException("Can't decrypt data with a public key");
 
         /// <summary>
         /// Sign binary data with the private key using SHA256
@@ -82,7 +83,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <returns>byte[32]</returns>
         public byte[] Sign(byte[] data) => Sign(data, SHA256.Create());
         public byte[] Sign(byte[] data, HashAlgorithm algorithm)
-            => (IsPrivate) ? provider.SignData(data, algorithm) : throw new ArgumentException("Can't sign data with a public key");
+            => (IsPrivate) ? _provider.SignData(data, algorithm) : throw new ArgumentException("Can't sign data with a public key");
 
         /// <summary>
         /// Verify signed data with the public key
@@ -92,13 +93,13 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <returns>true or false</returns>
         public bool Verify(byte[] data, byte[] signedData) => Verify(data, SHA256.Create(), signedData);
         public bool Verify(byte[] data, HashAlgorithm algorithm, byte[] signedData)
-            => provider.VerifyData(data, algorithm, signedData);
+            => _provider.VerifyData(data, algorithm, signedData);
         
         /// <summary>
         /// Get private or public key (CSPBlob)
         /// </summary>
         /// <returns>byte[] key</returns>
         public byte[] GetBytes()
-            => provider.ExportCspBlob(IsPrivate);
+            => _provider.ExportCspBlob(IsPrivate);
     }
 }
