@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block.Helpers
 {
     public static class BlockHeaderHelper
     {

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Abstractions
 {
     /// <summary>
     /// Interface for data objects that are stored in a block

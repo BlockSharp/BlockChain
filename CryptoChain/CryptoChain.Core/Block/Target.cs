@@ -5,7 +5,7 @@
 using System;
 using System.IO;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block
 {
     public class Target
     {

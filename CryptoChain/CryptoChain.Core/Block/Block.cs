@@ -8,8 +8,9 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using CryptoChain.Core.Abstractions;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block
 {
     public class Block<T> where T : IBlockData, new()
     {
@@ -23,13 +24,13 @@ namespace BlockChain.Core.Block
         /// The blockHeader of this block
         /// See BlockHeader for more detail
         /// </summary>
-        public byte[] BlockHeader => _blockData[..Block.BlockHeader.Size];
+        public byte[] BlockHeader => _blockData[..CryptoChain.Core.Block.BlockHeader.Size];
         public BlockHeader GetBlockHeader() => new BlockHeader(BlockHeader);
 
         /// <summary> (x bytes)
         /// The current data of this block
         /// </summary>
-        public byte[] Data => _blockData[Block.BlockHeader.Size..^4];
+        public byte[] Data => _blockData[CryptoChain.Core.Block.BlockHeader.Size..^4];
         public T GetData()
         {
             var data = new T();
@@ -49,7 +50,7 @@ namespace BlockChain.Core.Block
         /// <param name="blockData">byte[] of a block</param>
         public Block(byte[] blockData)
         {
-            if (blockData == null || blockData.Length < Block.BlockHeader.Size + 4)
+            if (blockData == null || blockData.Length < CryptoChain.Core.Block.BlockHeader.Size + 4)
                 throw new InvalidDataException("Invalid data size");
             _blockData = blockData;
         }
@@ -64,7 +65,7 @@ namespace BlockChain.Core.Block
         /// <returns>New instance of a Block</returns>
         public static Block<TD> Create<TD>(byte[] hashPrevBlock, TD data, Target target, SHA256 sha256)
             where TD : IBlockData, new()
-            => new Block<TD>(Block.BlockHeader.Create(hashPrevBlock, data, target, sha256), data);
+            => new Block<TD>(CryptoChain.Core.Block.BlockHeader.Create(hashPrevBlock, data, target, sha256), data);
         public Block(BlockHeader header, T data) : this(header.ToArray(), data.ToArray()) { }
         /// <summary>
         /// Create a new block
@@ -73,15 +74,15 @@ namespace BlockChain.Core.Block
         /// <param name="data">byte[] of data to be saved in block</param>
         public Block(byte[] blockHeader, byte[] data)
         {
-            if(blockHeader == null || blockHeader.Length != Block.BlockHeader.Size)
+            if(blockHeader == null || blockHeader.Length != CryptoChain.Core.Block.BlockHeader.Size)
                 throw new InvalidDataException("blockHeader has an invalid size");
             if(data == null) throw new NullReferenceException("Data is null");
             
-            _blockData = new byte[Block.BlockHeader.Size + data.Length + 4];
-            Buffer.BlockCopy(blockHeader, 0, _blockData, 0, Block.BlockHeader.Size); //Write header into block
-            Buffer.BlockCopy(data, 0, _blockData, Block.BlockHeader.Size, data.Length); //Write data into block
+            _blockData = new byte[CryptoChain.Core.Block.BlockHeader.Size + data.Length + 4];
+            Buffer.BlockCopy(blockHeader, 0, _blockData, 0, CryptoChain.Core.Block.BlockHeader.Size); //Write header into block
+            Buffer.BlockCopy(data, 0, _blockData, CryptoChain.Core.Block.BlockHeader.Size, data.Length); //Write data into block
             Buffer.BlockCopy(BitConverter.GetBytes(_blockData.Length), 0, _blockData,
-                Block.BlockHeader.Size + data.Length, 4); //Write size into block
+                CryptoChain.Core.Block.BlockHeader.Size + data.Length, 4); //Write size into block
         }
     }
 }

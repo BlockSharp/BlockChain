@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace BlockChain.Core
+namespace CryptoChain.Core.BlockChain
 {
     /// <summary>
     /// BlockChainHeader, saves length of blocks to disk

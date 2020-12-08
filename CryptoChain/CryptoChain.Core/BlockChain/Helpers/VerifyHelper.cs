@@ -1,9 +1,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BlockChain.Core.Block;
+using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Block.Helpers;
 
-namespace BlockChain.Core
+namespace CryptoChain.Core.BlockChain.Helpers
 {
     public static class VerifyHelper
     {

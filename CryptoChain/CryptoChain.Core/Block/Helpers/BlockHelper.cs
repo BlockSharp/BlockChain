@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
+using CryptoChain.Core.Abstractions;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block.Helpers
 {
     public static class BlockHelper
     {

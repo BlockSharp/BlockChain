@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Block;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.RSA;
 using CryptoChain.Core.Helpers;

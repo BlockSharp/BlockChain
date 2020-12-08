@@ -1,12 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections;
-using BlockChain.Core.Block;
-using System.Collections.Generic;
 using System.Security.Cryptography;
+using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Block;
 
-namespace BlockChain.Core
+namespace CryptoChain.Core.BlockChain
 {
     /// <summary>
     /// BlockChain, saves blocks to disk

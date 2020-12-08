@@ -12,8 +12,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography;
+using CryptoChain.Core.Abstractions;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block
 {
     public class BlockHeader
     {

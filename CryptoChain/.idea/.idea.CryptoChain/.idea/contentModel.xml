@@ -19,8 +19,27 @@
       </e>
       <e p="CryptoChain.Core" t="IncludeRecursive">
         <e p="Abstractions" t="Include">
+          <e p="IBlockData.cs" t="Include" />
           <e p="IScript.cs" t="Include" />
           <e p="ISerializable.cs" t="Include" />
+        </e>
+        <e p="Block" t="Include">
+          <e p="Block.cs" t="Include" />
+          <e p="BlockHeader.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="BlockHeaderHelper.cs" t="Include" />
+            <e p="BlockHelper.cs" t="Include" />
+            <e p="BlockMiner.cs" t="Include" />
+          </e>
+          <e p="Target.cs" t="Include" />
+        </e>
+        <e p="BlockChain" t="Include">
+          <e p="BlockChain.cs" t="Include" />
+          <e p="BlockChainHeader.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="AddHelpers.cs" t="Include" />
+            <e p="VerifyHelper.cs" t="Include" />
+          </e>
         </e>
         <e p="Constants.cs" t="Include" />
         <e p="CryptoChain.Core.csproj" t="IncludeRecursive" />

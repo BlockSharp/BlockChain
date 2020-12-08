@@ -3,8 +3,9 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using CryptoChain.Core.Abstractions;
 
-namespace BlockChain.Core.Block
+namespace CryptoChain.Core.Block.Helpers
 {
     public static class BlockMiner
     {
