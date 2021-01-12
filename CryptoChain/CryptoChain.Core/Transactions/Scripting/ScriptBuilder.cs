@@ -156,5 +156,18 @@ namespace CryptoChain.Core.Transactions.Scripting
             script.PushData(s.Serialize());
             return script;
         }
+
+        /// <summary>
+        /// Create a effective NULL_DATA script
+        /// </summary>
+        /// <param name="data">The data to be stored in the script</param>
+        /// <returns>A NULL_DATA script</returns>
+        public static IScript NullData(byte[] data)
+        {
+            var s = new ScriptBuilder();
+            s.Add(Opcode.RETURN);
+            s.PushData(data);
+            return s;
+        }
     }
 }

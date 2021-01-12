@@ -14,13 +14,16 @@ namespace CryptoChain.Core.Transactions
 
         private byte[]? _merkleRoot;
 
+        /// <summary>
+        /// Get the merkle root from all txIds of all transactions in the list
+        /// </summary>
         public byte[] MerkleRoot
         {
             get
             {
                 if (_merkleRoot == null)
                 {
-                    Queue<byte[]> txIds = new Queue<byte[]>(this.Select(x => x.TxId));
+                    Queue<byte[]> txIds = new(this.Select(x => x.TxId));
                     _merkleRoot =  GenerateMerkleRoot(txIds);
                 }
                 
@@ -30,9 +33,18 @@ namespace CryptoChain.Core.Transactions
 
         public TransactionList() {}
 
+        /// <summary>
+        /// Deserialize transactionList from bytes
+        /// </summary>
+        /// <param name="serialized">The serialized TransactionList</param>
         public TransactionList(byte[] serialized)
-            => FromArray(serialized);
-        
+        {
+            TransactionCount = BitConverter.ToInt32(serialized);
+            var items = Serialization.MultipleFromBuffer(serialized, 4).ToList();
+            foreach (var i in items)
+                Add(new Transaction(i));
+        }
+
         public byte[] Serialize()
         {
             TransactionCount = Count;
@@ -54,18 +66,6 @@ namespace CryptoChain.Core.Transactions
             return x.Length == Length && x.SequenceEqual(this);
         }
         
-        /// <summary>
-        /// Deserialize from array
-        /// </summary>
-        /// <param name="data">The serialized TransactionList</param>
-        private void FromArray(byte[] data)
-        {
-            TransactionCount = BitConverter.ToInt32(data);
-            var items = Serialization.MultipleFromBuffer(data, 4).ToList();
-            foreach (var i in items)
-                Add(new Transaction(i));
-        }
-
         /// <summary>
         /// Generate the merkle root from all transactions in this list
         /// </summary>

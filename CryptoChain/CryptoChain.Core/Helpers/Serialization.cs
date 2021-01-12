@@ -90,6 +90,9 @@ namespace CryptoChain.Core.Helpers
                 yield return result;
             }
         }
+
+        public static string ToHexString(this byte[] bytes, bool withDashes = false)
+            => withDashes ? BitConverter.ToString(bytes) : BitConverter.ToString(bytes).Replace("-", "");
         
         /// <summary>
         /// Converts BigInteger into inversed byte array

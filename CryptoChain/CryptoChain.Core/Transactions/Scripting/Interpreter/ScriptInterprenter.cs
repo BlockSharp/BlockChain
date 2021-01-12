@@ -24,15 +24,14 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                 .Where(m => m.GetCustomAttributes().OfType<OpCode>().Any() && m.IsStatic)
                 .ToDictionary(k => (
                         (OpCode) k.GetCustomAttributes().First()).Opcode,
-                    v => new Operation(v,v.GetCustomAttributes().First() as OpCode));
+                    v => new Operation(v, (OpCode)v.GetCustomAttributes().First()));
         }
 
         public ExecutionResult Execute(ref Transaction t, params IScript[] scripts) =>
             Execute(ref t, out _, scripts);
-        public ExecutionResult Execute(ref Transaction t, out byte[] output, params IScript[] scripts)
+        public ExecutionResult Execute(ref Transaction t, out byte[]? output, params IScript[] scripts)
         {
-            var stack = new ExecutionStack();
-            stack.Transaction = t;
+            var stack = new ExecutionStack { Transaction = t };
 
             for (int i = 0; i < scripts.Length; i++)
             {

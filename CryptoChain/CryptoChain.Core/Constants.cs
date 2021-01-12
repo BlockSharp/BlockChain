@@ -3,7 +3,9 @@ namespace CryptoChain.Core
     public static class Constants
     {
         public const int TransactionHashLength = 32;
-        public const int Version = 0x1;
+        public const int BlockHashLength = 32;
+        public const int TransactionVersion = 0x1;
+        public const int BlockVersion = 0x1;
 
         /// <summary>
         /// The minimum block dept before a coinbase transaction can be spent

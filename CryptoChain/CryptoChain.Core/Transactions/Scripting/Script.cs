@@ -22,7 +22,7 @@ namespace CryptoChain.Core.Transactions.Scripting
                 Add(s);
         }
         
-        public byte[] Serialize() => ToArray();
+        public byte[] Serialize() => base.ToArray();
         public Opcode Next() => (Opcode)Dequeue();
         public byte NextByte() => Dequeue();
 

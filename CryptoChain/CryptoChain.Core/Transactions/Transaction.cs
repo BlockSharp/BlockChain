@@ -50,7 +50,7 @@ namespace CryptoChain.Core.Transactions
         /// </summary>
         /// <param name="lockTime">The locking time or block height</param>
         /// <param name="version">The blockchain version</param>
-        public Transaction(uint lockTime = 0, int version = Constants.Version)
+        public Transaction(uint lockTime = 0, int version = Constants.TransactionVersion)
         {
             Version = version;
             LockTime = lockTime;
