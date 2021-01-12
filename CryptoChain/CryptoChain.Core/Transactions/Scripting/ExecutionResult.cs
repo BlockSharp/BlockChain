@@ -12,7 +12,6 @@ namespace CryptoChain.Core.Transactions.Scripting
         INVALID_SCRIPT,
         
         MORE_ITEMS_ON_BOTTOM,
-        NO_TRANSACTION_GIVEN,
         DISABLED_CODE,
         UNKNOWN_CODE,
         EXECUTION_STOPPED,

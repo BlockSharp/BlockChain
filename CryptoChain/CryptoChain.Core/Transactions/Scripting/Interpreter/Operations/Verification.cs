@@ -22,13 +22,12 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 2)]
         public static ExecutionResult? CheckSignature(ref ExecutionStack stack)
         {
-            if (stack.Transaction == null) return ExecutionResult.NO_TRANSACTION_GIVEN;
             if (stack.Count < 2) return ExecutionResult.INVALID_STACK;
 
             var pubKey = stack.Pop();
             var signature = stack.Pop();
             var rsa = new CryptoRsa(pubKey);
-            stack.Push(rsa.Verify(stack.Transaction.Hash(), signature));
+            stack.Push(rsa.Verify(stack.Transaction.TxId, signature));
             return null;
         }
 
@@ -43,7 +42,6 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 3)]
         public static ExecutionResult? CheckMultiSig(ref ExecutionStack stack)
         {
-            if (stack.Transaction == null) return ExecutionResult.NO_TRANSACTION_GIVEN;
             int amount = stack.PopShort();
             if (stack.Count < amount) return ExecutionResult.INVALID_STACK;
             var pubKeys = stack.PopRange(amount);
@@ -58,7 +56,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
                 return null;
             }
             
-            var transactionHash = stack.Transaction.Hash();
+            var transactionHash = stack.Transaction.TxId;
 
             var results = pubKeys.ToDictionary(x => x, x => false);
             foreach (var x in results.Keys.ToList())
@@ -74,15 +72,18 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             return null;
         }
 
-        [OpCode(Opcode = Opcode.CHECKLOCKTIME)]
+        [OpCode(Opcode = Opcode.CHECKLOCKTIME, MinLengthStack = 1)]
         public static ExecutionResult? CheckLockTime(ref ExecutionStack stack)
         {
-            if (stack.Transaction == null) return ExecutionResult.NO_TRANSACTION_GIVEN;
-            if (stack.Count < 1) return ExecutionResult.INVALID_STACK;
-            if (stack.Peek().Length != 4) return ExecutionResult.INVALID_BYTE_SIZE;
-
-            uint size = stack.PopUInt();
-            stack.Push(stack.Transaction.LockTime >= size);
+            //unlocked at unix time stamp
+            if (stack.Transaction.LockTime >= 100000000)
+            {
+                uint epochNow = (uint)(DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+                stack.Push(epochNow > stack.Transaction.LockTime);
+            }
+            else //unlocked at blockheight  //TODO: get blockheight
+                stack.Push(false);
+            
             return null;
         }
 

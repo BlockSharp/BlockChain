@@ -36,29 +36,40 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 
         [OpCode(Opcode = Opcode.LESSTHAN, MinLengthStack = 2)]
         public static void LessThan(ref ExecutionStack stack)
+            // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() < stack.PopShort());
 
         [OpCode(Opcode = Opcode.LESSOREQUAL, MinLengthStack = 2)]
         public static void LessOrEqual(ref ExecutionStack stack)
+            // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() <= stack.PopShort());
 
         [OpCode(Opcode = Opcode.GREATERTHAN, MinLengthStack = 2)]
         public static void GreaterThan(ref ExecutionStack stack)
+            // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() > stack.PopShort());
 
         [OpCode(Opcode = Opcode.GREATEROREQUAL, MinLengthStack = 2)]
         public static void GreaterOrEqual(ref ExecutionStack stack)
+            // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() >= stack.PopShort());
 
         [OpCode(Opcode = Opcode.EQ_NUM, MinLengthStack = 2)]
         public static void EQ_NUM(ref ExecutionStack stack)
+            // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() == stack.PopShort());
 
         [OpCode(Opcode = Opcode.EQ_VERIFY_NUM, MinLengthStack = 2)]
         public static ExecutionResult? EQ_VERIFY_NUM(ref ExecutionStack stack)
         {
+            // ReSharper disable once EqualExpressionComparison
             stack.Push(stack.PopShort() == stack.PopShort());
             return Verification.Verify(ref stack);
+        }
+
+        public static int Floor(object sqrt)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -26,11 +26,14 @@ namespace CryptoChain.Core.Transactions.Data
             ScriptLength = lockScript.Length;
         }
         
+        /// <summary>
+        /// Deserialize a TxOutput
+        /// </summary>
+        /// <param name="serialized">The serialized TxOutput</param>
         public TxOutput(byte[] serialized)
         {
             Amount = BitConverter.ToUInt64(serialized);
             ScriptLength = BitConverter.ToInt32(serialized, 8);
-            //if doesnt work provide scriptlength
             LockingScript = new Script(Serialization.FromBuffer(serialized, 12, false));
         }
         

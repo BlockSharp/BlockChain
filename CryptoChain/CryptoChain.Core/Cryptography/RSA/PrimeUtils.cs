@@ -1,5 +1,7 @@
+using System;
 using System.Numerics;
 using System.Security.Cryptography;
+using Math = System.Math;
 
 namespace CryptoChain.Core.Cryptography.RSA
 {
@@ -153,6 +155,19 @@ namespace CryptoChain.Core.Cryptography.RSA
                 if (TrialComposite(roundTest))
                     return false;
             }
+
+            return true;
+        }
+
+        public static bool IsSmallPrime(int number)
+        {
+            if (number <= 1) return false;
+            if (number == 2) return true;
+            if (number % 2 == 0) return false;
+
+            for (int i = 3; i <= (int)Math.Floor(Math.Sqrt(number)); i+=2)
+                if (number % i == 0)
+                    return false;
 
             return true;
         }

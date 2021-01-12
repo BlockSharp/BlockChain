@@ -1,4 +1,4 @@
-namespace BlockChain.Core.Test
+namespace CryptoChain.Core.Tests
 {
     public static class TestHelper
     {

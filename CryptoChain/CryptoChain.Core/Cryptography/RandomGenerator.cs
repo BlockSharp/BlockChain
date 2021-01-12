@@ -45,13 +45,11 @@ namespace CryptoChain.Core.Cryptography
             => _nextSkip = amount;
 
         /// <summary>
-        /// Fill byte array with semirandom bytes
+        /// Fill byte array with semi random bytes
         /// </summary>
         /// <param name="bytes">The bytes</param>
         public void GetBytes(byte[] bytes)
-        {
-            Buffer.BlockCopy(GetBytes(bytes.Length), 0, bytes, 0, bytes.Length);
-        }
+            => Buffer.BlockCopy(GetBytes(bytes.Length), 0, bytes, 0, bytes.Length);
 
         /// <summary>
         /// Composes the data needed for the hashing in GetBytes

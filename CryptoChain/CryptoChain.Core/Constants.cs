@@ -4,6 +4,11 @@ namespace CryptoChain.Core
     {
         public const int TransactionHashLength = 32;
         public const int Version = 0x1;
+
+        /// <summary>
+        /// The minimum block dept before a coinbase transaction can be spent
+        /// </summary>
+        public const uint MinimumCoinBaseLockTime = 100;
         
         /// <summary>
         /// First block of the blockchain

@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_CryptoChain.-263441944.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.3/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.3/resharper-host/local/Transient/Rider/v203/SolutionCaches/_CryptoChain.-263441944.00" t="ExcludeRecursive" />
     <e p="$APPLICATION_CONFIG_DIR$/scratches" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.8.3/build/netcoreapp2.1" t="Include">
+      <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/microsoft.testplatform.testhost/16.8.3/build/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.17.0/build/netcoreapp2.1/NUnit3.TestAdapter.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.17.0/build/netcoreapp2.1/NUnit3.TestAdapter.pdb" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.17.0/build/netcoreapp2.1/nunit.engine.api.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.17.0/build/netcoreapp2.1/nunit.engine.core.dll" t="Include" />
+    <e p="$USER_HOME$/.nuget/packages/nunit3testadapter/3.17.0/build/netcoreapp2.1/nunit.engine.dll" t="Include" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="CryptoChain.Cli" t="IncludeRecursive">
         <e p="CryptoChain.Cli.csproj" t="IncludeRecursive" />
@@ -11,7 +20,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="CryptoChain.Cli.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -61,13 +70,18 @@
           <e p="RandomGenerator.cs" t="Include" />
         </e>
         <e p="Helpers" t="Include">
+          <e p="MerkleProofQueueConverter.cs" t="Include" />
           <e p="Serialization.cs" t="Include" />
+        </e>
+        <e p="Resources" t="Include">
+          <e p="wordlist_en.txt" t="Include" />
         </e>
         <e p="Transactions" t="Include">
           <e p="Data" t="Include">
             <e p="TxInput.cs" t="Include" />
             <e p="TxOutput.cs" t="Include" />
           </e>
+          <e p="MerkleTree.cs" t="Include" />
           <e p="Scripting" t="Include">
             <e p="ExecutionResult.cs" t="Include" />
             <e p="Interpreter" t="Include">
@@ -94,8 +108,49 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="CryptoChain.Core.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="CryptoChain.Core.Tests" t="IncludeRecursive">
+        <e p="Block" t="Include">
+          <e p="BlockData" t="Include">
+            <e p="BlockHeaderTest.cs" t="Include" />
+            <e p="TargetTest.cs" t="Include" />
+            <e p="TestBlockData.cs" t="Include" />
+          </e>
+          <e p="BlockTest.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="BlockHeaderHelperTest.cs" t="Include" />
+            <e p="BlockHelperTest.cs" t="Include" />
+            <e p="BlockMinerTest.cs" t="Include" />
+          </e>
+        </e>
+        <e p="BlockChain" t="Include">
+          <e p="BlockChainTest.cs" t="Include" />
+          <e p="Helpers" t="Include">
+            <e p="AddHelpersTest.cs" t="Include" />
+            <e p="VerifyHelperTest.cs" t="Include" />
+          </e>
+        </e>
+        <e p="CryptoChain.Core.Tests.csproj" t="IncludeRecursive" />
+        <e p="Cryptography" t="Include">
+          <e p="Base58Test.cs" t="Include" />
+          <e p="RandomGeneratorTest.cs" t="Include" />
+          <e p="Rsa" t="Include">
+            <e p="KeyGenerationTests.cs" t="Include" />
+            <e p="PrimesTest.cs" t="Include" />
+            <e p="RsaHelper.cs" t="Include" />
+          </e>
+        </e>
+        <e p="TestHelper.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="CryptoChain.Core.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>

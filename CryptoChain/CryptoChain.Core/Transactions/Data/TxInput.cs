@@ -5,18 +5,29 @@ using CryptoChain.Core.Transactions.Scripting;
 
 namespace CryptoChain.Core.Transactions.Data
 {
+    /// <summary>
+    /// The transaction input. Points at a transaction (with the txId TxId) and marks its output index (VOut)
+    /// </summary>
     public class TxInput : ISerializable
     {
-        public int Length => Constants.TransactionHashLength + 5 + UnlockingScript.Length;
+        public int Length => Constants.TransactionHashLength + 6 + UnlockingScript.Length;
         
         //The transaction hash/id this input refers to.
         public byte[] TxId { get; set; }
+        
         //The index of the selected output (in the txOut list) of the transaction this input points to
-        public byte VOut { get; set; }
+        //This is limited to uint to decrease block size
+        public uint VOut { get; set; }
         public int ScriptLength { get; private set; }
         public IScript UnlockingScript { get; set; }
 
-        public TxInput(byte[] transactionHash, byte selectedOutput, IScript unlockScript)
+        /// <summary>
+        /// Create a TxInput from a selected TxOutput
+        /// </summary>
+        /// <param name="transactionHash">The txID of the selected transaction</param>
+        /// <param name="selectedOutput">The index of the output of the selected transaction</param>
+        /// <param name="unlockScript">The script that unlocks the output</param>
+        public TxInput(byte[] transactionHash, uint selectedOutput, IScript unlockScript)
         {
             TxId = transactionHash;
             VOut = selectedOutput;
@@ -24,12 +35,16 @@ namespace CryptoChain.Core.Transactions.Data
             ScriptLength = unlockScript.Length;
         }
         
+        /// <summary>
+        /// Deserialize a TxInput
+        /// </summary>
+        /// <param name="serialized">The serialized TxInput</param>
         public TxInput(byte[] serialized)
         {
             TxId = Serialization.FromBuffer(serialized, 0, false, Constants.TransactionHashLength);
             int idx = Constants.TransactionHashLength;
-            VOut = serialized[idx];
-            idx += 1;
+            VOut = BitConverter.ToUInt16(serialized, idx);
+            idx += 2;
             ScriptLength = BitConverter.ToInt32(serialized, idx);
             idx += 4;
             //if doesnt work: provide ScriptLength
@@ -43,8 +58,8 @@ namespace CryptoChain.Core.Transactions.Data
             int idx = 0;
             Buffer.BlockCopy(TxId, 0, buffer, 0, Constants.TransactionHashLength);
             idx += Constants.TransactionHashLength;
-            buffer[idx] = VOut;
-            idx += 1;
+            Buffer.BlockCopy(BitConverter.GetBytes(VOut), 0, buffer, idx, 2);
+            idx += 2;
             Buffer.BlockCopy(BitConverter.GetBytes(ScriptLength), 0, buffer, idx, 4);
             idx += 4;
             Buffer.BlockCopy(UnlockingScript.Serialize(), 0, buffer, idx, ScriptLength);

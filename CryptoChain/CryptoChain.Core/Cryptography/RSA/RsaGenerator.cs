@@ -53,7 +53,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="p">The first prime</param>
         /// <param name="q">The second prime</param>
         /// <returns>RSAParameters used in the RsaCSP</returns>
-        public static RSAParameters GenerateKey(BigInteger p, BigInteger q)
+        public static RSAParameters GenerateParameters(BigInteger p, BigInteger q)
         {
             /*
              * prime = an integer that's only dividable by 1 and itselve

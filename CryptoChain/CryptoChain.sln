@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoChain.Core", "CryptoC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoChain.Cli", "CryptoChain.Cli\CryptoChain.Cli.csproj", "{44BEAD8A-3918-43A4-831A-EBB486B71456}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoChain.Core.Tests", "CryptoChain.Core.Tests\CryptoChain.Core.Tests.csproj", "{210CB227-6AF0-4AB3-A959-F1E91F17A670}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{44BEAD8A-3918-43A4-831A-EBB486B71456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44BEAD8A-3918-43A4-831A-EBB486B71456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44BEAD8A-3918-43A4-831A-EBB486B71456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210CB227-6AF0-4AB3-A959-F1E91F17A670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210CB227-6AF0-4AB3-A959-F1E91F17A670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210CB227-6AF0-4AB3-A959-F1E91F17A670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210CB227-6AF0-4AB3-A959-F1E91F17A670}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

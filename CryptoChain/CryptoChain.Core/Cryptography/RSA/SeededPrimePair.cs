@@ -111,7 +111,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <returns>RsaKey</returns>
         public RsaKey ToRsaKey()
         {
-            var rsaParameters = RsaGenerator.GenerateKey(P, Q);
+            var rsaParameters = RsaGenerator.GenerateParameters(P, Q);
             return new RsaKey(rsaParameters);
         }
 
