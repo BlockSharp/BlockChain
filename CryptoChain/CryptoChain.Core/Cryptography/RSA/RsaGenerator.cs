@@ -49,11 +49,14 @@ namespace CryptoChain.Core.Cryptography.RSA
         
         /// <summary>
         /// This function generates RSAParameters from 2 primes!!!
+        /// The default fermat number is 65537
+        /// Also RsaCryptoServiceProvider uses this preselected value.
         /// </summary>
         /// <param name="p">The first prime</param>
         /// <param name="q">The second prime</param>
+        /// <param name="fermatIndex">The index in the fermatNumbers array. Default = 1 (65537)</param>
         /// <returns>RSAParameters used in the RsaCSP</returns>
-        public static RSAParameters GenerateParameters(BigInteger p, BigInteger q)
+        public static RSAParameters GenerateParameters(BigInteger p, BigInteger q, int fermatIndex = 1)
         {
             /*
              * prime = an integer that's only dividable by 1 and itselve
@@ -74,8 +77,8 @@ namespace CryptoChain.Core.Cryptography.RSA
             //4. Choose an integer e such that 1 < e < λ(n) and gcd(e, λ(n)) = 1; that is, e and λ(n) are coprime. 
             //e having a short bit-length and small Hamming weight results in more efficient encryption  – the most commonly chosen value for e is 2^16 + 1 = 65,537. The smallest (and fastest) possible value for e is 3,
             //but such a small value for e has been shown to be less secure in some settings
-            //Commonly a fermat number is used, nearly always 65537
-            var e = new BigInteger(65537); //Also RsaCryptoServiceProvider uses this preselected value.
+            //Commonly a fermat number is used, nearly always 65537. Default it is 65537
+            var e = PrimeUtils.FermatNumbers[fermatIndex];
             
             //Check if e is correct, just for sure
             if(!Mathematics.AreCoPrime(e, λn))

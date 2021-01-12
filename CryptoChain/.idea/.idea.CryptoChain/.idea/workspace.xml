@@ -24,36 +24,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5d031f3-8cd5-465f-90fd-63b53a2a7804" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core.Tests/Cryptography/Base58Test.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core.Tests/Cryptography/RandomGeneratorTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core.Tests/Cryptography/Rsa/KeyGenerationTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core.Tests/Cryptography/Rsa/PrimesTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core.Tests/Cryptography/Rsa/RsaHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core/Helpers/MerkleProofQueueConverter.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/MerkleTree.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BlockChain.Core.Test/TestHelper.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CryptoChain/riderModule.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CryptoChain/riderModule.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Cli/CryptoChain.Cli.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Cli/CryptoChain.Cli.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/CryptoChain.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/CryptoChain.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/PrimeUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/PrimeUtils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SeededPrimePair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/SeededPrimePair.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RandomGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RandomGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Helpers/Serialization.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Helpers/Serialization.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxInput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Data/TxOutput.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ExecutionResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Math.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Math.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/Interpreter/Operations/Verification.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ScriptBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Scripting/ScriptBuilder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Transaction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/Transaction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/TransactionList.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/TransactionList.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CryptoChain.sln" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CryptoChain.Core/Transactions/MerkleTree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/CryptoChain.Core/Transactions/MerkleTree.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +61,7 @@
       <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/TransactionList.cs" />
       <option value="$PROJECT_DIR$/CryptoChain.Core/Helpers/MerkleProofQueueConverter.cs" />
       <option value="$PROJECT_DIR$/CryptoChain.Cli/Program.cs" />
+      <option value="$PROJECT_DIR$/CryptoChain.Core/Cryptography/RSA/RsaGenerator.cs" />
       <option value="$PROJECT_DIR$/CryptoChain.Core/Transactions/MerkleTree.cs" />
     </changedPaths>
   </component>
@@ -173,7 +147,8 @@
       <workItem from="1610398696127" duration="1289000" />
       <workItem from="1610444816186" duration="5540000" />
       <workItem from="1610450458097" duration="1444000" />
-      <workItem from="1610453603329" duration="1391000" />
+      <workItem from="1610453603329" duration="1774000" />
+      <workItem from="1610475919027" duration="465000" />
     </task>
     <servers />
   </component>

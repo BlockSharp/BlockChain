@@ -122,7 +122,7 @@ namespace CryptoChain.Core.Transactions
             public bool IsLeaf => Left == null && Right == null;
             public int LeafCount => IsLeaf ? 1 : (Left?.LeafCount ?? 0) + (Right?.LeafCount ?? 0);
             public int Count => 1 + (Left?.Count ?? 0) + (Right?.Count ?? 0);
-
+            
             /// <summary>
             /// Create a new node
             /// </summary>
