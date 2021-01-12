@@ -7,7 +7,7 @@ using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Transactions
 {
-    public class TransactionList : List<Transaction>, ISerializable, IBlockData
+    public class TransactionList : List<Transaction>, ISerializable
     {
         public int TransactionCount { get; private set; }
         public int Length => this.Sum(x => x.Length + 4) + 4;
@@ -53,11 +53,12 @@ namespace CryptoChain.Core.Transactions
             var x = (TransactionList) obj;
             return x.Length == Length && x.SequenceEqual(this);
         }
-
-        public new byte[] ToArray()
-            => Serialize();
-
-        public void FromArray(byte[] data)
+        
+        /// <summary>
+        /// Deserialize from array
+        /// </summary>
+        /// <param name="data">The serialized TransactionList</param>
+        private void FromArray(byte[] data)
         {
             TransactionCount = BitConverter.ToInt32(data);
             var items = Serialization.MultipleFromBuffer(data, 4).ToList();
