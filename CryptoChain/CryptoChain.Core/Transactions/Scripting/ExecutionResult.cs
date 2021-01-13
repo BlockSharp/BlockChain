@@ -15,7 +15,6 @@ namespace CryptoChain.Core.Transactions.Scripting
         DISABLED_CODE,
         UNKNOWN_CODE,
         EXECUTION_STOPPED,
-        INVALID_BYTE_SIZE,
         UNKNOWN_ERROR
     }
 }

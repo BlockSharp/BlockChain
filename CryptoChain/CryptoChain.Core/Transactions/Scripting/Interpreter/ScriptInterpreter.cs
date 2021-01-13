@@ -6,7 +6,7 @@ using CryptoChain.Core.Abstractions;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter
 {
-    public class ScriptInterpreter
+    public class ScriptInterpreter : IScriptInterpreter
     {
         /// <summary>
         /// Dictionary with all the operations

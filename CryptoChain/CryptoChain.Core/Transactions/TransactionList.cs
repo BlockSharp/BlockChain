@@ -7,6 +7,9 @@ using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Transactions
 {
+    /// <summary>
+    /// A list of all transactions in a block. This is how the transactions are stored in a block
+    /// </summary>
     public class TransactionList : List<Transaction>, ISerializable
     {
         public int TransactionCount { get; private set; }

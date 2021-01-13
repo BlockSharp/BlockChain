@@ -12,13 +12,37 @@ namespace CryptoChain.Core.Cryptography.RSA
         public RSAParameters Parameters { get; }
         public bool IsPrivate => Parameters.D != null;
 
+        private byte[]? _privateKey;
+        private byte[]? _publicKey;
+        private int _keySize;
+
+        public byte[] PublicKey
+        {
+            get
+            {
+                if (_publicKey == null)
+                    _publicKey = ToArray(false);
+                return _publicKey;
+            }
+        }
+        
+        public byte[] PrivateKey
+        {
+            get
+            {
+                if (!IsPrivate)
+                    throw new ArgumentException("Key is not a private key");
+                if (_privateKey == null)
+                    _privateKey = ToArray(true);
+                return _privateKey;
+            }
+        }
+
         /// <summary>
         /// Get the RsaKey with only the public information
         /// </summary>
-        public RsaKey PublicKey => 
+        public RsaKey PublicRsaKey => 
             new RsaKey(new RSAParameters { Exponent = Parameters.Exponent, Modulus = Parameters.Modulus }, KeySize);
-
-        private int _keySize;
 
         /// <summary>
         /// Returns KeySize in bits
@@ -71,16 +95,18 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <param name="csp">The created RSACryptoServiceProvider</param>
         public RsaKey(RSACryptoServiceProvider csp) : this(csp.ExportParameters(!csp.PublicOnly), csp.KeySize){}
 
-        
         /// <summary>
         /// Create RsaKey from PEM format
         /// </summary>
         /// <param name="pem">The PEM string</param>
         /// <returns>RsaKey</returns>
         public static RsaKey FromPem(string pem)
-            => new RsaKey(PemUtilities.FromPem(pem));
-        
-        
+        {
+            using var csp = new RSACryptoServiceProvider();
+            csp.ImportFromPem(pem);
+            return new RsaKey(csp);
+        }
+
         /// <summary>
         /// Create RsaKey from XML
         /// </summary>

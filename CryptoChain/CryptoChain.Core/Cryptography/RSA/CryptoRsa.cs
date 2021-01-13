@@ -8,7 +8,7 @@ namespace CryptoChain.Core.Cryptography.RSA
     {
         private readonly RSACryptoServiceProvider _provider;
         public bool IsPrivate { get; }
-        public RsaKey Key => new RsaKey(_provider);
+        public RsaKey Key => new(_provider);
         
         /// <summary>
         /// Create new CryptoRSA object from RsaKey

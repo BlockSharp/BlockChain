@@ -5,6 +5,9 @@ using CryptoChain.Core.Cryptography.Hashing;
 
 namespace CryptoChain.Core.Transactions
 {
+    /// <summary>
+    /// A tree structure for the transaction ids
+    /// </summary>
     public class MerkleTree
     { 
         public Node Root { get; set; }
