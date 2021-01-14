@@ -2,12 +2,12 @@ using System;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms.RSA
 {
     /// <summary>
     /// This class is able to generate strong RSA keys, even from a seed
     /// </summary>
-    public class RsaKey : ISerializable
+    public class RsaKey : ICryptoKey
     {
         public RSAParameters Parameters { get; }
         public bool IsPrivate => Parameters.D != null;

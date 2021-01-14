@@ -12,6 +12,8 @@ namespace CryptoChain.Core.Transactions.Addresses
         public byte[] Data { get; set; }
         public Checksum Checksum { get; set; }
 
+        public string Value => ToString();
+
         public bool IsValid => Checksum.Validate(GetChecksumData());
 
         /// <summary>
@@ -26,12 +28,14 @@ namespace CryptoChain.Core.Transactions.Addresses
             Checksum = new Checksum(GetChecksumData(), 4);
         }
 
+        public Address(string address) : this(Base58.Decode(address)){}
         public Address(byte[] serialized)
         {
             Prefix = (AddressType)serialized[0];
             Data = serialized[1..^4];
             Checksum = new Checksum(serialized[^4..]);
         }
+        
 
         private byte[] GetChecksumData()
         {
@@ -49,5 +53,8 @@ namespace CryptoChain.Core.Transactions.Addresses
             Checksum.Serialize().CopyTo(buffer, buffer.Length - 4);
             return buffer;
         }
+
+        public override string ToString()
+            => Base58.Encode(Serialize());
     }
 }

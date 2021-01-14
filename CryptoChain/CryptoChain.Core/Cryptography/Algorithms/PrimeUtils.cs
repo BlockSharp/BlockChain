@@ -1,9 +1,8 @@
-using System;
 using System.Numerics;
 using System.Security.Cryptography;
 using Math = System.Math;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms
 {
     /// <summary>
     /// To test, use: https://bigprimes.org/primality-test

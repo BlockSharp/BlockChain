@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms
 {
     public static class PemUtilities
     {

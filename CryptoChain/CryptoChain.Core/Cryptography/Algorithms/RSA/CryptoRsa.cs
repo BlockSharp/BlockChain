@@ -1,14 +1,15 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using CryptoChain.Core.Abstractions;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms.RSA
 {
-    public class CryptoRsa
+    public class CryptoRsa : ISignAlgorithm, ICryptAlgorithm
     {
         private readonly RSACryptoServiceProvider _provider;
         public bool IsPrivate { get; }
-        public RsaKey Key => new(_provider);
+        public ICryptoKey Key => new RsaKey(_provider);
         
         /// <summary>
         /// Create new CryptoRSA object from RsaKey
@@ -83,7 +84,7 @@ namespace CryptoChain.Core.Cryptography.RSA
         /// <returns>byte[32]</returns>
         public byte[] Sign(byte[] data) => Sign(data, SHA256.Create());
         public byte[] Sign(byte[] data, HashAlgorithm algorithm)
-            => (IsPrivate) ? _provider.SignData(data, algorithm) : throw new ArgumentException("Can't sign data with a public key");
+            => IsPrivate ? _provider.SignData(data, algorithm) : throw new ArgumentException("Can't sign data with a public key");
 
         /// <summary>
         /// Verify signed data with the public key

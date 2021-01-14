@@ -4,7 +4,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core.Helpers;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms.RSA
 {
     /// <summary>
     /// This class is able to generate RSA parameters from 2 primes using math

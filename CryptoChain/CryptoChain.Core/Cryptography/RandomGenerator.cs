@@ -8,10 +8,10 @@ namespace CryptoChain.Core.Cryptography
     /// </summary>
     public class RandomGenerator
     {
-        private Random _rnd;
-        private Random _rnd2;
+        private readonly Random _rnd;
+        private readonly Random _rnd2;
         public byte[] Seed { get; private set; }
-        private byte[] _data;
+        private readonly byte[] _data;
         private uint _nextSkip;
         public uint Iterations { get; private set; }
         public bool Active { get; set; }

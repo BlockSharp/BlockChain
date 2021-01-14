@@ -1,21 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
-using CryptoChain.Core;
-using CryptoChain.Core.Abstractions;
-using CryptoChain.Core.Block;
+using System.Security.Cryptography;
 using CryptoChain.Core.Cryptography;
-using CryptoChain.Core.Cryptography.Hashing;
-using CryptoChain.Core.Cryptography.RSA;
-using CryptoChain.Core.Helpers;
-using CryptoChain.Core.Transactions;
-using CryptoChain.Core.Transactions.Addresses;
-using CryptoChain.Core.Transactions.Data;
-using CryptoChain.Core.Transactions.Scripting;
-using CryptoChain.Core.Transactions.Scripting.Interpreter;
+using CryptoChain.Core.Cryptography.Algorithms;
 
 namespace CryptoChain.Cli
 {
@@ -23,7 +11,49 @@ namespace CryptoChain.Cli
     {
         static void Main(string[] args)
         {
-            
+
+            long n = 65537; //prime
+    
+
+            /*
+            //https://en.bitcoin.it/wiki/List_of_address_prefixes
+            //see length
+
+            List<string> res = new List<string>(255);
+
+            for (int i = 0; i < byte.MaxValue + 1; i++)
+            {
+                for (int j = 0; j < byte.MaxValue + 1; j++)
+                {
+                    res.Add(TestAddress(64, (byte)i, (byte)j));
+                }
+
+                char t = res.First()[0];
+                if(res.All(x => x.StartsWith(t)))
+                    Console.WriteLine($"prefix {i} starts with {t}");
+                
+                res.Clear();
+            }*/
+        }
+
+        static string TestAddress(int count, byte prefix = 0, byte leading = 0)
+        {
+            byte[] buffer = new byte[1 + count + 4];
+            buffer[0] = prefix;
+            var data = FillRandom(count, leading);
+            data.CopyTo(buffer, 1);
+            var checksum = new Checksum(data, 4);
+            checksum.Value.CopyTo(buffer, 1 + count);
+            return Base58.Encode(buffer);
+        }
+
+        static byte[] FillRandom(int count, byte leading = 0)
+        {
+            byte[] buffer = new byte[count];
+            using var rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(buffer);
+            buffer[0] = leading;
+            return buffer;
         }
     }
 }

@@ -2,9 +2,10 @@ using System;
 using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Helpers;
 
-namespace CryptoChain.Core.Cryptography.RSA
+namespace CryptoChain.Core.Cryptography.Algorithms
 {
     /// <summary>
     /// The SeededPrimePair class stores seeding information for the generation of primes.
