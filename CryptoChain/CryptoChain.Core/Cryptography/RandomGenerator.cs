@@ -22,7 +22,7 @@ namespace CryptoChain.Core.Cryptography
         /// Create a new instance of this semirandom number generator
         /// </summary>
         /// <param name="seed">The seed to make it not fully random</param>
-        public RandomGenerator(byte[] seed = null)
+        public RandomGenerator(byte[]? seed = null)
         {
             if (seed == null)
             {
@@ -84,12 +84,13 @@ namespace CryptoChain.Core.Cryptography
         /// Get semirandom bytes from the generator
         /// </summary>
         /// <param name="count">The amount of bytes you want</param>
+        /// <param name="iterations">Amount of iterations for the hash algorithm that generates the bytes</param>
         /// <returns>A byte array</returns>
-        public byte[] GetBytes(int count)
+        public byte[] GetBytes(int count, int iterations = 1)
         {
             Iterations++;
             var randomData = GetData();
-            using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, 1);
+            using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, iterations);
             return rfc.GetBytes(count);
         }
     }

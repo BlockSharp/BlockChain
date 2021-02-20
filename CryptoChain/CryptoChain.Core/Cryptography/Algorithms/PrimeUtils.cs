@@ -39,7 +39,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         public BigInteger GetLowLevelPrime(int size)
         {
             Start:
-            var pc = RandomFromRange(BigInteger.Pow(2, size - 1) + 1, BigInteger.Pow(2, size) - 1);
+            var pc = RandomInRange(BigInteger.Pow(2, size - 1) + 1, BigInteger.Pow(2, size) - 1);
             foreach (var divisor in FirstPrimes)
                 if (pc % divisor == 0 && BigInteger.Pow(divisor, 2) <= pc)
                     goto Start;
@@ -52,7 +52,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         /// <param name="min">minimum value</param>
         /// <param name="max">maximum value</param>
         /// <returns>random BigInteger</returns>
-        public BigInteger RandomFromRange(BigInteger min, BigInteger max)
+        public BigInteger RandomInRange(BigInteger min, BigInteger max)
         {
             using var rng = new RNGCryptoServiceProvider();
             var bytes = new byte[max.GetByteCount()];
@@ -91,7 +91,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
 
             for (int i = 0; i < k; i++)
             {
-                BigInteger a = RandomFromRange(0, n - 1), x = BigInteger.ModPow(a, r, n);
+                BigInteger a = RandomInRange(0, n - 1), x = BigInteger.ModPow(a, r, n);
 
                 if (x != 1 && x != n - 1)
                 {
@@ -150,7 +150,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             int numberOfRabinTrials = 20;
             for (int i = 0; i < numberOfRabinTrials; i++)
             {
-                BigInteger roundTest = RandomFromRange(2, mrc);
+                BigInteger roundTest = RandomInRange(2, mrc);
                 if (TrialComposite(roundTest))
                     return false;
             }
