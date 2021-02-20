@@ -54,14 +54,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         /// <returns>random BigInteger</returns>
         public BigInteger RandomInRange(BigInteger min, BigInteger max)
         {
-            using var rng = new RNGCryptoServiceProvider();
             var bytes = new byte[max.GetByteCount()];
             while (true)
             {
-                if (_generator.Active)
-                    _generator.GetBytes(bytes);
-                else
-                    rng.GetBytes(bytes);
+                _generator.GetBytes(bytes);
                 
                 bytes[^1] &= 0x7F; // force sign bit to positive
                 bytes[0] |= 1; // force last bit to 1

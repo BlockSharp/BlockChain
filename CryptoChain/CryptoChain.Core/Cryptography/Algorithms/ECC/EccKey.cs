@@ -19,7 +19,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public bool IsPrivate { get; }
         public byte[] PublicKey { get; }
         public byte[] PrivateKey { get; }
-        public int KeySize { get; }
+        public int KeySize => (int)Curve.LengthInBits;
 
         private EccKey(Curve curve)
             => Curve = curve;

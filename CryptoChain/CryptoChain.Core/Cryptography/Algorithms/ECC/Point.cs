@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Numerics;
 using CryptoChain.Core.Abstractions;
 
@@ -22,12 +23,32 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
         public byte[] Compress()
         {
-            throw new NotImplementedException();
+            var x = X.ToByteArray();
+            byte[] buffer = new byte[x.Length + 1];
+            x.CopyTo(buffer, 1);
+            buffer[0] = Y.IsEven ? 0x02 : 0x03;
+            return buffer;
         }
 
-        public Point Decompress(byte[] compressed)
+        public static Point Decompress(byte[] compressed, Curve curve)
         {
-            throw new NotImplementedException();
+            bool isEven = compressed[0] == 0x02;
+            var x = new BigInteger(compressed[1..]);
+            
+            var y2 = (BigInteger.ModPow(x, 3, curve.P)
+                      + curve.A * x + curve.B) % curve.P;
+            
+            var y3 = BigInteger.ModPow(y2, (curve.P + 1) / 4, curve.P);
+            var y = isEven ? y3 : curve.P - y3;
+
+            var even = y % 2 == 0;
+            isEven = even;//???
+            
+            Console.WriteLine($"Even: {isEven}, {even}");
+            Console.WriteLine("Other: "+ (!isEven ? y3 : curve.P - y3).ToString("X2"));
+            return new Point(x, y);
+            
+            //Find out if there is any way to check if it needs to use the one or the other
         }
 
         public int Length { get; }

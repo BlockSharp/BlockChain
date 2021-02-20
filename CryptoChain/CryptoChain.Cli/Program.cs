@@ -16,12 +16,25 @@ namespace CryptoChain.Cli
     {
         static void Main(string[] args)
         {
-            var curve = Curve.Sepc251K1;
+            //TODO: unlucky numbers when ignoring leftmost bits
+            //https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm
+            var curve = Curve.Secp251R1;
             var math = new CurveMath(curve);
-            var random = new RandomGenerator();
+            var random = new RandomGenerator() {Active = false};
             var utils = new PrimeUtils(ref random);
             var priv = utils.RandomInRange(0, curve.N - 1);
             var pub = math.ScalarMult(priv, curve.G);
+            
+            Console.WriteLine(pub.X.ToString("X2"));
+            Console.WriteLine(pub.Y.ToString("X2"));
+
+            var comp = pub.Compress();
+            Console.WriteLine(new BigInteger(comp).ToString("X2"));
+
+            var decom = Point.Decompress(comp, curve);
+            Console.WriteLine("Decompressed");
+            Console.WriteLine(decom.X.ToString("X2"));
+            Console.WriteLine(decom.Y.ToString("X2"));
             
             //ECDSA signature
             byte[] message = Encoding.UTF8.GetBytes("Petra is lief");
@@ -53,6 +66,7 @@ namespace CryptoChain.Cli
 
 
             {
+                pub = decom;
                 h = new BigInteger(Hash.SHA_256(Encoding.UTF8.GetBytes("Petra is lief")));
                 //ECDSA verify
                 curve.EnsureContains(pub);

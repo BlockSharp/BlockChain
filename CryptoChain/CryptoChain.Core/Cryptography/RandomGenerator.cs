@@ -88,10 +88,19 @@ namespace CryptoChain.Core.Cryptography
         /// <returns>A byte array</returns>
         public byte[] GetBytes(int count, int iterations = 1)
         {
-            Iterations++;
-            var randomData = GetData();
-            using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, iterations);
-            return rfc.GetBytes(count);
+            if (Active)
+            {
+                Iterations++;
+                var randomData = GetData();
+                using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, iterations);
+                return rfc.GetBytes(count);
+            }
+
+            //If not active, use RNG for strong cryptography. Not active = NOT using seed!
+            using var rng = new RNGCryptoServiceProvider();
+            byte[] buffer = new byte[count];
+            rng.GetBytes(buffer);
+            return buffer;
         }
     }
 }
