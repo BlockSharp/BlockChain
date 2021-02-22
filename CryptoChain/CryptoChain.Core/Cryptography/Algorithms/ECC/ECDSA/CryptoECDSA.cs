@@ -10,18 +10,22 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
         public bool IsPrivate { get; }
         public ICryptoKey Key { get; }
 
-        private CurveMath _math;
-        private RandomGenerator _random;
-        private PrimeUtils _utils;
+        private readonly CurveMath _math;
+        private readonly RandomGenerator _random;
 
         public CryptoECDSA(EccKey key)
         {
             _math = new CurveMath(key.Curve);
             _random = new RandomGenerator {Active = false};  //disable insecure random
-            _utils = new PrimeUtils(ref _random);
             Key = key;
+            IsPrivate = key.IsPrivate;
         }
 
+        /// <summary>
+        /// Sign the data using SHA256 as hashing algorithm
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public byte[] Sign(byte[] data) => Sign(data, SHA256.Create());
         public byte[] Sign(byte[] data, HashAlgorithm algorithm)
         {
@@ -35,9 +39,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
                 
                 while (true)
                 {
-                    var k = _utils.RandomInRange(0, key.Curve.N - 1);
-                    var R = _math.ScalarMult(k, key.Curve.G);
-                    var r = R.X % key.Curve.N;
+                    var k = _random.RandomInRange(0, key.Curve.N - 1);
+                    var rp = _math.ScalarMult(k, key.Curve.G);
+                    var r = rp.X % key.Curve.N;
                     var p = new BigInteger(key.PrivateKey);
                     if(r == BigInteger.Zero)
                         continue;
@@ -49,40 +53,51 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
                         continue;
 
                     var signature = new Point(r, s);
+                    
                     //(r, -s mod n) is also valid
-                    return signature.Serialize(); //Compress?
+                    return signature.Serialize();
                 }
             }
         }
 
+        /// <summary>
+        /// Verify an ECDSA signature using the original data and the signature
+        /// </summary>
+        /// <param name="data">The data to be verified</param>
+        /// <param name="signedData">The signature</param>
+        /// <returns>True if combination of data and signature is right</returns>
         public bool Verify(byte[] data, byte[] signedData) => Verify(data, SHA256.Create(), signedData);
         public bool Verify(byte[] data, HashAlgorithm algorithm, byte[] signedData)
         {
-            var key = (EccKey)Key;
-            var h = new BigInteger(algorithm.ComputeHash(data));
-            var signature = Point.Infinity; //Replace with decompressed point or deserialized point
-            key.Curve.EnsureContains(key.PublicPoint);
+            using (algorithm)
+            {
+                var key = (EccKey)Key;
+                var h = new BigInteger(algorithm.ComputeHash(data));
+                var signature = new Point(signedData);
+                key.Curve.EnsureContains(key.PublicPoint);
+                
+                var r = signature.X;
+                var s = signature.Y;
+                
+                //Validate if signature is valid
+                if (!(r > 1 && r < key.Curve.N - 1))
+                    return false;
+                
+                if (!(s > 1 && s < key.Curve.N - 1))
+                    return false;
+                
+                var c = Mathematics.ModInverse(s, key.Curve.N);
             
-            var r = signature.X;
-            var s = signature.Y;
+                //This can be calculated more efficient
+                var u1 = (h * c) % key.Curve.N;
+                var u2 = (r * c) % key.Curve.N;
 
-            //Validate if signature is valid
-            if (r > 1 && r < key.Curve.N - 1)
-                return false;
-            if (s > 1 && s < key.Curve.N - 1)
-                return false;
-            
-            var c = Mathematics.ModInverse(s, key.Curve.N);
-            
-            //This can be calculated more efficient
-            var u1 = (h * c) % key.Curve.N;
-            var u2 = (r * c) % key.Curve.N;
-
-            var xy = _math.ScalarMult(u1, key.Curve.G);
-            xy = _math.Add(xy, _math.ScalarMult(u2, key.PublicPoint));
-            var v = xy.X % key.Curve.N;
-            
-            return v == r;
+                var xy = _math.ScalarMult(u1, key.Curve.G);
+                xy = _math.Add(xy, _math.ScalarMult(u2, key.PublicPoint));
+                var v = xy.X % key.Curve.N;
+                
+                return v == r;
+            }
         }
     }
 }

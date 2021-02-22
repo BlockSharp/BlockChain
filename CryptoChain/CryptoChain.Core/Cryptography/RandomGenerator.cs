@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Security.Cryptography;
 
 namespace CryptoChain.Core.Cryptography
@@ -101,6 +102,27 @@ namespace CryptoChain.Core.Cryptography
             byte[] buffer = new byte[count];
             rng.GetBytes(buffer);
             return buffer;
+        }
+        
+        /// <summary>
+        /// Get random number within range
+        /// </summary>
+        /// <param name="min">minimum value</param>
+        /// <param name="max">maximum value</param>
+        /// <returns>random BigInteger</returns>
+        public BigInteger RandomInRange(BigInteger min, BigInteger max)
+        {
+            var bytes = new byte[max.GetByteCount()];
+            while (true)
+            {
+                GetBytes(bytes);
+                
+                bytes[^1] &= 0x7F; // force sign bit to positive
+                bytes[0] |= 1; // force last bit to 1
+
+                var random = new BigInteger(bytes);
+                if (random <= max && random >= min) return random;
+            }
         }
     }
 }

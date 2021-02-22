@@ -9,7 +9,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
     {
         public int Length { get; }
         public Curve Curve { get; }
-        public Point? PublicPoint { get; }
+        public Point PublicPoint { get; }
         
         public byte[] Serialize()
         {
@@ -27,7 +27,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public EccKey(Curve curve, byte[] privateKey) : this(curve)
         {
             PrivateKey = privateKey;
-            PublicPoint = new CurveMath(Curve).ScalarMult(new BigInteger(privateKey), curve.G);
+            PublicPoint = new CurveMath(Curve).ScalarMult(new BigInteger(privateKey), curve.G) ?? throw new InvalidOperationException();
             PublicKey = CompressPubPoint();
             IsPrivate = true;
         }
@@ -39,9 +39,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         }
 
         private byte[] CompressPubPoint()
-        {
-            return null;
-        }
+            => PublicPoint.Compress();
 
         public string ToXmlString(bool withPrivate = true)
         {

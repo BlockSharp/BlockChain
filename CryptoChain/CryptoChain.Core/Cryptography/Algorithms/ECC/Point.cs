@@ -21,6 +21,19 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             Y = y;
         }
 
+        public Point(byte[] serialized)
+        {
+            int xlen = BitConverter.ToInt32(serialized);
+            byte[] x = serialized[4..(4 + xlen)];
+            byte[] y = serialized[(4 + xlen)..];
+            X = new BigInteger(x);
+            Y = new BigInteger(y);
+        }
+
+        /// <summary>
+        /// Compress EC point to single X coordinate with sign
+        /// </summary>
+        /// <returns></returns>
         public byte[] Compress()
         {
             var x = X.ToByteArray();
@@ -30,31 +43,40 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             return buffer;
         }
 
+        /// <summary>
+        /// Decompress compressed coordinate to Point
+        /// </summary>
+        /// <param name="compressed">The compressed point</param>
+        /// <param name="curve">The desired curve</param>
+        /// <returns>The uncompressed X and Y coordinates</returns>
         public static Point Decompress(byte[] compressed, Curve curve)
         {
-            bool isEven = compressed[0] == 0x02;
-            var x = new BigInteger(compressed[1..]);
+            byte sig = compressed[0];
+            if (sig != 0x02 && sig != 0x03)
+                throw new ArgumentException("Key is not compressed");
             
+            var x = new BigInteger(compressed[1..]);
+
             var y2 = (BigInteger.ModPow(x, 3, curve.P)
                       + curve.A * x + curve.B) % curve.P;
             
             var y3 = BigInteger.ModPow(y2, (curve.P + 1) / 4, curve.P);
-            var y = isEven ? y3 : curve.P - y3;
+            
+            var y = (y3 % 2 != sig - 2) ? curve.P - y3 : y3;
 
-            var even = y % 2 == 0;
-            isEven = even;//???
-            
-            Console.WriteLine($"Even: {isEven}, {even}");
-            Console.WriteLine("Other: "+ (!isEven ? y3 : curve.P - y3).ToString("X2"));
             return new Point(x, y);
-            
-            //Find out if there is any way to check if it needs to use the one or the other
         }
 
-        public int Length { get; }
+        public int Length => 4 + X.GetByteCount() + Y.GetByteCount();
         public byte[] Serialize()
         {
-            throw new NotImplementedException();
+            byte[] buffer = new byte[Length];
+            var x = X.ToByteArray();
+            var y = Y.ToByteArray();
+            Buffer.BlockCopy(BitConverter.GetBytes(x.Length), 0, buffer, 0, 4);
+            x.CopyTo(buffer, 4);
+            y.CopyTo(buffer, 4 + x.Length);
+            return buffer;
         }
     }
 }

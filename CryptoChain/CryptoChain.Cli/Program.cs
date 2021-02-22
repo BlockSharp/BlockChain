@@ -8,6 +8,8 @@ using System.Text;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Algorithms.ECC;
+using CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Cryptography.Hashing;
 
 namespace CryptoChain.Cli
@@ -16,78 +18,19 @@ namespace CryptoChain.Cli
     {
         static void Main(string[] args)
         {
-            //TODO: unlucky numbers when ignoring leftmost bits
-            //https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm
             var curve = Curve.Secp251R1;
-            var math = new CurveMath(curve);
             var random = new RandomGenerator() {Active = false};
-            var utils = new PrimeUtils(ref random);
-            var priv = utils.RandomInRange(0, curve.N - 1);
-            var pub = math.ScalarMult(priv, curve.G);
+
+            var priv = random.RandomInRange(0, curve.N - 1);
+
+            var key = new EccKey(curve, priv.ToByteArray());
+            var ecdsa = new CryptoECDSA(key);
+
+            var sign = ecdsa.Sign(Encoding.UTF8.GetBytes("Petra is lief"));
             
-            Console.WriteLine(pub.X.ToString("X2"));
-            Console.WriteLine(pub.Y.ToString("X2"));
-
-            var comp = pub.Compress();
-            Console.WriteLine(new BigInteger(comp).ToString("X2"));
-
-            var decom = Point.Decompress(comp, curve);
-            Console.WriteLine("Decompressed");
-            Console.WriteLine(decom.X.ToString("X2"));
-            Console.WriteLine(decom.Y.ToString("X2"));
+            Console.WriteLine(ecdsa.Verify(Encoding.UTF8.GetBytes("Petra is lief"), sign));
             
-            //ECDSA signature
-            byte[] message = Encoding.UTF8.GetBytes("Petra is lief");
-            var h = new BigInteger(Hash.SHA_256(message));
-
-            Point signature;
-
-            while (true)
-            {
-                var k = utils.RandomInRange(0, curve.N - 1);
-                var R = math.ScalarMult(k, curve.G);
-                var r = R.X % curve.N;
-                if(r == BigInteger.Zero)
-                    continue;
-                
-                var s = Mathematics.ModInverse(k, curve.N) 
-                    * (h + r * priv) % curve.N;
-                
-                if(s == BigInteger.Zero)
-                    continue;
-
-                signature = new Point(r, s);
-                //(r, -s mod n) is also valid
-                break;
-            }
             
-            Console.WriteLine(signature.X);
-            Console.WriteLine(signature.Y);
-
-
-            {
-                pub = decom;
-                h = new BigInteger(Hash.SHA_256(Encoding.UTF8.GetBytes("Petra is lief")));
-                //ECDSA verify
-                curve.EnsureContains(pub);
-                var r = signature.X;
-                var s = signature.Y;
-                
-                //check if signature is valid
-                Debug.Assert(r > 1 && r < curve.N - 1);
-                Debug.Assert(s > 1 && s < curve.N - 1);
-
-                var c = Mathematics.ModInverse(s, curve.N);
-                var u1 = (h * c) % curve.N;
-                var u2 = (r * c) % curve.N;
-
-                var xy = math.ScalarMult(u1, curve.G);
-                xy = math.Add(xy, math.ScalarMult(u2, pub));
-                var v = xy.X % curve.N;
-                bool valid = v == r;
-                Console.WriteLine("Valid: "+valid);
-            }
-
             /*
             //https://en.bitcoin.it/wiki/List_of_address_prefixes
             //see length

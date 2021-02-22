@@ -28,7 +28,7 @@ namespace CryptoChain.Core.Tests.Cryptography.Rsa
             var exported = spp.Serialize();
             var spp2 = new SeededPrimePair(exported);
             //p and q are not stored in serialization so we check them
-            Assert.AreEqual(spp.P, spp2.Q);
+            Assert.AreEqual(spp.P, spp2.P);
             Assert.AreEqual(spp.Q, spp2.Q);
             Assert.AreEqual(spp.Seed, spp2.Seed);
         }

@@ -39,33 +39,13 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         public BigInteger GetLowLevelPrime(int size)
         {
             Start:
-            var pc = RandomInRange(BigInteger.Pow(2, size - 1) + 1, BigInteger.Pow(2, size) - 1);
+            var pc = _generator.RandomInRange(BigInteger.Pow(2, size - 1) + 1, BigInteger.Pow(2, size) - 1);
             foreach (var divisor in FirstPrimes)
                 if (pc % divisor == 0 && BigInteger.Pow(divisor, 2) <= pc)
                     goto Start;
             return pc;
         }
-
-        /// <summary>
-        /// Get random number within range
-        /// </summary>
-        /// <param name="min">minimum value</param>
-        /// <param name="max">maximum value</param>
-        /// <returns>random BigInteger</returns>
-        public BigInteger RandomInRange(BigInteger min, BigInteger max)
-        {
-            var bytes = new byte[max.GetByteCount()];
-            while (true)
-            {
-                _generator.GetBytes(bytes);
-                
-                bytes[^1] &= 0x7F; // force sign bit to positive
-                bytes[0] |= 1; // force last bit to 1
-
-                var random = new BigInteger(bytes);
-                if (random <= max && random >= min) return random;
-            }
-        }
+        
 
         /// <summary>
         /// Determines whether biginteger is a prime
@@ -87,7 +67,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
 
             for (int i = 0; i < k; i++)
             {
-                BigInteger a = RandomInRange(0, n - 1), x = BigInteger.ModPow(a, r, n);
+                BigInteger a = _generator.RandomInRange(0, n - 1), x = BigInteger.ModPow(a, r, n);
 
                 if (x != 1 && x != n - 1)
                 {
@@ -146,7 +126,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             int numberOfRabinTrials = 20;
             for (int i = 0; i < numberOfRabinTrials; i++)
             {
-                BigInteger roundTest = RandomInRange(2, mrc);
+                BigInteger roundTest = _generator.RandomInRange(2, mrc);
                 if (TrialComposite(roundTest))
                     return false;
             }
