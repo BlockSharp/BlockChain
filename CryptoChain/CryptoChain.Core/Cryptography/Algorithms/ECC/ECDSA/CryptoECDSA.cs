@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
@@ -16,7 +17,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
         public CryptoECDSA(EccKey key)
         {
             _math = new CurveMath(key.Curve);
-            _random = new RandomGenerator {Active = false};  //disable insecure random
+            _random = new RandomGenerator {Active = false};  //disable insecure random. Very important!
             Key = key;
             IsPrivate = key.IsPrivate;
         }

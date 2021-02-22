@@ -4,7 +4,7 @@ namespace CryptoChain.Core
     {
         public const int TransactionHashLength = 32;
         public const int BlockHashLength = 32;
-        public const int TransactionVersion = 0x1;
+        public const byte TransactionVersion = 0x1;
         public const int BlockVersion = 0x1;
 
         /// <summary>

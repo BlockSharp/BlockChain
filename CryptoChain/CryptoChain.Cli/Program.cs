@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Algorithms.ECC;
 using CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA;
 using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Cryptography.Hashing;
+using CryptoChain.Core.Transactions;
+using CryptoChain.Core.Transactions.Data;
+using CryptoChain.Core.Transactions.Scripting;
+using CryptoChain.Core.Transactions.Scripting.Interpreter;
 
 namespace CryptoChain.Cli
 {
@@ -18,22 +24,32 @@ namespace CryptoChain.Cli
     {
         static void Main(string[] args)
         {
-            var curve = Curve.Secp251R1;
-            var random = new RandomGenerator() {Active = false};
+            var rsakey = new RsaKey();
+            var ecckey = new EccKey(Curve.Secp251K1);
 
-            var priv = random.RandomInRange(0, curve.N - 1);
+            ISignAlgorithm rsa = new CryptoRsa(rsakey);
+            ISignAlgorithm ecdsa = new CryptoECDSA(ecckey);
 
-            var key = new EccKey(curve, priv.ToByteArray());
-            var ecdsa = new CryptoECDSA(key);
+            byte[] data = Encoding.UTF8.GetBytes("This data will be signed in a moment");
+            byte[] signature;
 
-            var sign = ecdsa.Sign(Encoding.UTF8.GetBytes("Petra is lief"));
-            
-            Console.WriteLine(ecdsa.Verify(Encoding.UTF8.GetBytes("Petra is lief"), sign));
-            
-            
+            var sw = Stopwatch.StartNew();
+            signature = rsa.Sign(data);
+            Console.WriteLine("RSA sign: "+sw.Elapsed);
+            sw.Restart();
+            Debug.Assert(rsa.Verify(data, signature));
+            Console.WriteLine("RSA verify: "+sw.Elapsed);
+            sw.Restart();
+            signature = ecdsa.Sign(data);
+            Console.WriteLine("ECDSA sign: "+sw.Elapsed);
+            sw.Restart();
+            Debug.Assert(ecdsa.Verify(data, signature));
+            Console.WriteLine("ECDSA verify: "+sw.Elapsed);
+
             /*
             //https://en.bitcoin.it/wiki/List_of_address_prefixes
             //see length
+            
 
             List<string> res = new List<string>(255);
 

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Numerics;
 using CryptoChain.Core.Abstractions;
 
@@ -10,10 +9,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public BigInteger X { get; }
         public BigInteger Y { get; }
 
-        public static Point? Infinity => null;
+        public static Point Infinity => new (0,0);
 
-        public static bool IsInfinity(Point? point)
-            => point == Infinity;
+        public static bool IsInfinity(Point point)
+            => point.Equals(Infinity);
         
         public Point(BigInteger x, BigInteger y)
         {
@@ -29,6 +28,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             X = new BigInteger(x);
             Y = new BigInteger(y);
         }
+
+        public int CompressedLength => X.GetByteCount() + 1;
 
         /// <summary>
         /// Compress EC point to single X coordinate with sign
@@ -78,5 +79,20 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             y.CopyTo(buffer, 4 + x.Length);
             return buffer;
         }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != GetType())
+                return false;
+            var p = (Point)obj;
+            return p.Equals(this);
+        }
+
+        protected bool Equals(Point other)
+            => X.Equals(other.X) && Y.Equals(other.Y);
+
+        public override int GetHashCode()
+            => HashCode.Combine(X, Y);
     }
 }

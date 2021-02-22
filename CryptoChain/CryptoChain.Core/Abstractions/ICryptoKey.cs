@@ -1,3 +1,5 @@
+using CryptoChain.Core.Cryptography.Algorithms;
+
 namespace CryptoChain.Core.Abstractions
 {
     public interface ICryptoKey : ISerializable

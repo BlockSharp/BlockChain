@@ -92,7 +92,7 @@ namespace CryptoChain.Core.Transactions
             unlockingScript.PushData(BitConverter.GetBytes(blockHeight));
             var input = new TxInput(new byte[Constants.TransactionHashLength], byte.MaxValue, unlockingScript);
             var output = new TxOutput(amount, outputScript);
-            Transaction t = new Transaction(Constants.MinimumCoinBaseLockTime);
+            Transaction t = new (Constants.MinimumCoinBaseLockTime);
             t.Inputs.Add(input);
             t.Outputs.Add(output);
             return t;

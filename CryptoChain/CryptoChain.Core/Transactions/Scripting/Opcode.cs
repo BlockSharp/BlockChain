@@ -32,7 +32,12 @@ namespace CryptoChain.Core.Transactions.Scripting
         VERIFY = 112,
         //113-119
         DUP = 120, DUP2 = 121,
-        //122 - 254
+        //122 - 129
+        ALG_RSA = 130, 
+        //Other algorithms: 131-139
+        //ECC algorithms: 140 - 145
+        ALG_ECDSA = 140,
+        //146-254
         RETURN = 255
     }
 }

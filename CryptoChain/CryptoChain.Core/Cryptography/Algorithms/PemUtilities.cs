@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using CryptoChain.Core.Cryptography.Algorithms.ECC;
 
 namespace CryptoChain.Core.Cryptography.Algorithms
 {
@@ -74,6 +75,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             return result;
         }
 
+        
         /// <summary>
         /// Export public key from MS RSACryptoServiceProvider into OpenSSH PEM string
         /// slightly modified from https://stackoverflow.com/a/28407693

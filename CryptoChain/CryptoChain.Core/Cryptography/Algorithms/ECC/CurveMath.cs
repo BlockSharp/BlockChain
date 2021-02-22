@@ -5,7 +5,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
     public class CurveMath
     {
-        private Curve _curve;
+        private readonly Curve _curve;
 
         public CurveMath(Curve curve)
             => _curve = curve;
@@ -13,14 +13,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public BigInteger InverseMod(BigInteger k, BigInteger p)
         {
             if (k ==0)
-            {
                 throw new DivideByZeroException("k");
-            }
 
             if (k < 0)
-            {
                 return p - InverseMod(-k, p);
-            }
 
             BigInteger s = 0, oldS = 1;
             BigInteger r = p, oldR = k;
@@ -58,20 +54,16 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             return result;
         }
 
-        public Point? Add(Point point1, Point point2)
+        public Point Add(Point point1, Point point2)
         {
             _curve.EnsureContains(point1);
             _curve.EnsureContains(point2);
 
             if (Point.IsInfinity(point1))
-            {
                 return point2;
-            }
 
             if (Point.IsInfinity(point2))
-            {
                 return point1;
-            }
 
             var x1 = point1.X;
             var y1 = point1.Y;
@@ -85,10 +77,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             if (x1 == x2)
             {
                 if (y1 != y2) // point1 + (-point1) = 0
-                {
                     return Point.Infinity;;
-                }
-               
+
                 // This is the case point1 == point2.
                 m = (3 * x1 * x1 + a) * InverseMod(2 * y1, p);
             }
@@ -110,9 +100,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
             // -0 = 0
             if (Point.IsInfinity(point))
-            {
                 return point;
-            }
 
             var x = point.X;
             var y = point.Y;
@@ -122,24 +110,22 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             _curve.EnsureContains(result);
             return result;
         }
-
-        public Point? ScalarMult(BigInteger k, Point point)
+        
+        public Point ScalarMult(BigInteger k, Point point)
         {
             _curve.EnsureContains(point);
 
             var n = _curve.N;
 
             if (k % n == 0 || Point.IsInfinity(point))
-            {
                 return Point.Infinity;
-            }
 
             // k * point = -k * (-point)
             if (k < 0)
                 return ScalarMult(-k, PointNeg(point));
 
-            Point? result = Point.Infinity;
-            Point? addend = point;
+            Point result = Point.Infinity;
+            Point addend = point;
 
             while (k != 0)
             {

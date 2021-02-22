@@ -42,7 +42,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
         /// Get the RsaKey with only the public information
         /// </summary>
         public RsaKey PublicRsaKey => 
-            new RsaKey(new RSAParameters { Exponent = Parameters.Exponent, Modulus = Parameters.Modulus }, KeySize);
+            new (new RSAParameters { Exponent = Parameters.Exponent, Modulus = Parameters.Modulus }, KeySize);
 
         /// <summary>
         /// Returns KeySize in bits
