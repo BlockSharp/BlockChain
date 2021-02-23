@@ -5,6 +5,9 @@ using CryptoChain.Core.Cryptography.Hashing;
 
 namespace CryptoChain.Core.Transactions
 {
+    /// <summary>
+    /// A tree structure for the transaction ids
+    /// </summary>
     public class MerkleTree
     { 
         public Node Root { get; set; }
@@ -71,7 +74,7 @@ namespace CryptoChain.Core.Transactions
         public Queue<(byte[] hash, bool side)> GetProof(int index)
         {
             int depth = (int)Math.Ceiling(Math.Log2(Root.LeafCount));
-            Queue<bool> path = new Queue<bool>(Convert.ToString(index, 2)
+            Queue<bool> path = new (Convert.ToString(index, 2)
                 .PadLeft(depth, '0').Select(x => x == '1'));
 
             var proof = new List<(byte[], bool)>();
@@ -122,7 +125,7 @@ namespace CryptoChain.Core.Transactions
             public bool IsLeaf => Left == null && Right == null;
             public int LeafCount => IsLeaf ? 1 : (Left?.LeafCount ?? 0) + (Right?.LeafCount ?? 0);
             public int Count => 1 + (Left?.Count ?? 0) + (Right?.Count ?? 0);
-
+            
             /// <summary>
             /// Create a new node
             /// </summary>

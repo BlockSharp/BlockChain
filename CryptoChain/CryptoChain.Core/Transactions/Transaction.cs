@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions.Data;
@@ -50,7 +51,7 @@ namespace CryptoChain.Core.Transactions
         /// </summary>
         /// <param name="lockTime">The locking time or block height</param>
         /// <param name="version">The blockchain version</param>
-        public Transaction(uint lockTime = 0, int version = Constants.Version)
+        public Transaction(uint lockTime = 0, int version = Constants.TransactionVersion)
         {
             Version = version;
             LockTime = lockTime;
@@ -92,7 +93,7 @@ namespace CryptoChain.Core.Transactions
             unlockingScript.PushData(BitConverter.GetBytes(blockHeight));
             var input = new TxInput(new byte[Constants.TransactionHashLength], byte.MaxValue, unlockingScript);
             var output = new TxOutput(amount, outputScript);
-            Transaction t = new Transaction(Constants.MinimumCoinBaseLockTime);
+            Transaction t = new (Constants.MinimumCoinBaseLockTime);
             t.Inputs.Add(input);
             t.Outputs.Add(output);
             return t;
@@ -128,6 +129,22 @@ namespace CryptoChain.Core.Transactions
             if (obj.GetType() != GetType()) return false;
             var x = (Transaction) obj;
             return x.TxId.SequenceEqual(TxId);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("====================== Transaction =====================");
+            sb.AppendLine("Version: " + Version.ToString("X"));
+            sb.AppendLine("TxID/Hash: " + TxId.ToHexString());
+            sb.AppendLine($"Inputs #: {TxInCount}, Outputs #: {TxOutCount}");
+            sb.AppendLine("[Inputs]");
+            foreach (var i in Inputs)
+                sb.AppendLine(i.ToString());
+            sb.AppendLine("[Outputs]");
+            foreach (var o in Outputs)
+                sb.AppendLine(o.ToString());
+            return sb.ToString();
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
-using CryptoChain.Core.Cryptography.RSA;
+using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 
 namespace CryptoChain.Core.Tests.Cryptography.Rsa
 {

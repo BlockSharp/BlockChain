@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using CryptoChain.Core.Cryptography.RSA;
+using CryptoChain.Core.Cryptography;
+using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
@@ -19,15 +23,17 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
          * This method needs at least a stack with 2 items. The first one (pubkey) 84 bytes the second (signature) 64.
          * stack: { [84], [64], ... }
          */
-        [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 3)]
         public static ExecutionResult? CheckSignature(ref ExecutionStack stack)
         {
             if (stack.Count < 2) return ExecutionResult.INVALID_STACK;
 
+            var algorithm = (Algorithm)stack.PopByte();
             var pubKey = stack.Pop();
             var signature = stack.Pop();
-            var rsa = new CryptoRsa(pubKey);
-            stack.Push(rsa.Verify(stack.Transaction.TxId, signature));
+            var key = CryptoFactory.GetKey(pubKey, algorithm);
+            var alg = CryptoFactory.GetSignAlgorithm(key, algorithm);
+            stack.Push(alg.Verify(stack.Transaction.TxId, signature));
             return null;
         }
 
@@ -39,9 +45,10 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             return Verify(ref stack);
         }
 
-        [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 3)]
+        [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 4)]
         public static ExecutionResult? CheckMultiSig(ref ExecutionStack stack)
         {
+            var algorithm = (Algorithm) stack.PopByte();
             int amount = stack.PopShort();
             if (stack.Count < amount) return ExecutionResult.INVALID_STACK;
             var pubKeys = stack.PopRange(amount);
@@ -49,7 +56,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             int signatureCount = stack.PopShort();
             if (stack.Count < signatureCount) return ExecutionResult.INVALID_STACK;
             var signatures = stack.PopRange(signatureCount);
-
+            
             if (signatureCount < minValidAmount)
             {
                 stack.Push(false);
@@ -59,14 +66,25 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             var transactionHash = stack.Transaction.TxId;
 
             var results = pubKeys.ToDictionary(x => x, x => false);
+            
             foreach (var x in results.Keys.ToList())
             {
-                var rsa = new CryptoRsa(new RsaKey(x));
-                foreach (var sig in signatures)
-                    if (rsa.Verify(transactionHash, sig))
+                if(results.Count(k => k.Value) >= minValidAmount)
+                    break;
+                
+                var key = CryptoFactory.GetKey(x, algorithm);
+                var alg = CryptoFactory.GetSignAlgorithm(key, algorithm);
+                
+                for (int i = 0; i < signatures.Count; i++)
+                {
+                    if (alg.Verify(transactionHash, signatures[i]))
+                    {
+                        signatures.Remove(signatures[i]);
                         results[x] = true;
+                        break;
+                    }
+                }
             }
-            
             
             stack.Push(results.Count(x => x.Value) >= minValidAmount);
             return null;

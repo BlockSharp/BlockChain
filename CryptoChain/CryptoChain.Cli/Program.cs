@@ -1,104 +1,129 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
-using System.Text.Json;
+using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
+using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Block;
+using CryptoChain.Core.Cryptography;
+using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.ECC;
+using CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Cryptography.Hashing;
 using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions;
 using CryptoChain.Core.Transactions.Data;
 using CryptoChain.Core.Transactions.Scripting;
+using CryptoChain.Core.Transactions.Scripting.Interpreter;
 
 namespace CryptoChain.Cli
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            //Full blockchain process
             
-            Transaction coinBase1 = Transaction.CoinBase(new Script(), 1, 50);
-            Transaction coinBase2 = Transaction.CoinBase(new Script(), 2, 50);
-            Transaction coinBase3 = Transaction.CoinBase(new Script(), 3, 50);
-            Transaction coinBase4 = Transaction.CoinBase(new Script(), 4, 50);
-            Transaction coinBase5 = Transaction.CoinBase(new Script(), 5, 50);
-            Transaction coinBase6 = Transaction.CoinBase(new Script(), 6, 50);
-            Transaction coinBase7 = Transaction.CoinBase(new Script(), 7, 50);
-            Transaction coinBase8 = Transaction.CoinBase(new Script(), 8, 50);
+            //Sender
+            var rsaKey = new RsaKey(512);
+            var rsa = new CryptoRsa(rsaKey);
+            var eccKey = new EccKey(Curve.Secp251K1);
+            var ecdsa = new CryptoECDSA(eccKey);
+            
+            var coinbaseOut = ScriptBuilder.Lock_P2PKH(eccKey.PublicKey, Algorithm.ECDSA);
+            var coinbase = Transaction.CoinBase(coinbaseOut, 0, 100);
+            var anotherUnusedCoinbase = Transaction.CoinBase(coinbaseOut, 1, 150);
 
-            MerkleTree.Node n1 = new MerkleTree.Node(coinBase1.TxId);
-            MerkleTree.Node n2 = new MerkleTree.Node(coinBase2.TxId);
-            MerkleTree.Node n3 = new MerkleTree.Node(coinBase3.TxId);
-            MerkleTree.Node n4 = new MerkleTree.Node(coinBase4.TxId);
-            MerkleTree.Node n5 = new MerkleTree.Node(coinBase5.TxId);
-            MerkleTree.Node n6 = new MerkleTree.Node(coinBase6.TxId);
-            MerkleTree.Node n7 = new MerkleTree.Node(coinBase7.TxId);
-            MerkleTree.Node n8 = new MerkleTree.Node(coinBase8.TxId);
+            var coinbaseIn = ScriptBuilder.Unlock_P2PKH(eccKey.PublicKey, ecdsa.Sign(coinbase.TxId));
+            var secondOut = ScriptBuilder.Lock_P2PK(rsaKey.PublicKey, Algorithm.RSA);
+            var second = new Transaction() {
+                Inputs = new List<TxInput> {
+                    new TxInput(coinbase.TxId, 0, coinbaseIn)
+                },
+                Outputs = new List<TxOutput> {
+                    new TxOutput(100, secondOut)
+                }
+            };
             
-            /*Console.WriteLine("1 - 8:");
-            Console.WriteLine(Convert.ToBase64String(n1.Hash));
-            Console.WriteLine(Convert.ToBase64String(n2.Hash));
-            Console.WriteLine(Convert.ToBase64String(n3.Hash));
-            Console.WriteLine(Convert.ToBase64String(n4.Hash));
-            Console.WriteLine(Convert.ToBase64String(n5.Hash));
-            Console.WriteLine(Convert.ToBase64String(n6.Hash));
-            Console.WriteLine(Convert.ToBase64String(n7.Hash));
-            Console.WriteLine(Convert.ToBase64String(n8.Hash));*/
-            
-            
-            MerkleTree.Node n12 = new MerkleTree.Node(n1, n2);
-            MerkleTree.Node n34 = new MerkleTree.Node(n3, n4);
-            MerkleTree.Node n56 = new MerkleTree.Node(n5, n6);
-            MerkleTree.Node n78 = new MerkleTree.Node(n7, n8);
-            
-            /*Console.WriteLine("12 - 78:");
-            Console.WriteLine(Convert.ToBase64String(n12.Hash));
-            Console.WriteLine(Convert.ToBase64String(n34.Hash));
-            Console.WriteLine(Convert.ToBase64String(n56.Hash));
-            Console.WriteLine(Convert.ToBase64String(n78.Hash));*/
+            //Validate that script is working correctly. Clone must occur because else the scripts are emptied
+            var interpreter = new ScriptInterpreter();
+            Debug.Assert(interpreter.Execute(ref coinbase, coinbaseIn.Clone(), coinbaseOut.Clone()) == ExecutionResult.SUCCESS);
 
-            MerkleTree.Node n1234 = new MerkleTree.Node(n12, n34);
-            MerkleTree.Node n5678 = new MerkleTree.Node(n56, n78);
+            //Create transaction list
+            var transactions = new TransactionList {anotherUnusedCoinbase, coinbase, second};
             
-            /*Console.WriteLine("1234 & 5678:");
-            Console.WriteLine(Convert.ToBase64String(n1234.Hash));
-            Console.WriteLine(Convert.ToBase64String(n5678.Hash));*/
+            //Building a tree (just for fun, check if the root is correct)
+            var cbIdx = transactions.IndexOf(coinbase);
+            var tree = new MerkleTree(transactions);
+            var proof = tree.GetProof(cbIdx);
+            
+            Console.WriteLine("Transactions: ");
+            foreach (var t in transactions)
+                Console.WriteLine(t.TxId.ToHexString());
+            Console.WriteLine($"Proof for transaction coinbase ({coinbase.TxId.ToHexString()}):");
+            while (proof.Any())
+                Console.WriteLine(proof.Peek().hash.ToHexString() + " "+ proof.Dequeue().side);
 
-            MerkleTree.Node n12345678 = new MerkleTree.Node(n1234, n5678);
-            /*Console.WriteLine("12345678:");
-            Console.WriteLine(Convert.ToBase64String(n12345678.Hash));*/
+            proof = tree.GetProof(cbIdx);
+            Debug.Assert(tree.ValidateInclusionProof(coinbase.TxId, proof));
+            proof = tree.GetProof(cbIdx);
+            
+            //And check if it is correct
+            Debug.Assert(tree.MerkleRoot.SequenceEqual(transactions.MerkleRoot));
 
-            var tl = new TransactionList() {coinBase1, coinBase2, coinBase3, coinBase4, coinBase5, coinBase6, coinBase7, coinBase8};
-            //Console.WriteLine(Convert.ToBase64String(tl.MerkleRoot));
+            //Packing transactions into block!
+            var target = new Target(32);
+            var block = await Miner.MineBlock(transactions, new byte[32], target);
+
+            Debug.Assert(block != null, nameof(block) + " != null");
+            Console.WriteLine("\n\n");
+            Console.WriteLine(block.ToString());
+
+            /*
+            //https://en.bitcoin.it/wiki/List_of_address_prefixes
+            //see length
             
 
-            var tree = new MerkleTree(tl);
-            //Console.WriteLine(Convert.ToBase64String(tree.Root.Hash));
-            
-            Console.WriteLine(tree.Root.LeafCount);
-            Console.WriteLine(tree.Root.Count);
+            List<string> res = new List<string>(255);
 
-            Console.WriteLine("\n");
+            for (int i = 0; i < byte.MaxValue + 1; i++)
+            {
+                for (int j = 0; j < byte.MaxValue + 1; j++)
+                {
+                    res.Add(TestAddress(64, (byte)i, (byte)j));
+                }
 
-            
-            Console.WriteLine("Checking: "+Convert.ToBase64String(coinBase3.TxId));
+                char t = res.First()[0];
+                if(res.All(x => x.StartsWith(t)))
+                    Console.WriteLine($"prefix {i} starts with {t}");
+                
+                res.Clear();
+            }*/
+        }
 
-            Console.WriteLine("");
+        static string TestAddress(int count, byte prefix = 0, byte leading = 0)
+        {
+            byte[] buffer = new byte[1 + count + 4];
+            buffer[0] = prefix;
+            var data = FillRandom(count, leading);
+            data.CopyTo(buffer, 1);
+            var checksum = new Checksum(data, 4);
+            checksum.Value.CopyTo(buffer, 1 + count);
+            return Base58.Encode(buffer);
+        }
 
-            var options = new JsonSerializerOptions {Converters = {new MerkleProofQueueConverter()}};
-            
-            var test = tree.GetProof(5);
-            var json = JsonSerializer.Serialize(test, options);
-            
-            Console.WriteLine(test.Count);
-            
-            Console.WriteLine(json);
-
-            var obj = JsonSerializer.Deserialize<Queue<(byte[], bool)>>(json, options);
-
-
-            MerkleTree newTree = new MerkleTree(tree.MerkleRoot);
-            
-            Console.WriteLine(newTree.ValidateInclusionProof(coinBase6.TxId, obj));
-            
+        static byte[] FillRandom(int count, byte leading = 0)
+        {
+            byte[] buffer = new byte[count];
+            using var rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(buffer);
+            buffer[0] = leading;
+            return buffer;
         }
     }
 }

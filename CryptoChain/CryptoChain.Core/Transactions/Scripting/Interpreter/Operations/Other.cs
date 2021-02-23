@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
@@ -44,5 +45,13 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             var unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
             stack.Push(unixTimestamp);
         }
+
+        [OpCode(Opcode = Opcode.ALG_RSA)]
+        public static void SetAlgorithmRSA(ref ExecutionStack stack)
+            => stack.Push((byte)Algorithm.RSA);
+        
+        [OpCode(Opcode = Opcode.ALG_ECDSA)]
+        public static void SetAlgorithmECDSA(ref ExecutionStack stack)
+            => stack.Push((byte)Algorithm.ECDSA);
     }
 }

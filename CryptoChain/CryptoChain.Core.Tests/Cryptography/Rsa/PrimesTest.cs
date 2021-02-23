@@ -1,6 +1,7 @@
 using System.Numerics;
 using CryptoChain.Core.Cryptography;
-using CryptoChain.Core.Cryptography.RSA;
+using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using NUnit.Framework;
 
 namespace CryptoChain.Core.Tests.Cryptography.Rsa

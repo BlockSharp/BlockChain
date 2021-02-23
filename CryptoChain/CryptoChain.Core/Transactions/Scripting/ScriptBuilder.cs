@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Hashing;
 
 namespace CryptoChain.Core.Transactions.Scripting
@@ -39,11 +40,13 @@ namespace CryptoChain.Core.Transactions.Scripting
         /// Create a locking pay to public key script
         /// </summary>
         /// <param name="publicKey">The public key</param>
+        /// <param name="algorithm">Indicate the algorithm used</param>
         /// <returns>P2PK Locking script</returns>
-        public static IScript Lock_P2PK(byte[] publicKey)
+        public static IScript Lock_P2PK(byte[] publicKey, Algorithm algorithm)
         {
             var script = new ScriptBuilder();
             script.PushData(publicKey);
+            script.Add((Opcode)(130 + algorithm)); //Store used algorithm in script
             script.Add(Opcode.CHECKSIG);
             return script;
         }
@@ -64,13 +67,14 @@ namespace CryptoChain.Core.Transactions.Scripting
         /// Create a locking pay to public key hash script
         /// </summary>
         /// <param name="publicKey">The public key to be hashed</param>
+        /// <param name="algorithm">Indicate the algorithm used</param>
         /// <returns>The locking P2PKH script</returns>
-        public static IScript Lock_P2PKH(byte[] publicKey)
+        public static IScript Lock_P2PKH(byte[] publicKey, Algorithm algorithm)
         {
             var script = new ScriptBuilder();
             script.Add(Opcode.DUP, Opcode.HASH160);
             script.PushData(Cryptography.Hashing.Hash.HASH_160(publicKey));
-            script.Add(Opcode.EQ_VERIFY, Opcode.CHECKSIG);
+            script.Add(Opcode.EQ_VERIFY, (Opcode)(130 + algorithm), Opcode.CHECKSIG);
             return script;
         }
         
@@ -93,8 +97,9 @@ namespace CryptoChain.Core.Transactions.Scripting
         /// </summary>
         /// <param name="requiredSignatureCount">The minimum amount of signatures to be provided to unlock this script</param>
         /// <param name="publicKeys">The public keys</param>
+        /// <param name="algorithm">The algorithm used</param>
         /// <returns>A P2MS locking script</returns>
-        public static IScript Lock_P2MS(byte requiredSignatureCount, params byte[][] publicKeys)
+        public static IScript Lock_P2MS(byte requiredSignatureCount, Algorithm algorithm, params byte[][] publicKeys)
         {
             if(publicKeys.Length > 16)
                 throw new ArgumentException("The maximum amount of pubKeys for a P2MS script is 16");
@@ -108,7 +113,8 @@ namespace CryptoChain.Core.Transactions.Scripting
                 script.PushData(pk);
             
             script.Add((Opcode)(publicKeys.Length + 1)); //OP_x
-            script.Add(Opcode.CHECKMULTISIG);
+            script.Add((Opcode)(130 + algorithm)); //Store used algorithm in script
+            script.Add(Opcode.CHECKMULTISIG);;
             return script;
         }
 
@@ -155,6 +161,19 @@ namespace CryptoChain.Core.Transactions.Scripting
             var script = new ScriptBuilder();
             script.PushData(s.Serialize());
             return script;
+        }
+
+        /// <summary>
+        /// Create a effective NULL_DATA script
+        /// </summary>
+        /// <param name="data">The data to be stored in the script</param>
+        /// <returns>A NULL_DATA script</returns>
+        public static IScript NullData(byte[] data)
+        {
+            var s = new ScriptBuilder();
+            s.Add(Opcode.RETURN);
+            s.PushData(data);
+            return s;
         }
     }
 }

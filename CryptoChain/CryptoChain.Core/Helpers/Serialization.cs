@@ -10,7 +10,7 @@ namespace CryptoChain.Core.Helpers
     {
         /// <summary>
         /// Serializes ISerializable add adds it to a buffer
-        /// REMEMBER: If you are using withLength, dont forget to adopt your buffer to that! (4 bytes extra)
+        /// REMEMBER: If you are using withLength, dont forget to adapt your buffer to that! (4 bytes extra)
         /// </summary>
         /// <param name="buffer">The buffer</param>
         /// <param name="s">The serializable to be serialized</param>
@@ -91,7 +91,16 @@ namespace CryptoChain.Core.Helpers
                 yield return result;
             }
         }
-        
+
+        /// <summary>
+        /// Extension to convert byte[] to hex string
+        /// </summary>
+        /// <param name="bytes">The bytes to be converted</param>
+        /// <param name="withDashes">Indicate if you want to include the dashes between the byte pairs</param>
+        /// <returns>hex string</returns>
+        public static string ToHexString(this byte[] bytes, bool withDashes = false)
+            => withDashes ? BitConverter.ToString(bytes) : BitConverter.ToString(bytes).Replace("-", "");
+
         /// <summary>
         /// Converts BigInteger into inversed byte array
         /// </summary>

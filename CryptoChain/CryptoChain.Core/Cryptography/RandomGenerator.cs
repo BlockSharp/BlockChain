@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Security.Cryptography;
 
 namespace CryptoChain.Core.Cryptography
@@ -8,10 +9,10 @@ namespace CryptoChain.Core.Cryptography
     /// </summary>
     public class RandomGenerator
     {
-        private Random _rnd;
-        private Random _rnd2;
+        private readonly Random _rnd;
+        private readonly Random _rnd2;
         public byte[] Seed { get; private set; }
-        private byte[] _data;
+        private readonly byte[] _data;
         private uint _nextSkip;
         public uint Iterations { get; private set; }
         public bool Active { get; set; }
@@ -22,7 +23,7 @@ namespace CryptoChain.Core.Cryptography
         /// Create a new instance of this semirandom number generator
         /// </summary>
         /// <param name="seed">The seed to make it not fully random</param>
-        public RandomGenerator(byte[] seed = null)
+        public RandomGenerator(byte[]? seed = null)
         {
             if (seed == null)
             {
@@ -84,13 +85,44 @@ namespace CryptoChain.Core.Cryptography
         /// Get semirandom bytes from the generator
         /// </summary>
         /// <param name="count">The amount of bytes you want</param>
+        /// <param name="iterations">Amount of iterations for the hash algorithm that generates the bytes</param>
         /// <returns>A byte array</returns>
-        public byte[] GetBytes(int count)
+        public byte[] GetBytes(int count, int iterations = 1)
         {
-            Iterations++;
-            var randomData = GetData();
-            using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, 1);
-            return rfc.GetBytes(count);
+            if (Active)
+            {
+                Iterations++;
+                var randomData = GetData();
+                using var rfc = new Rfc2898DeriveBytes(randomData.Item1, randomData.Item2, iterations);
+                return rfc.GetBytes(count);
+            }
+
+            //If not active, use RNG for strong cryptography. Not active = NOT using seed!
+            using var rng = new RNGCryptoServiceProvider();
+            byte[] buffer = new byte[count];
+            rng.GetBytes(buffer);
+            return buffer;
+        }
+        
+        /// <summary>
+        /// Get random number within range
+        /// </summary>
+        /// <param name="min">minimum value</param>
+        /// <param name="max">maximum value</param>
+        /// <returns>random BigInteger</returns>
+        public BigInteger RandomInRange(BigInteger min, BigInteger max)
+        {
+            var bytes = new byte[max.GetByteCount()];
+            while (true)
+            {
+                GetBytes(bytes);
+                
+                bytes[^1] &= 0x7F; // force sign bit to positive
+                bytes[0] |= 1; // force last bit to 1
+
+                var random = new BigInteger(bytes);
+                if (random <= max && random >= min) return random;
+            }
         }
     }
 }

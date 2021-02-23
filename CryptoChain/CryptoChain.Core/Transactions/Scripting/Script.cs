@@ -22,7 +22,7 @@ namespace CryptoChain.Core.Transactions.Scripting
                 Add(s);
         }
         
-        public byte[] Serialize() => ToArray();
+        public byte[] Serialize() => base.ToArray();
         public Opcode Next() => (Opcode)Dequeue();
         public byte NextByte() => Dequeue();
 
@@ -55,8 +55,11 @@ namespace CryptoChain.Core.Transactions.Scripting
                 Add(b);
         }
 
+        public IScript Clone()
+            => new Script(Serialize());
+        
         public byte[] Hash()
-            => Cryptography.Hashing.Hash.HASH_160(this.Serialize());
+            => Cryptography.Hashing.Hash.HASH_160(Serialize());
 
         public override bool Equals(object? obj)
         {

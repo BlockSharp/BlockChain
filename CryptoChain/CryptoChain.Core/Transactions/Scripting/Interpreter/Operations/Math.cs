@@ -66,10 +66,5 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             stack.Push(stack.PopShort() == stack.PopShort());
             return Verification.Verify(ref stack);
         }
-
-        public static int Floor(object sqrt)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -1,88 +1,108 @@
-/* https://en.bitcoin.it/wiki/Block
- *
- * [BlockHeader]            84 bytes
- * [BlockData]              * bytes
- * [BlockLength]            4 bytes
- */
-
 using System;
 using System.IO;
-using System.Security.Cryptography;
+using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Helpers;
+using CryptoChain.Core.Transactions;
 
 namespace CryptoChain.Core.Block
 {
-    public class Block<T> where T : IBlockData, new()
+    /// <summary>
+    /// The Block. Note that a block won't be generated using a constructor but can just be created
+    /// using a Miner
+    /// </summary>
+    public class Block : ISerializable
     {
+        public int Length => Header.Length + Data.Length + 1 + 4;
+        
+        public BlockDataIdentifier Type { get; }
+        public BlockHeader Header { get; }
+        public int DataLength { get; }
+        public byte[] Data { get; }
+        public byte[] Hash => Header.Hash;
+
+        private TransactionList? _transactions;
+        
         /// <summary>
-        /// Contains all the data of this block
+        /// Get list of transactions from block
         /// </summary>
-        private readonly byte[] _blockData;
-        public byte[] ToArray() => _blockData;
-
-        /// <summary> (84 bytes)
-        /// The blockHeader of this block
-        /// See BlockHeader for more detail
-        /// </summary>
-        public byte[] BlockHeader => _blockData[..CryptoChain.Core.Block.BlockHeader.Size];
-        public BlockHeader GetBlockHeader() => new BlockHeader(BlockHeader);
-
-        /// <summary> (x bytes)
-        /// The current data of this block
-        /// </summary>
-        public byte[] Data => _blockData[CryptoChain.Core.Block.BlockHeader.Size..^4];
-        public T GetData()
+        /// <exception cref="ArgumentException">Throws if the block does not contain transaction data</exception>
+        public TransactionList Transactions
         {
-            var data = new T();
-            data.FromArray(Data);
-            return data;
-        }
-
-        /// <summary> (4 bytes)
-        /// The current size of this block
-        /// </summary>
-        public byte[] Size => _blockData[^4..];
-        public int GetSize() => BitConverter.ToInt32(Size);
-
-        /// <summary>
-        /// Construct(Deserialize) block from a byte[]
-        /// </summary>
-        /// <param name="blockData">byte[] of a block</param>
-        public Block(byte[] blockData)
-        {
-            if (blockData == null || blockData.Length < CryptoChain.Core.Block.BlockHeader.Size + 4)
-                throw new InvalidDataException("Invalid data size");
-            _blockData = blockData;
+            get
+            {
+                if (Type != BlockDataIdentifier.TRANSACTIONS)
+                    throw new ArgumentException("Data does not contain transactions");
+                
+                if (_transactions == null)
+                    _transactions = new TransactionList(Data);
+                return _transactions;
+            }
         }
 
         /// <summary>
-        /// Create a new block
+        /// Create a new instance of a Block. This function is intended to be used by the Miner
         /// </summary>
-        /// <param name="hashPrevBlock">Hash from previous block</param>
-        /// <param name="data">Data of this block</param>
-        /// <param name="target">Target of this block, will be saved as bits in blockheader</param>
-        /// <param name="sha256">sha256 instance to create hash of blockData</param>
-        /// <returns>New instance of a Block</returns>
-        public static Block<TD> Create<TD>(byte[] hashPrevBlock, TD data, Target target, SHA256 sha256)
-            where TD : IBlockData, new()
-            => new Block<TD>(CryptoChain.Core.Block.BlockHeader.Create(hashPrevBlock, data, target, sha256), data);
-        public Block(BlockHeader header, T data) : this(header.ToArray(), data.ToArray()) { }
-        /// <summary>
-        /// Create a new block
-        /// </summary>
-        /// <param name="blockHeader">blockHeader of this block</param>
-        /// <param name="data">byte[] of data to be saved in block</param>
-        public Block(byte[] blockHeader, byte[] data)
+        /// <param name="data">The block data</param>
+        /// <param name="header">The block header</param>
+        /// <param name="type">The block data type</param>
+        public Block(byte[] data, BlockHeader header, BlockDataIdentifier type)
         {
-            if(blockHeader == null || blockHeader.Length != CryptoChain.Core.Block.BlockHeader.Size)
-                throw new InvalidDataException("blockHeader has an invalid size");
-            if(data == null) throw new NullReferenceException("Data is null");
-            
-            _blockData = new byte[CryptoChain.Core.Block.BlockHeader.Size + data.Length + 4];
-            Buffer.BlockCopy(blockHeader, 0, _blockData, 0, CryptoChain.Core.Block.BlockHeader.Size); //Write header into block
-            Buffer.BlockCopy(data, 0, _blockData, CryptoChain.Core.Block.BlockHeader.Size, data.Length); //Write data into block
-            Buffer.BlockCopy(BitConverter.GetBytes(_blockData.Length), 0, _blockData,
-                CryptoChain.Core.Block.BlockHeader.Size + data.Length, 4); //Write size into block
+            Data = data;
+            DataLength = data.Length;
+            Header = header;
+            Type = type;
+        }
+        
+        /// <summary>
+        /// Deserialize a block
+        /// </summary>
+        /// <param name="serialized">The serialized block</param>
+        public Block(byte[] serialized)
+        {
+            Type = (BlockDataIdentifier)serialized[0];
+            int idx = 1;
+            DataLength = BitConverter.ToInt32(serialized, idx);
+            idx += 4;
+            Header = new BlockHeader(Serialization.FromBuffer(serialized, idx, false, serialized.Length - DataLength));
+            idx += (serialized.Length - DataLength) - idx;
+            Data = Serialization.FromBuffer(serialized, idx, false);
+        }
+
+        /// <summary>
+        /// Serialize a block to a byte[]
+        /// </summary>
+        /// <returns>byte[]</returns>
+        public byte[] Serialize()
+        {
+            byte[] buffer = new byte[Length];
+            buffer[0] = (byte)Type;
+            int idx = 1;
+            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, buffer, idx, 4);
+            idx += 4;
+            buffer.AddSerializable(Header, idx, false);
+            idx += Header.Length;
+            Buffer.BlockCopy(Data, 0, buffer, idx, DataLength);
+            return buffer;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("============================= Block ============================");
+            sb.AppendLine("Type: " + Type);
+            sb.AppendLine("DataLength: " + DataLength);
+            sb.AppendLine("Hash/block ID: " + Hash.ToHexString());
+            sb.AppendLine(Header.ToString());
+            if (Type == BlockDataIdentifier.TRANSACTIONS)
+            {
+                sb.AppendLine("Data (TransactionList): ");
+                sb.AppendLine(Transactions.ToString());
+            }
+            else
+                sb.AppendLine("Data (RAW): " + Convert.ToHexString(Data));
+            return sb.ToString();
         }
     }
 }

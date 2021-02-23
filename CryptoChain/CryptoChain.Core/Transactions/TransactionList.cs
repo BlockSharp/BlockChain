@@ -1,27 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography.Hashing;
 using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Transactions
 {
-    public class TransactionList : List<Transaction>, ISerializable, IBlockData
+    /// <summary>
+    /// A list of all transactions in a block. This is how the transactions are stored in a block
+    /// </summary>
+    public class TransactionList : List<Transaction>, ISerializable
     {
         public int TransactionCount { get; private set; }
         public int Length => this.Sum(x => x.Length + 4) + 4;
 
         private byte[]? _merkleRoot;
 
+        /// <summary>
+        /// Get the merkle root from all txIds of all transactions in the list
+        /// </summary>
         public byte[] MerkleRoot
         {
             get
             {
                 if (_merkleRoot == null)
                 {
-                    Queue<byte[]> txIds = new Queue<byte[]>(this.Select(x => x.TxId));
-                    _merkleRoot =  GenerateMerkleRoot(txIds);
+                    Queue<byte[]> txIds = new(this.Select(x => x.TxId));
+                    _merkleRoot = GenerateMerkleRoot(txIds);
                 }
                 
                 return _merkleRoot;
@@ -30,9 +37,18 @@ namespace CryptoChain.Core.Transactions
 
         public TransactionList() {}
 
+        /// <summary>
+        /// Deserialize transactionList from bytes
+        /// </summary>
+        /// <param name="serialized">The serialized TransactionList</param>
         public TransactionList(byte[] serialized)
-            => FromArray(serialized);
-        
+        {
+            TransactionCount = BitConverter.ToInt32(serialized);
+            var items = Serialization.MultipleFromBuffer(serialized, 4).ToList();
+            foreach (var i in items)
+                Add(new Transaction(i));
+        }
+
         public byte[] Serialize()
         {
             TransactionCount = Count;
@@ -53,20 +69,11 @@ namespace CryptoChain.Core.Transactions
             var x = (TransactionList) obj;
             return x.Length == Length && x.SequenceEqual(this);
         }
-
-        public new byte[] ToArray()
-            => Serialize();
-
-        public void FromArray(byte[] data)
-        {
-            TransactionCount = BitConverter.ToInt32(data);
-            var items = Serialization.MultipleFromBuffer(data, 4).ToList();
-            foreach (var i in items)
-                Add(new Transaction(i));
-        }
-
+        
         /// <summary>
         /// Generate the merkle root from all transactions in this list
+        /// Yes, this does practically the same as the MerkleTree class. But this is more efficient than building
+        /// a new tree and hashing the root.
         /// </summary>
         /// <param name="txIds">The TxIds to be hashed into a merkle root</param>
         /// <returns>A merkle root (recursive)</returns>
@@ -89,6 +96,15 @@ namespace CryptoChain.Core.Transactions
             }
             
             return GenerateMerkleRoot(hashes);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("===================== Transaction List ====================");
+            foreach (var t in this)
+                sb.AppendLine(t.ToString());
+            return sb.ToString();
         }
     }
 }
