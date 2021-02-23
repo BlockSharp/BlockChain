@@ -114,7 +114,7 @@ namespace CryptoChain.Core.Transactions.Scripting
             
             script.Add((Opcode)(publicKeys.Length + 1)); //OP_x
             script.Add((Opcode)(130 + algorithm)); //Store used algorithm in script
-            script.Add(Opcode.CHECKMULTISIG);
+            script.Add(Opcode.CHECKMULTISIG);;
             return script;
         }
 

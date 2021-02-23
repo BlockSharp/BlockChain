@@ -56,7 +56,7 @@ namespace CryptoChain.Core.Transactions.Scripting
         }
 
         public byte[] Hash()
-            => Cryptography.Hashing.Hash.HASH_160(this.Serialize());
+            => Cryptography.Hashing.Hash.HASH_160(Serialize());
 
         public override bool Equals(object? obj)
         {

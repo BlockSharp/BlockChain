@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
@@ -54,7 +56,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             int signatureCount = stack.PopShort();
             if (stack.Count < signatureCount) return ExecutionResult.INVALID_STACK;
             var signatures = stack.PopRange(signatureCount);
-
+            
             if (signatureCount < minValidAmount)
             {
                 stack.Push(false);
@@ -64,15 +66,25 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             var transactionHash = stack.Transaction.TxId;
 
             var results = pubKeys.ToDictionary(x => x, x => false);
+            
             foreach (var x in results.Keys.ToList())
             {
+                if(results.Count(k => k.Value) >= minValidAmount)
+                    break;
+                
                 var key = CryptoFactory.GetKey(x, algorithm);
                 var alg = CryptoFactory.GetSignAlgorithm(key, algorithm);
-                foreach (var sig in signatures)
-                    if (alg.Verify(transactionHash, sig))
+                
+                for (int i = 0; i < signatures.Count; i++)
+                {
+                    if (alg.Verify(transactionHash, signatures[i]))
+                    {
+                        signatures.Remove(signatures[i]);
                         results[x] = true;
+                        break;
+                    }
+                }
             }
-            
             
             stack.Push(results.Count(x => x.Value) >= minValidAmount);
             return null;

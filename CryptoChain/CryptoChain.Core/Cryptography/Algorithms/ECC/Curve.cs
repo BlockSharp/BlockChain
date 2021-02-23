@@ -71,12 +71,12 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             2, "1.2.840.10045.3.1.7", 256
         );
 
-        public static Curve GetById(short id)
+        public static Curve GetById(byte id)
             => id switch
             {
                 1 => Secp251K1,
                 2 => Secp251R1,
-                _ => throw new ArgumentException("Unknown curve")
+                _ => throw new ArgumentException("Unknown curve: "+id)
             };
 
     }
