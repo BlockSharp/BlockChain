@@ -13,45 +13,12 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public BigInteger InverseMod(BigInteger k, BigInteger p)
         {
             if (k ==0)
-                throw new DivideByZeroException("k");
+                throw new DivideByZeroException("Can't divide by zero");
 
             if (k < 0)
                 return p - InverseMod(-k, p);
 
-            BigInteger s = 0, oldS = 1;
-            BigInteger r = p, oldR = k;
-
-            while (r != 0)
-            {
-                BigInteger quotient = oldR / r;
-
-                BigInteger prov = r;
-                r = oldR - quotient * prov;
-                oldR = prov;
-
-                prov = s;
-                s = oldS - quotient * prov;
-                oldS = prov;
-            }
-
-            BigInteger gcd = oldR;
-            BigInteger x = oldS;
-
-            if (gcd != 1)
-            {
-                throw new NotSupportedException($"gcd != 1, {gcd}");
-            }
-
-
-            BigInteger modularKxp = Modular(k*x, p);
-            if (modularKxp != 1)
-            {
-                throw new NotSupportedException($"(k * x) % p != 1, {modularKxp}");
-            }
-
-            var result = Modular(x, p);
-
-            return result;
+            return Mathematics.ModInverse(k, p);
         }
 
         public Point Add(Point point1, Point point2)
@@ -145,12 +112,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
         public BigInteger Modular(BigInteger k, BigInteger p)
         {
-            BigInteger reminder = k % p;
-
-            if (reminder < 0)
-                reminder += p;
-
-            return reminder;
+            BigInteger r = k % p;
+            return r < 0 ? r + p : r;
         }
     }
 }

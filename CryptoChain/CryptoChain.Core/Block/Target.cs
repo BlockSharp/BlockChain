@@ -33,6 +33,21 @@ namespace CryptoChain.Core.Block
         }
 
         /// <summary>
+        /// Create a new target. How lower, how more difficult. For readability, please enter your numbers in hex.
+        /// The exponent is the 'index' of the target including the coefficients. 
+        /// Example: (32, 0xFF, 0x00, 0x00) equals (31, 0x00, 0xFF, 0x00) and (30, 0x00, 0x00, 0xFF)
+        /// The target will look like: 0000000000000000000000000000000000000000000000000000000000FF0000
+        /// 29 zero pairs (00), 2 from the right
+        /// The most difficult (read: nearly impossible) target will be: [3, 0x01, 0x00, 0x00]
+        /// The easiest target will be: [32, 0x00, 0x00, 0xFF]
+        /// </summary>
+        /// <param name="exponent">The exponent (size of the target in bytes, amount of zeroes - 3)</param>
+        /// <param name="c1">First byte of target</param>
+        /// <param name="c2">Second byte of target</param>
+        /// <param name="c3">Third byte of target</param>
+        public Target(byte exponent = ValueSize, byte c1 = 0xFF, byte c2 = 0xFF, byte c3 = 0xFF) : this(new byte[]{exponent, c1,c2,c3}){}
+
+        /// <summary>
         /// Convert the Target to bits
         /// Format bits: [length of target] [last byte 3] [last byte 2] [last byte of target]
         /// </summary>

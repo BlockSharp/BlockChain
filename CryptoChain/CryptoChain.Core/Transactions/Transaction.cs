@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions.Data;
@@ -128,6 +129,22 @@ namespace CryptoChain.Core.Transactions
             if (obj.GetType() != GetType()) return false;
             var x = (Transaction) obj;
             return x.TxId.SequenceEqual(TxId);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("====================== Transaction =====================");
+            sb.AppendLine("Version: " + Version.ToString("X"));
+            sb.AppendLine("TxID/Hash: " + TxId.ToHexString());
+            sb.AppendLine($"Inputs #: {TxInCount}, Outputs #: {TxOutCount}");
+            sb.AppendLine("[Inputs]");
+            foreach (var i in Inputs)
+                sb.AppendLine(i.ToString());
+            sb.AppendLine("[Outputs]");
+            foreach (var o in Outputs)
+                sb.AppendLine(o.ToString());
+            return sb.ToString();
         }
     }
 }

@@ -74,7 +74,7 @@ namespace CryptoChain.Core.Transactions
         public Queue<(byte[] hash, bool side)> GetProof(int index)
         {
             int depth = (int)Math.Ceiling(Math.Log2(Root.LeafCount));
-            Queue<bool> path = new Queue<bool>(Convert.ToString(index, 2)
+            Queue<bool> path = new (Convert.ToString(index, 2)
                 .PadLeft(depth, '0').Select(x => x == '1'));
 
             var proof = new List<(byte[], bool)>();

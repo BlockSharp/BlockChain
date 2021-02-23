@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography.Hashing;
 using CryptoChain.Core.Helpers;
@@ -27,7 +28,7 @@ namespace CryptoChain.Core.Transactions
                 if (_merkleRoot == null)
                 {
                     Queue<byte[]> txIds = new(this.Select(x => x.TxId));
-                    _merkleRoot =  GenerateMerkleRoot(txIds);
+                    _merkleRoot = GenerateMerkleRoot(txIds);
                 }
                 
                 return _merkleRoot;
@@ -71,6 +72,8 @@ namespace CryptoChain.Core.Transactions
         
         /// <summary>
         /// Generate the merkle root from all transactions in this list
+        /// Yes, this does practically the same as the MerkleTree class. But this is more efficient than building
+        /// a new tree and hashing the root.
         /// </summary>
         /// <param name="txIds">The TxIds to be hashed into a merkle root</param>
         /// <returns>A merkle root (recursive)</returns>
@@ -93,6 +96,15 @@ namespace CryptoChain.Core.Transactions
             }
             
             return GenerateMerkleRoot(hashes);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("===================== Transaction List ====================");
+            foreach (var t in this)
+                sb.AppendLine(t.ToString());
+            return sb.ToString();
         }
     }
 }

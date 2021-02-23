@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions.Scripting;
@@ -76,6 +77,16 @@ namespace CryptoChain.Core.Transactions.Data
             if (obj.GetType() != GetType()) return false;
             var x = (TxInput) obj;
             return x.Length == Length && x.VOut == VOut && x.UnlockingScript.Equals(UnlockingScript);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("============= Transaction Input =============");
+            sb.AppendLine("Selected Tx: " + TxId.ToHexString());
+            sb.AppendLine("Selected output (VOut): " + VOut);
+            sb.AppendLine($"UnlockingScript ({ScriptLength}): " + Convert.ToHexString(UnlockingScript.Serialize()));
+            return sb.ToString();
         }
     }
 }

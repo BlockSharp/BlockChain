@@ -15,6 +15,7 @@ namespace CryptoChain.Core.Abstractions
         void Add(params Opcode[] code);
         void Add(IScript s);
         void AddRange(byte[] bytes);
+        IScript Clone();
 
         byte[] Hash();
     }

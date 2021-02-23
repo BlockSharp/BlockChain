@@ -55,6 +55,9 @@ namespace CryptoChain.Core.Transactions.Scripting
                 Add(b);
         }
 
+        public IScript Clone()
+            => new Script(Serialize());
+        
         public byte[] Hash()
             => Cryptography.Hashing.Hash.HASH_160(Serialize());
 

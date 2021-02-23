@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 
@@ -7,14 +9,14 @@ namespace CryptoChain.Core.Block
 {
     public class BlockHeader : ISerializable
     {
-        public int Version { get; set; }
-        public byte[] PrevHash { get; set; }
-        public byte[] MerkleRoot { get; set; }
+        public int Version { get; }
+        public byte[] PrevHash { get; }
+        public byte[] MerkleRoot { get; }
         public DateTime Timestamp { get; set; }
-        public byte[] Bits { get; set; }
+        public byte[] Bits { get; }
         public uint Nonce { get; set; }
 
-        public Target Target => new Target(Bits);
+        public Target Target => new (Bits);
 
         private byte[]? _blockHash;
 
@@ -38,11 +40,9 @@ namespace CryptoChain.Core.Block
         /// </summary>
         /// <param name="prevHash">The hash of the previous block</param>
         /// <param name="merkleRoot">The merkle root or hash of the block data</param>
-        /// <param name="timestamp">The timestamp the block is created</param>
         /// <param name="bits">The shortened target</param>
-        /// <param name="nonce">The nonce</param>
         /// <param name="version">The block version (optional)</param>
-        public BlockHeader(byte[] prevHash, byte[] merkleRoot, DateTime timestamp, byte[] bits, uint nonce,
+        public BlockHeader(byte[] prevHash, byte[] merkleRoot, byte[] bits,
             int version = Constants.BlockVersion)
         {
             if (prevHash.Length != Constants.BlockHashLength)
@@ -57,9 +57,7 @@ namespace CryptoChain.Core.Block
             Version = version;
             PrevHash = prevHash;
             MerkleRoot = merkleRoot;
-            Timestamp = timestamp;
             Bits = bits;
-            Nonce = nonce;
         }
         
         /// <summary>
@@ -67,12 +65,10 @@ namespace CryptoChain.Core.Block
         /// </summary>
         /// <param name="prevHash">The hash of the previous block</param>
         /// <param name="merkleRoot">The merkle root or hash of the block data</param>
-        /// <param name="timestamp">The timestamp the block is created</param>
         /// <param name="target">The target</param>
-        /// <param name="nonce">The nonce</param>
         /// <param name="version">The block version (optional)</param>
-        public BlockHeader(byte[] prevHash, byte[] merkleRoot, DateTime timestamp, Target target, uint nonce,
-            int version = Constants.BlockVersion) : this(prevHash, merkleRoot, timestamp, target.ToBits(), nonce, version){}
+        public BlockHeader(byte[] prevHash, byte[] merkleRoot, Target target,
+            int version = Constants.BlockVersion) : this(prevHash, merkleRoot, target.ToBits(), version){}
         
 
         /// <summary>
@@ -112,6 +108,20 @@ namespace CryptoChain.Core.Block
             idx += 4;
             Buffer.BlockCopy(BitConverter.GetBytes(Nonce), 0, buffer, idx, 4);
             return buffer;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("  ======================= Block Header =======================  ");
+            sb.AppendLine($"  Version: {Version:X}");
+            sb.AppendLine("  Prevhash: " + PrevHash.ToHexString());
+            sb.AppendLine("  MerkeRoot: " + MerkleRoot.ToHexString());
+            sb.AppendLine("  Timestamp: " + Timestamp.ToString("dd-MM-yyyy HH:mm:ss"));
+            sb.AppendLine($"  Bits: [{string.Join(" ", Bits.Select(x => x.ToString("X"))).TrimEnd()}]");
+            sb.AppendLine("  Nonce: " + Nonce);
+            sb.AppendLine("  ============================================================  ");
+            return sb.ToString();
         }
     }
 }

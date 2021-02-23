@@ -6,13 +6,16 @@ using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Block;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Algorithms.ECC;
 using CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA;
 using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Cryptography.Hashing;
+using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions;
 using CryptoChain.Core.Transactions.Data;
 using CryptoChain.Core.Transactions.Scripting;
@@ -22,29 +25,64 @@ namespace CryptoChain.Cli
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var rsakey = new RsaKey();
-            var ecckey = new EccKey(Curve.Secp251K1);
+            //Full blockchain process
+            
+            //Sender
+            var rsaKey = new RsaKey(512);
+            var rsa = new CryptoRsa(rsaKey);
+            var eccKey = new EccKey(Curve.Secp251K1);
+            var ecdsa = new CryptoECDSA(eccKey);
+            
+            var coinbaseOut = ScriptBuilder.Lock_P2PKH(eccKey.PublicKey, Algorithm.ECDSA);
+            var coinbase = Transaction.CoinBase(coinbaseOut, 0, 100);
+            var anotherUnusedCoinbase = Transaction.CoinBase(coinbaseOut, 1, 150);
 
-            ISignAlgorithm rsa = new CryptoRsa(rsakey);
-            ISignAlgorithm ecdsa = new CryptoECDSA(ecckey);
+            var coinbaseIn = ScriptBuilder.Unlock_P2PKH(eccKey.PublicKey, ecdsa.Sign(coinbase.TxId));
+            var secondOut = ScriptBuilder.Lock_P2PK(rsaKey.PublicKey, Algorithm.RSA);
+            var second = new Transaction() {
+                Inputs = new List<TxInput> {
+                    new TxInput(coinbase.TxId, 0, coinbaseIn)
+                },
+                Outputs = new List<TxOutput> {
+                    new TxOutput(100, secondOut)
+                }
+            };
+            
+            //Validate that script is working correctly. Clone must occur because else the scripts are emptied
+            var interpreter = new ScriptInterpreter();
+            Debug.Assert(interpreter.Execute(ref coinbase, coinbaseIn.Clone(), coinbaseOut.Clone()) == ExecutionResult.SUCCESS);
 
-            byte[] data = Encoding.UTF8.GetBytes("This data will be signed in a moment");
-            byte[] signature;
+            //Create transaction list
+            var transactions = new TransactionList {anotherUnusedCoinbase, coinbase, second};
+            
+            //Building a tree (just for fun, check if the root is correct)
+            var cbIdx = transactions.IndexOf(coinbase);
+            var tree = new MerkleTree(transactions);
+            var proof = tree.GetProof(cbIdx);
+            
+            Console.WriteLine("Transactions: ");
+            foreach (var t in transactions)
+                Console.WriteLine(t.TxId.ToHexString());
+            Console.WriteLine($"Proof for transaction coinbase ({coinbase.TxId.ToHexString()}):");
+            while (proof.Any())
+                Console.WriteLine(proof.Peek().hash.ToHexString() + " "+ proof.Dequeue().side);
 
-            var sw = Stopwatch.StartNew();
-            signature = rsa.Sign(data);
-            Console.WriteLine("RSA sign: "+sw.Elapsed);
-            sw.Restart();
-            Debug.Assert(rsa.Verify(data, signature));
-            Console.WriteLine("RSA verify: "+sw.Elapsed);
-            sw.Restart();
-            signature = ecdsa.Sign(data);
-            Console.WriteLine("ECDSA sign: "+sw.Elapsed);
-            sw.Restart();
-            Debug.Assert(ecdsa.Verify(data, signature));
-            Console.WriteLine("ECDSA verify: "+sw.Elapsed);
+            proof = tree.GetProof(cbIdx);
+            Debug.Assert(tree.ValidateInclusionProof(coinbase.TxId, proof));
+            proof = tree.GetProof(cbIdx);
+            
+            //And check if it is correct
+            Debug.Assert(tree.MerkleRoot.SequenceEqual(transactions.MerkleRoot));
+
+            //Packing transactions into block!
+            var target = new Target(32);
+            var block = await Miner.MineBlock(transactions, new byte[32], target);
+
+            Debug.Assert(block != null, nameof(block) + " != null");
+            Console.WriteLine("\n\n");
+            Console.WriteLine(block.ToString());
 
             /*
             //https://en.bitcoin.it/wiki/List_of_address_prefixes
