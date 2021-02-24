@@ -1,12 +1,12 @@
 using System;
-using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 using CryptoChain.Core.Transactions;
 
-namespace CryptoChain.Core.Block
+namespace CryptoChain.Core.Blocks
 {
     /// <summary>
     /// The Block. Note that a block won't be generated using a constructor but can just be created
@@ -76,10 +76,11 @@ namespace CryptoChain.Core.Block
         /// <returns>byte[]</returns>
         public byte[] Serialize()
         {
+            Debug.Assert(DataLength == Data.Length);
             byte[] buffer = new byte[Length];
             buffer[0] = (byte)Type;
             int idx = 1;
-            Buffer.BlockCopy(BitConverter.GetBytes(Data.Length), 0, buffer, idx, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(DataLength), 0, buffer, idx, 4);
             idx += 4;
             buffer.AddSerializable(Header, idx, false);
             idx += Header.Length;
@@ -104,5 +105,8 @@ namespace CryptoChain.Core.Block
                 sb.AppendLine("Data (RAW): " + Convert.ToHexString(Data));
             return sb.ToString();
         }
+
+        public bool Equals(Block other)
+            => other.Serialize().SequenceEqual(Serialize());
     }
 }

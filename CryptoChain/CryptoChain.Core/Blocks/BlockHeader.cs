@@ -5,7 +5,7 @@ using System.Text;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Helpers;
 
-namespace CryptoChain.Core.Block
+namespace CryptoChain.Core.Blocks
 {
     public class BlockHeader : ISerializable
     {
@@ -33,7 +33,7 @@ namespace CryptoChain.Core.Block
             }
         }
         
-        public int Length => 4 + Constants.BlockHashLength + Constants.TransactionHashLength + 4 + 4 + 4;
+        public int Length => Constants.BlockHeaderLength;
         
         /// <summary>
         /// Construct a new blockHeader

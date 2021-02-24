@@ -6,6 +6,10 @@ namespace CryptoChain.Core
         public const int BlockHashLength = 32;
         public const byte TransactionVersion = 0x1;
         public const int BlockVersion = 0x1;
+        public const long MaxBlockFileSize = 2000_000; //2MB
+
+        public const int BlockHeaderLength =
+            4 + BlockHashLength + TransactionHashLength + 4 + 4 + 4;
 
         /// <summary>
         /// The minimum block dept before a coinbase transaction can be spent

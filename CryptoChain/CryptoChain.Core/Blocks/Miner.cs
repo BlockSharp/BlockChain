@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CryptoChain.Core.Cryptography.Hashing;
 using CryptoChain.Core.Transactions;
 
-namespace CryptoChain.Core.Block
+namespace CryptoChain.Core.Blocks
 {
     public static class Miner
     {
@@ -19,9 +19,9 @@ namespace CryptoChain.Core.Block
         /// <param name="token">The cancellation token</param>
         /// <param name="threadCount">The amount of threads you want to use</param>
         /// <returns>A block</returns>
-        public static async Task<Block?> MineBlock(TransactionList transactions, byte[] prevHash, Target target,
+        public static async Task<Blocks.Block?> CreateBlock(TransactionList transactions, byte[] prevHash, Target target,
             CancellationToken token = new(), int threadCount = 0)
-            => await MineBlock(new BlockHeader(prevHash, transactions.MerkleRoot, target), transactions.Serialize(),
+            => await CreateBlock(new BlockHeader(prevHash, transactions.MerkleRoot, target), transactions.Serialize(),
                 BlockDataIdentifier.TRANSACTIONS, token, threadCount);
         
         /// <summary>
@@ -33,7 +33,7 @@ namespace CryptoChain.Core.Block
         /// <param name="token">The cancellation token</param>
         /// <param name="threadCount">The amount of threads you want to use</param>
         /// <returns>A Block if the mining succeeds and isn't cancelled</returns>
-        public static async Task<Block?> MineBlock(BlockHeader header, byte[] data, BlockDataIdentifier dataType, CancellationToken token = new(),
+        public static async Task<Blocks.Block?> CreateBlock(BlockHeader header, byte[] data, BlockDataIdentifier dataType, CancellationToken token = new(),
             int threadCount = 0)
         {
             var worker = new Worker(header, threadCount);

@@ -71,7 +71,7 @@ namespace CryptoChain.Core.Transactions
         /// </summary>
         /// <param name="index">The index of the leaf you want to generate a proof for</param>
         /// <returns>A Queue with (hash, side): the siblings along the path to the leaf starting from the leaf</returns>
-        public Queue<(byte[] hash, bool side)> GetProof(int index)
+        public Queue<(byte[] hash, bool side)> GetInclusionProof(int index)
         {
             int depth = (int)Math.Ceiling(Math.Log2(Root.LeafCount));
             Queue<bool> path = new (Convert.ToString(index, 2)

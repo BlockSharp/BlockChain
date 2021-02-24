@@ -1,7 +1,8 @@
 using System;
 using System.IO;
+using System.Linq;
 
-namespace CryptoChain.Core.Block
+namespace CryptoChain.Core.Blocks
 {
     public class Target
     {
@@ -39,7 +40,7 @@ namespace CryptoChain.Core.Block
         /// The target will look like: 0000000000000000000000000000000000000000000000000000000000FF0000
         /// 29 zero pairs (00), 2 from the right
         /// The most difficult (read: nearly impossible) target will be: [3, 0x01, 0x00, 0x00]
-        /// The easiest target will be: [32, 0x00, 0x00, 0xFF]
+        /// The easiest target will be: [32, any, any, 0xFF]
         /// </summary>
         /// <param name="exponent">The exponent (size of the target in bytes, amount of zeroes - 3)</param>
         /// <param name="c1">First byte of target</param>
@@ -89,5 +90,8 @@ namespace CryptoChain.Core.Block
                     return Math.Max(i + 1, 3);
             return index;
         }
+
+        public override string ToString()
+            => new(Convert.ToHexString(Value).Reverse().ToArray());
     }
 }
