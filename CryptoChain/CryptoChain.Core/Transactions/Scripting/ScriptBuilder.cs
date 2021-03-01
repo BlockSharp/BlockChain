@@ -18,17 +18,17 @@ namespace CryptoChain.Core.Transactions.Scripting
         {
             if (bytes.Length <= 255)
             {
-                Add(Opcode.PUSHDATA_1);
+                Add(Opcode.PUSH_DATA_1);
                 Add((byte)bytes.Length);
             }
             else if(bytes.Length <= 65535)
             {
-                Add(Opcode.PUSHDATA_2);
+                Add(Opcode.PUSH_DATA_2);
                 AddRange(BitConverter.GetBytes((ushort)bytes.Length));
             }
             else
             {
-                Add(Opcode.PUSHDATA_4);
+                Add(Opcode.PUSH_DATA_4);
                 AddRange(BitConverter.GetBytes(bytes.Length));
             }
             
@@ -47,7 +47,7 @@ namespace CryptoChain.Core.Transactions.Scripting
             var script = new ScriptBuilder();
             script.PushData(publicKey);
             script.Add((Opcode)(130 + algorithm)); //Store used algorithm in script
-            script.Add(Opcode.CHECKSIG);
+            script.Add(Opcode.CHECK_SIG);
             return script;
         }
         
@@ -74,7 +74,7 @@ namespace CryptoChain.Core.Transactions.Scripting
             var script = new ScriptBuilder();
             script.Add(Opcode.DUP, Opcode.HASH160);
             script.PushData(Cryptography.Hashing.Hash.HASH_160(publicKey));
-            script.Add(Opcode.EQ_VERIFY, (Opcode)(130 + algorithm), Opcode.CHECKSIG);
+            script.Add(Opcode.EQ_VERIFY, (Opcode)(130 + algorithm), Opcode.CHECK_SIG);
             return script;
         }
         
@@ -114,7 +114,7 @@ namespace CryptoChain.Core.Transactions.Scripting
             
             script.Add((Opcode)(publicKeys.Length + 1)); //OP_x
             script.Add((Opcode)(130 + algorithm)); //Store used algorithm in script
-            script.Add(Opcode.CHECKMULTISIG);;
+            script.Add(Opcode.CHECK_MULTI_SIG);;
             return script;
         }
 

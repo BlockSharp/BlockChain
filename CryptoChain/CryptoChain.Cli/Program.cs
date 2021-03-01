@@ -7,6 +7,8 @@ using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Blocks;
 using CryptoChain.Core.Chain;
 using CryptoChain.Core.Chain.Storage;
+using CryptoChain.Core.Chain.Storage.Indexes;
+using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Algorithms.RSA;
 using CryptoChain.Core.Cryptography.Hashing;
@@ -22,6 +24,15 @@ namespace CryptoChain.CLI
     {
         public static async Task Main(string[] args)
         {
+           
+            
+            return;
+            var bi = new BlockIndexes("/home/maurict/Desktop/blocks/blocks.idx");
+            var ti = new TransactionIndexes("/home/maurict/Desktop/blocks/transactions.idx");
+            
+            
+
+            return;
             var spp = new SeededPrimePair(
                 Convert.FromBase64String("AAQAAPDTAADyDQEAUGV0cmEgaXMgZGUgYWxsZXJsaWVmc3RlIQ=="));
             var key = spp.ToRsaKey();
@@ -34,9 +45,6 @@ namespace CryptoChain.CLI
             var rsa1 = new CryptoRsa(key1);
             var rsa2 = new CryptoRsa(key2);
             
-            IBlockStore blockStore = new FileBlockStore("/home/maurict/Desktop/blocks");
-            ITransactionStore transactionStore = new TransactionStore(ref blockStore);
-            Console.WriteLine(blockStore);
             
             /*
             var cb = Transaction.CoinBase(
@@ -64,18 +72,6 @@ namespace CryptoChain.CLI
             var block3 = await Miner.CreateBlock(new TransactionList() {tx3, tx4}, block2.Hash, new Target(30));
             //await blockStore.AddBlock(block3);*/
 
-
-            var latest = await blockStore.GetBlock(blockStore.BlockHeight);
-            var latestTx = latest.Transactions[0];
-
-            var newTx = new Transaction();
-            newTx.Inputs.Add(new TxInput(latestTx.TxId, 0, ScriptBuilder.Unlock_P2PKH(key2.PublicKey, rsa2.Sign(newTx.TxId))));
-            newTx.Outputs.Add(new TxOutput(2001, new Script()));
-
-            var finished = new Transaction(newTx.Serialize());
-
-            var bc = new Blockchain(blockStore);
-            Console.WriteLine(await bc.Validate(finished));
         }
     }
 }

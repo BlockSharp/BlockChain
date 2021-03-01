@@ -18,11 +18,13 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         public Transaction Transaction { get; set; }
         public uint BlockHeight { get; }
         public Algorithm CurrentAlgorithm { get; set; }
+        public Dictionary<byte, byte[]> Variables { get; set; }
 
         public ExecutionStack(Transaction t, uint currentBlockHeight = 0)
         {
             Transaction = t;
             BlockHeight = currentBlockHeight;
+            Variables = new Dictionary<byte, byte[]>();
         }
 
         public void SetScript(ref IScript script)

@@ -52,15 +52,15 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.OP_16)]
         public static void OP_16(ref ExecutionStack stack) => stack.Push((short) 16);
 
-        [OpCode(Opcode = Opcode.PUSHDATA_1)]
+        [OpCode(Opcode = Opcode.PUSH_DATA_1)]
         public static void PushData_1(ref ExecutionStack stack)
             => stack.Push(stack.CurrentScript.NextRange(stack.CurrentScript.NextByte()));
 
-        [OpCode(Opcode = Opcode.PUSHDATA_2)]
+        [OpCode(Opcode = Opcode.PUSH_DATA_2)]
         public static void PushData_2(ref ExecutionStack stack)
             => stack.Push(stack.CurrentScript.NextRange(BitConverter.ToUInt16(stack.CurrentScript.NextRange(2))));
 
-        [OpCode(Opcode = Opcode.PUSHDATA_4)]
+        [OpCode(Opcode = Opcode.PUSH_DATA_4)]
         public static void PushData_4(ref ExecutionStack stack)
             => stack.Push(stack.CurrentScript.NextRange(BitConverter.ToInt32(stack.CurrentScript.NextRange(4))));
         

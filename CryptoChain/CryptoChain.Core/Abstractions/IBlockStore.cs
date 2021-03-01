@@ -79,6 +79,6 @@ namespace CryptoChain.Core.Abstractions
         /// </summary>
         /// <param name="hash">The hash of the block you want to delete</param>
         /// <param name="cascade">Indicates if you want to remove all dependents</param>
-        public void RemoveBlock(byte[] hash, bool cascade = true);
+        public Task RemoveBlock(byte[] hash, bool cascade = true);
     }
 }

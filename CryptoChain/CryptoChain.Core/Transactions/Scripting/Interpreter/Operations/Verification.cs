@@ -23,7 +23,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
          * This method needs at least a stack with 2 items. The first one (pubkey) 84 bytes the second (signature) 64.
          * stack: { [84], [64], ... }. Third item, before the first one, is the used algorithm
          */
-        [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.CHECK_SIG, MinLengthStack = 2)]
         public static void CheckSignature(ref ExecutionStack stack)
         {
             var pubKey = stack.Pop();
@@ -33,14 +33,14 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             stack.Push(alg.Verify(stack.Transaction.TxId, signature));
         }
 
-        [OpCode(Opcode = Opcode.CHECKSIG_VERIFY, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.CHECK_SIG_VERIFY, MinLengthStack = 2)]
         public static ExecutionResult? CheckSignature_Verify(ref ExecutionStack stack)
         {
             CheckSignature(ref stack);
             return Verify(ref stack);
         }
 
-        [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 3)]
+        [OpCode(Opcode = Opcode.CHECK_MULTI_SIG, MinLengthStack = 3)]
         public static ExecutionResult? CheckMultiSig(ref ExecutionStack stack)
         {
             int amount = stack.PopShort();
@@ -84,11 +84,11 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             return null;
         }
 
-        [OpCode(Opcode = Opcode.CHECKLOCKTIME)]
+        [OpCode(Opcode = Opcode.CHECK_LOCKTIME)]
         public static void CheckLockTime(ref ExecutionStack stack)
             => stack.Push(stack.Transaction.VerifyLockTime(stack.BlockHeight));
 
-        [OpCode(Opcode = Opcode.CHECKLOCKTIME_VERIFY)]
+        [OpCode(Opcode = Opcode.CHECK_LOCKTIME_VERIFY)]
         public static ExecutionResult? CheckLockTime_Verify(ref ExecutionStack stack)
         {
             CheckLockTime(ref stack);

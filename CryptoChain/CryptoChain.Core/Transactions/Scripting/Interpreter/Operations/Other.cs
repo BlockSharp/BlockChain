@@ -29,6 +29,12 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             stack.Push(stack.CurrentScript.Serialize());
             return ExecutionResult.EXECUTION_STOPPED;
         }
+        
+        [OpCode(Opcode = Opcode.EXIT)]
+        public static ExecutionResult? Exit(ref ExecutionStack stack)
+        {
+            return ExecutionResult.EXECUTION_STOPPED;
+        }
 
         [OpCode(Opcode = Opcode.EVAL_SCRIPT, MinLengthStack = 1)]
         public static void Evaluate(ref ExecutionStack stack)
@@ -43,6 +49,10 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             var unixTimestamp = (uint)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
             stack.Push(unixTimestamp);
         }
+
+        [OpCode(Opcode = Opcode.PUSH_BLOCK_HEIGHT)]
+        public static void PushBlockHeight(ref ExecutionStack stack)
+            => stack.Push(stack.BlockHeight);
 
         [OpCode(Opcode = Opcode.ALG_RSA)]
         public static void SetAlgorithmRsa(ref ExecutionStack stack)

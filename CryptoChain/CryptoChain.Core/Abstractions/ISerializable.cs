@@ -4,6 +4,5 @@ namespace CryptoChain.Core.Abstractions
     {
         int Length { get; }
         byte[] Serialize();
-        //T Deserialize(byte[] data);
     }
 }

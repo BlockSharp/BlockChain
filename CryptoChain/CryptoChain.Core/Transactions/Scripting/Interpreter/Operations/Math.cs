@@ -22,7 +22,6 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.DIVIDE)]
         [OpCode(Opcode = Opcode.MODULO)]
         [OpCode(Opcode = Opcode.NEGATE)]
-        [OpCode(Opcode = Opcode.SEPERATOR)]
         public static ExecutionResult? Disabled(ref ExecutionStack stack)
             => ExecutionResult.DISABLED_CODE;
 
@@ -34,22 +33,22 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         public static void Subtract(ref ExecutionStack stack)
             => stack.Push((short)(stack.PopShort() - stack.PopShort()));
 
-        [OpCode(Opcode = Opcode.LESSTHAN, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.LESS_THAN, MinLengthStack = 2)]
         public static void LessThan(ref ExecutionStack stack)
             // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() < stack.PopShort());
 
-        [OpCode(Opcode = Opcode.LESSOREQUAL, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.LESS_OR_EQ, MinLengthStack = 2)]
         public static void LessOrEqual(ref ExecutionStack stack)
             // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() <= stack.PopShort());
 
-        [OpCode(Opcode = Opcode.GREATERTHAN, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.GREATER_THAN, MinLengthStack = 2)]
         public static void GreaterThan(ref ExecutionStack stack)
             // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() > stack.PopShort());
 
-        [OpCode(Opcode = Opcode.GREATEROREQUAL, MinLengthStack = 2)]
+        [OpCode(Opcode = Opcode.GREATER_OR_EQ, MinLengthStack = 2)]
         public static void GreaterOrEqual(ref ExecutionStack stack)
             // ReSharper disable once EqualExpressionComparison
             => stack.Push(stack.PopShort() >= stack.PopShort());

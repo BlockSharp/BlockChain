@@ -25,6 +25,11 @@ namespace CryptoChain.Core.Blocks
         private TransactionList? _transactions;
         
         /// <summary>
+        /// Height in the chain where the block is stored. This must be manually set BEFORE accessing transactions
+        /// </summary>
+        public uint Height { get; set; }
+        
+        /// <summary>
         /// Get list of transactions from block
         /// </summary>
         /// <exception cref="ArgumentException">Throws if the block does not contain transaction data</exception>
@@ -34,9 +39,13 @@ namespace CryptoChain.Core.Blocks
             {
                 if (Type != BlockDataIdentifier.TRANSACTIONS)
                     throw new ArgumentException("Data does not contain transactions");
-                
+
                 if (_transactions == null)
+                {
                     _transactions = new TransactionList(Data);
+                    _transactions.ForEach(x => x.BlockHeight = Height);
+                }
+                
                 return _transactions;
             }
         }
