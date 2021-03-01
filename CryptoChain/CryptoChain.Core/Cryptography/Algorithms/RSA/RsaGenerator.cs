@@ -22,6 +22,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
         /// <returns>(prime: BigInteger, iterations: long => indicates how much rounds it took before the prime was found)</returns>
         public static (BigInteger prime, uint iterations) GeneratePrime(ref RandomGenerator rg, int bitSize = 1024, bool millerRabin = true, bool logToConsole = true)
         {
+#if !DEBUG
+            logToConsole = false;
+#endif
+            
             var primeUtils = new PrimeUtils(ref rg);
             var sw = Stopwatch.StartNew();
             uint iterations = 0;

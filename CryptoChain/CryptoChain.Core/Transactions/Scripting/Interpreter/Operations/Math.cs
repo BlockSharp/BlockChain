@@ -62,8 +62,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.EQ_VERIFY_NUM, MinLengthStack = 2)]
         public static ExecutionResult? EQ_VERIFY_NUM(ref ExecutionStack stack)
         {
-            // ReSharper disable once EqualExpressionComparison
-            stack.Push(stack.PopShort() == stack.PopShort());
+            EQ_NUM(ref stack);
             return Verification.Verify(ref stack);
         }
     }

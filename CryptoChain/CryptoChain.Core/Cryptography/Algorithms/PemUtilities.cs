@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms.ECC;
@@ -194,10 +195,11 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         /// <param name="stream"></param>
         /// <param name="value"></param>
         /// <param name="forceUnsigned"></param>
-        private static void EncodeIntegerBigEndian(BinaryWriter stream, byte[] value, bool forceUnsigned = true)
+        private static void EncodeIntegerBigEndian(BinaryWriter stream, byte[]? value, bool forceUnsigned = true)
         {
             stream.Write((byte)0x02); // INTEGER
             var prefixZeros = 0;
+            Debug.Assert(value != null, nameof(value) + " != null");
             for (var i = 0; i < value.Length; i++)
             {
                 if (value[i] != 0) break;

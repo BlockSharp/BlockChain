@@ -18,8 +18,8 @@ namespace CryptoChain.Core.Transactions.Data
         public byte[] TxId { get; set; }
         
         //The index of the selected output (in the txOut list) of the transaction this input points to
-        //This is limited to uint to decrease block size
-        public uint VOut { get; set; }
+        //This is limited to ushort to decrease memory and block size
+        public ushort VOut { get; set; }
         public int ScriptLength { get; private set; }
         public IScript UnlockingScript { get; set; }
 
@@ -29,7 +29,7 @@ namespace CryptoChain.Core.Transactions.Data
         /// <param name="transactionHash">The txID of the selected transaction</param>
         /// <param name="selectedOutput">The index of the output of the selected transaction</param>
         /// <param name="unlockScript">The script that unlocks the output</param>
-        public TxInput(byte[] transactionHash, uint selectedOutput, IScript unlockScript)
+        public TxInput(byte[] transactionHash, ushort selectedOutput, IScript unlockScript)
         {
             if (transactionHash.Length != Constants.TransactionHashLength)
                 throw new InvalidDataException("Transaction hash length must equal " + Constants.TransactionHashLength);
@@ -71,13 +71,8 @@ namespace CryptoChain.Core.Transactions.Data
             return buffer;
         }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            if (obj.GetType() != GetType()) return false;
-            var x = (TxInput) obj;
-            return x.Length == Length && x.VOut == VOut && x.UnlockingScript.Equals(UnlockingScript);
-        }
+        public bool Equals(TxInput other)
+            => other.Length == Length && other.VOut == VOut && other.UnlockingScript.Equals(UnlockingScript);
 
         public override string ToString()
         {

@@ -2,18 +2,14 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
     internal static class Logic
     {
-        [OpCode(Opcode = Opcode.EQUAL)]
-        public static ExecutionResult? Equals(ref ExecutionStack stack)
-        {
-            if (stack.Count < 2) return ExecutionResult.INVALID_STACK;
-            stack.Push(System.Linq.Enumerable.SequenceEqual(stack.Pop(), stack.Pop()));
-            return null;
-        }
+        [OpCode(Opcode = Opcode.EQUAL, MinLengthStack = 2)]
+        public static void Equals(ref ExecutionStack stack)
+            => stack.Push(System.Linq.Enumerable.SequenceEqual(stack.Pop(), stack.Pop()));
             
-        [OpCode(Opcode = Opcode.EQ_VERIFY)]
+        [OpCode(Opcode = Opcode.EQ_VERIFY, MinLengthStack = 2)]
         public static ExecutionResult? EqualVerify(ref ExecutionStack stack)
         {
-            if (Equals(ref stack) != null) stack.Push(false);
+            Equals(ref stack);
             return Verification.Verify(ref stack);
         }
 

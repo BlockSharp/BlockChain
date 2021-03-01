@@ -1,45 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Blocks;
+using CryptoChain.Core.Chain;
 using CryptoChain.Core.Chain.Storage;
-using CryptoChain.Core.Cryptography;
+using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.RSA;
+using CryptoChain.Core.Cryptography.Hashing;
 using CryptoChain.Core.Helpers;
+using CryptoChain.Core.Transactions;
+using CryptoChain.Core.Transactions.Data;
+using CryptoChain.Core.Transactions.Scripting;
+using CryptoChain.Core.Transactions.Scripting.Interpreter;
 
-namespace CryptoChain.Cli
+namespace CryptoChain.CLI
 {
     static class Program
     {
-        public async static Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            FileBlockStore store = new FileBlockStore("/home/maurict/Desktop/blocks", false);
-            await store.Index();
-            //mine some blocks and put them in the store
+            var spp = new SeededPrimePair(
+                Convert.FromBase64String("AAQAAPDTAADyDQEAUGV0cmEgaXMgZGUgYWxsZXJsaWVmc3RlIQ=="));
+            var key = spp.ToRsaKey();
+            var rsa = new CryptoRsa(key);
+            
+            return;
 
-            bool CREATE = false;
-            int AMOUNT_OF_BLOCKS = 5000;
+            var key1 = new RsaKey(512);
+            var key2 = new RsaKey(512);
+            var rsa1 = new CryptoRsa(key1);
+            var rsa2 = new CryptoRsa(key2);
+            
+            IBlockStore blockStore = new FileBlockStore("/home/maurict/Desktop/blocks");
+            ITransactionStore transactionStore = new TransactionStore(ref blockStore);
+            Console.WriteLine(blockStore);
+            
+            /*
+            var cb = Transaction.CoinBase(
+                ScriptBuilder.Lock_P2PK(key1.PublicKey, Algorithm.RSA), blockStore.BlockHeight, 1000);
+            var coinbase = await Miner.CreateBlock(new TransactionList() {cb}, new byte[32], new Target(30));
+            //await blockStore.AddBlock(coinbase);
 
-            if (CREATE)
-            {
-                Target target = new Target(31); //EZ target (1 zero place, FF FF FF)
-                var random = new RandomGenerator();
-                byte[] prevHash = new byte[32];
-                for (int i = 0; i < AMOUNT_OF_BLOCKS; i++)
-                {
-                    var header = new BlockHeader(prevHash, random.GetBytes(32), target, 255);
-                    var block = await Miner.CreateBlock(header, random.GetBytes(100000), BlockDataIdentifier.RAW_DATA);
-                    Debug.Assert(block != null);
-                    await store.AddBlock(block);
-                    prevHash = block.Hash;
-                }
-                
-                await store.Index();
-            }
+            var tx1 = new Transaction();
+            tx1.Inputs.Add(new TxInput(coinbase.Transactions.First().TxId, 0, ScriptBuilder.Unlock_P2PK(rsa1.Sign(coinbase.Transactions.First().TxId))));
+            tx1.Outputs.Add(new TxOutput(250, ScriptBuilder.Lock_P2PKH(key1.PublicKey, Algorithm.RSA)));
+            tx1.Outputs.Add(new TxOutput(750, ScriptBuilder.Lock_P2PKH(key2.PublicKey, Algorithm.RSA)));
 
-            Console.WriteLine(store);
-            Console.WriteLine(store.GetHeight(store.GetBlock(store.BlockHeight).Result.Hash));
+            var tx2 = Transaction.CoinBase(
+                ScriptBuilder.Lock_P2PK(key2.PublicKey, Algorithm.RSA), blockStore.BlockHeight, 1000);
+            var block2 = await Miner.CreateBlock(new TransactionList() {tx1, tx2}, coinbase.Hash, new Target(30));
+            //await blockStore.AddBlock(block2);
+
+            var tx3 = new Transaction();
+            tx3.Inputs.Add(new TxInput(block2.Transactions[0].TxId, 0, ScriptBuilder.Unlock_P2PKH(key1.PublicKey, rsa1.Sign(block2.Transactions[0].TxId)))); //250
+            tx3.Inputs.Add(new TxInput(block2.Transactions[0].TxId, 1, ScriptBuilder.Unlock_P2PKH(key2.PublicKey, rsa2.Sign(block2.Transactions[0].TxId)))); //750
+            tx3.Inputs.Add(new TxInput(block2.Transactions[1].TxId, 0, ScriptBuilder.Unlock_P2PK(rsa2.Sign(block2.Transactions[1].TxId)))); //1000
+            tx3.Outputs.Add(new TxOutput(2000, ScriptBuilder.Lock_P2PKH(key2.PublicKey, Algorithm.RSA)));
+            var tx4 = Transaction.CoinBase(ScriptBuilder.Lock_P2PKH(key2.PublicKey, Algorithm.RSA),
+                blockStore.BlockHeight, 500);
+            var block3 = await Miner.CreateBlock(new TransactionList() {tx3, tx4}, block2.Hash, new Target(30));
+            //await blockStore.AddBlock(block3);*/
+
+
+            var latest = await blockStore.GetBlock(blockStore.BlockHeight);
+            var latestTx = latest.Transactions[0];
+
+            var newTx = new Transaction();
+            newTx.Inputs.Add(new TxInput(latestTx.TxId, 0, ScriptBuilder.Unlock_P2PKH(key2.PublicKey, rsa2.Sign(newTx.TxId))));
+            newTx.Outputs.Add(new TxOutput(2001, new Script()));
+
+            var finished = new Transaction(newTx.Serialize());
+
+            var bc = new Blockchain(blockStore);
+            Console.WriteLine(await bc.Validate(finished));
         }
     }
 }

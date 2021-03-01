@@ -71,7 +71,7 @@ namespace CryptoChain.Core.Transactions
         /// </summary>
         /// <param name="index">The index of the leaf you want to generate a proof for</param>
         /// <returns>A Queue with (hash, side): the siblings along the path to the leaf starting from the leaf</returns>
-        public Queue<(byte[] hash, bool side)> GetInclusionProof(int index)
+        public MerkleProof GetInclusionProof(int index)
         {
             int depth = (int)Math.Ceiling(Math.Log2(Root.LeafCount));
             Queue<bool> path = new (Convert.ToString(index, 2)
@@ -90,17 +90,18 @@ namespace CryptoChain.Core.Transactions
             }
 
             proof.Reverse();
-            return new Queue<(byte[], bool)>(proof);
+            return new MerkleProof(proof);
         }
 
         /// <summary>
         /// Validate a inclusion proof
         /// </summary>
         /// <param name="hash">The hash of the leaf to be verified</param>
-        /// <param name="proof">The siblings along the path from the leaf to the top</param>
+        /// <param name="p">The siblings along the path from the leaf to the top</param>
         /// <returns>true if the proof succeeds (and the result equals the merkleRoot)</returns>
-        public bool ValidateInclusionProof(byte[] hash, Queue<(byte[] hash, bool side)> proof)
+        public bool ValidateInclusionProof(byte[] hash, MerkleProof p)
         {
+            var proof = p.Clone();
             while (proof.Any())
             {
                 var next = proof.Dequeue();

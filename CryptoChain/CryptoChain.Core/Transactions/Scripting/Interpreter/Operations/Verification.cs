@@ -21,34 +21,28 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 
         /*
          * This method needs at least a stack with 2 items. The first one (pubkey) 84 bytes the second (signature) 64.
-         * stack: { [84], [64], ... }
+         * stack: { [84], [64], ... }. Third item, before the first one, is the used algorithm
          */
-        [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 3)]
-        public static ExecutionResult? CheckSignature(ref ExecutionStack stack)
+        [OpCode(Opcode = Opcode.CHECKSIG, MinLengthStack = 2)]
+        public static void CheckSignature(ref ExecutionStack stack)
         {
-            if (stack.Count < 2) return ExecutionResult.INVALID_STACK;
-
-            var algorithm = (Algorithm)stack.PopByte();
             var pubKey = stack.Pop();
             var signature = stack.Pop();
-            var key = CryptoFactory.GetKey(pubKey, algorithm);
-            var alg = CryptoFactory.GetSignAlgorithm(key, algorithm);
+            var key = CryptoFactory.GetKey(pubKey, stack.CurrentAlgorithm);
+            var alg = CryptoFactory.GetSignAlgorithm(key, stack.CurrentAlgorithm);
             stack.Push(alg.Verify(stack.Transaction.TxId, signature));
-            return null;
         }
 
-        [OpCode(Opcode = Opcode.CHECKSIG_VERIFY)]
+        [OpCode(Opcode = Opcode.CHECKSIG_VERIFY, MinLengthStack = 2)]
         public static ExecutionResult? CheckSignature_Verify(ref ExecutionStack stack)
         {
-            if (CheckSignature(ref stack) != null) 
-                stack.Push(false);
+            CheckSignature(ref stack);
             return Verify(ref stack);
         }
 
-        [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 4)]
+        [OpCode(Opcode = Opcode.CHECKMULTISIG, MinLengthStack = 3)]
         public static ExecutionResult? CheckMultiSig(ref ExecutionStack stack)
         {
-            var algorithm = (Algorithm) stack.PopByte();
             int amount = stack.PopShort();
             if (stack.Count < amount) return ExecutionResult.INVALID_STACK;
             var pubKeys = stack.PopRange(amount);
@@ -72,8 +66,8 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
                 if(results.Count(k => k.Value) >= minValidAmount)
                     break;
                 
-                var key = CryptoFactory.GetKey(x, algorithm);
-                var alg = CryptoFactory.GetSignAlgorithm(key, algorithm);
+                var key = CryptoFactory.GetKey(x, stack.CurrentAlgorithm);
+                var alg = CryptoFactory.GetSignAlgorithm(key, stack.CurrentAlgorithm);
                 
                 for (int i = 0; i < signatures.Count; i++)
                 {
@@ -90,26 +84,14 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
             return null;
         }
 
-        [OpCode(Opcode = Opcode.CHECKLOCKTIME, MinLengthStack = 1)]
-        public static ExecutionResult? CheckLockTime(ref ExecutionStack stack)
-        {
-            //unlocked at unix time stamp
-            if (stack.Transaction.LockTime >= 100000000)
-            {
-                uint epochNow = (uint)(DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
-                stack.Push(epochNow > stack.Transaction.LockTime);
-            }
-            else //unlocked at blockheight  //TODO: get blockheight
-                stack.Push(false);
-            
-            return null;
-        }
+        [OpCode(Opcode = Opcode.CHECKLOCKTIME)]
+        public static void CheckLockTime(ref ExecutionStack stack)
+            => stack.Push(stack.Transaction.VerifyLockTime(stack.BlockHeight));
 
         [OpCode(Opcode = Opcode.CHECKLOCKTIME_VERIFY)]
         public static ExecutionResult? CheckLockTime_Verify(ref ExecutionStack stack)
         {
-            if (CheckLockTime(ref stack) != null) 
-                stack.Push(false);
+            CheckLockTime(ref stack);
             return Verify(ref stack);
         }
     }

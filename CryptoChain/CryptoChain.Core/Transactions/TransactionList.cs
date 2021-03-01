@@ -62,13 +62,8 @@ namespace CryptoChain.Core.Transactions
             return buffer;
         }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            if (obj.GetType() != GetType()) return false;
-            var x = (TransactionList) obj;
-            return x.Length == Length && x.SequenceEqual(this);
-        }
+        public bool Equals(TransactionList x)
+            => x.Length == Length && x.SequenceEqual(this);
         
         /// <summary>
         /// Generate the merkle root from all transactions in this list

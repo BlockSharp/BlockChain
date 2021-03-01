@@ -50,7 +50,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             Seed = Serialization.FromBuffer(serialized, 12, false);
         }
         
-        private SeededPrimePair(){}
+        private SeededPrimePair()
+            => Seed = new byte[0];
 
         /// <summary>
         /// Generate 2 new primes for RSA.
@@ -99,9 +100,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         {
             var random = new RandomGenerator(Seed);
             random.Skip(IterationsP);
-            var p = RsaGenerator.GeneratePrime(ref random, KeySize / 2);
+            var p = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true, false);
             random.Skip(IterationsQ);
-            var q = RsaGenerator.GeneratePrime(ref random, KeySize / 2);
+            var q = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true, false);
             _p = p.prime;
             _q = q.prime;
         }

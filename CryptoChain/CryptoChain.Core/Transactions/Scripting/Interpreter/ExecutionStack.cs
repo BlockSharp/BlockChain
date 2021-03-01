@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter
 {
@@ -13,8 +14,16 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
     public class ExecutionStack : Stack<byte[]>
     {
         //Script and transaction to provide information for specific OPCodes
-        public IScript CurrentScript { get; set; }
+        public IScript CurrentScript { get; private set; } = new Script();
         public Transaction Transaction { get; set; }
+        public uint BlockHeight { get; }
+        public Algorithm CurrentAlgorithm { get; set; }
+
+        public ExecutionStack(Transaction t, uint currentBlockHeight = 0)
+        {
+            Transaction = t;
+            BlockHeight = currentBlockHeight;
+        }
 
         public void SetScript(ref IScript script)
             => CurrentScript = script;

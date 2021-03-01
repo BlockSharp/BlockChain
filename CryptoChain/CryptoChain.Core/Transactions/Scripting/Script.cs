@@ -61,12 +61,8 @@ namespace CryptoChain.Core.Transactions.Scripting
         public byte[] Hash()
             => Cryptography.Hashing.Hash.HASH_160(Serialize());
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            var s = (Script)obj;
-            return s.Length == Length && this.SequenceEqual(s);
-        }
+        public bool Equals(Script s)
+            => s.Length == Length && this.SequenceEqual(s);
 
     }
 }

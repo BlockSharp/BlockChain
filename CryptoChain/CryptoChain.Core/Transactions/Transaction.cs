@@ -12,17 +12,17 @@ namespace CryptoChain.Core.Transactions
     public class Transaction : ISerializable
     {
         public int Length => 
-            6 + Inputs.Sum(x => x.Length + 4) + Outputs.Sum(x => x.Length + 4) + 4;
+            8 + Inputs.Sum(x => x.Length + 4) + Outputs.Sum(x => x.Length + 4) + 4;
         
         //Version, 4 bytes. Used as a hexadecimal value
         public int Version { get; }
         
         //Indicates the amount of transaction inputs and outputs
-        public byte TxInCount { get; private set; }
-        public byte TxOutCount { get; private set; }
+        public ushort TxInCount { get; private set; }
+        public ushort TxOutCount { get; private set; }
         
-        public ICollection<TxInput> Inputs { get; set; } = new List<TxInput>();
-        public ICollection<TxOutput> Outputs { get; set; } = new List<TxOutput>();
+        public IList<TxInput> Inputs { get; set; } = new List<TxInput>();
+        public IList<TxOutput> Outputs { get; set; } = new List<TxOutput>();
 
         private byte[]? _txId;
 
@@ -45,6 +45,11 @@ namespace CryptoChain.Core.Transactions
         /// Can indicate a Unix timestamp (when it is above 1_000_000_000, twice of bitcoin) or a block height (when below that number)
         /// </summary>
         public uint LockTime { get; }
+        
+        /// <summary>
+        /// The height of the block where the transaction is stored in. Needs to be manually set by chain
+        /// </summary>
+        public uint BlockHeight { get; set; }
 
         /// <summary>
         /// Create a new transaction
@@ -64,9 +69,9 @@ namespace CryptoChain.Core.Transactions
         public Transaction(byte[] serialized)
         {
             Version = BitConverter.ToInt32(serialized, 0);
-            TxInCount = serialized[4];
-            TxOutCount = serialized[5];
-            int idx = 6;
+            TxInCount = BitConverter.ToUInt16(serialized, 4);
+            TxOutCount = BitConverter.ToUInt16(serialized, 6);
+            int idx = 8;
             
             Inputs = Serialization.MultipleFromBuffer(serialized, idx)
                 .Take(TxInCount).Select(x => new TxInput(x)).ToList();
@@ -83,22 +88,50 @@ namespace CryptoChain.Core.Transactions
         /// <summary>
         /// Create a new coinbase transaction
         /// </summary>
-        /// <param name="outputScript"></param>
+        /// <param name="lockingScript"></param>
         /// <param name="blockHeight">The current blockHeight to avoid duplicate coinbase TxIds</param>
         /// <param name="amount">The amount of money (block reward + transaction fees)</param>
+        /// <param name="inputScript">Some data you want to store in the coinbase transaction. For instance your name. Optional</param>
         /// <returns>Coinbase transaction</returns>
-        public static Transaction CoinBase(IScript outputScript, uint blockHeight, ulong amount)
+        public static Transaction CoinBase(IScript lockingScript, uint blockHeight, ulong amount, IScript? inputScript = null)
         {
             var unlockingScript = new ScriptBuilder();
             unlockingScript.PushData(BitConverter.GetBytes(blockHeight));
-            var input = new TxInput(new byte[Constants.TransactionHashLength], byte.MaxValue, unlockingScript);
-            var output = new TxOutput(amount, outputScript);
+            if(inputScript != null)
+                unlockingScript.Add(inputScript);
+            
+            var input = new TxInput(new byte[Constants.TransactionHashLength], UInt16.MaxValue, unlockingScript);
+            var output = new TxOutput(amount, lockingScript);
             Transaction t = new (Constants.MinimumCoinBaseLockTime);
             t.Inputs.Add(input);
             t.Outputs.Add(output);
             return t;
         }
-        
+
+        /// <summary>
+        /// Verify lockTime of this transaction
+        /// </summary>
+        /// <param name="currentBlockHeight">Current blockChain height</param>
+        /// <returns>True if the transaction is unlocked, otherwise false</returns>
+        public bool VerifyLockTime(uint currentBlockHeight)
+        {
+            //unlocked at unix time stamp
+            if (LockTime >= 1000_000_000)
+            {
+                uint epochNow = (uint)(DateTime.UtcNow - DateTime.UnixEpoch).TotalSeconds;
+                return epochNow > LockTime;
+            }
+            
+            //unlocked at block height
+            return currentBlockHeight >= LockTime + BlockHeight;
+        }
+
+        /// <summary>
+        /// Indicate if transaction is a coinbase transaction
+        /// </summary>
+        public bool IsCoinbase 
+            => Inputs.Count == 1 && Outputs.Count == 1 && Inputs.First().TxId.All(x => x == 0) && Inputs.First().VOut == UInt16.MaxValue;
+
         /// <summary>
         /// Serialize the transaction
         /// </summary>
@@ -110,9 +143,9 @@ namespace CryptoChain.Core.Transactions
             
             byte[] buffer = new byte[Length];
             Buffer.BlockCopy(BitConverter.GetBytes(Version), 0, buffer, 0, 4);
-            buffer[4] = TxInCount;
-            buffer[5] = TxOutCount;
-            int idx = 6;
+            BitConverter.GetBytes(TxInCount).CopyTo(buffer, 4);
+            BitConverter.GetBytes(TxOutCount).CopyTo(buffer, 6);
+            int idx = 8;
             
             var txs = new List<ISerializable>();
             txs.AddRange(Inputs);
@@ -123,13 +156,8 @@ namespace CryptoChain.Core.Transactions
             return buffer;
         }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            if (obj.GetType() != GetType()) return false;
-            var x = (Transaction) obj;
-            return x.TxId.SequenceEqual(TxId);
-        }
+        public bool Equals(Transaction x)
+            => x.TxId.SequenceEqual(TxId);
 
         public override string ToString()
         {
@@ -137,6 +165,7 @@ namespace CryptoChain.Core.Transactions
             sb.AppendLine("====================== Transaction =====================");
             sb.AppendLine("Version: " + Version.ToString("X"));
             sb.AppendLine("TxID/Hash: " + TxId.ToHexString());
+            sb.AppendLine("Locktime: "+LockTime);
             sb.AppendLine($"Inputs #: {TxInCount}, Outputs #: {TxOutCount}");
             sb.AppendLine("[Inputs]");
             foreach (var i in Inputs)

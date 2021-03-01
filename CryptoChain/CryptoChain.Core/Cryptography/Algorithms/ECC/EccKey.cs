@@ -51,7 +51,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
         public bool IsPrivate { get; }
         public byte[] PublicKey => PublicEccKey.Serialize();
-        public byte[] PrivateKey { get; }
+        public byte[] PrivateKey { get; } = new byte[0];
         public int KeySize => (int)Curve.LengthInBits;
         
 

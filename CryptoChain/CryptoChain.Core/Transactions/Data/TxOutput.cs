@@ -50,13 +50,8 @@ namespace CryptoChain.Core.Transactions.Data
             return buffer;
         }
         
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            if (obj.GetType() != GetType()) return false;
-            var x = (TxOutput) obj;
-            return x.Length == Length && x.Amount == Amount && x.LockingScript.Equals(LockingScript);
-        }
+        public bool Equals(TxOutput x)
+            => x.Length == Length && x.Amount == Amount && x.LockingScript.Equals(LockingScript);
         
         public override string ToString()
         {

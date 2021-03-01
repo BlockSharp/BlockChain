@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using CryptoChain.Core.Transactions;
 
 namespace CryptoChain.Core.Helpers
 {
@@ -13,9 +14,9 @@ namespace CryptoChain.Core.Helpers
     /// JsonSerializer.Serialize(..., options);
     /// </code>
     /// </summary>
-    public class MerkleProofQueueConverter : JsonConverter<Queue<(byte[], bool)>>
+    public class MerkleProofQueueConverter : JsonConverter<MerkleProof>
     {
-        public override Queue<(byte[], bool)> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override MerkleProof Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             var queue = new Queue<(byte[], bool)>();
             
@@ -46,10 +47,10 @@ namespace CryptoChain.Core.Helpers
                 }
             }
 
-            return queue;
+            return new MerkleProof(queue);
         }
 
-        public override void Write(Utf8JsonWriter writer, Queue<(byte[], bool)> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, MerkleProof value, JsonSerializerOptions options)
         {
             writer.WriteStartArray();
             foreach (var item in value.ToList())

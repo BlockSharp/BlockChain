@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using CryptoChain.Core.Abstractions;
@@ -12,6 +13,12 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         /// Dictionary with all the operations
         /// </summary>
         private readonly Dictionary<Opcode, Operation> _operations;
+        
+        /// <summary>
+        /// Current block height. Passed to the executionStack to be used in the script engine.
+        /// Needs to be manually passed to the interpreter
+        /// </summary>
+        public uint CurrentBlockHeight { get; set; }
 
         /// <summary>
         /// Load all Operations into the Operations dictionary.
@@ -27,15 +34,21 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                     v => new Operation(v, (OpCode)v.GetCustomAttributes().First()));
         }
 
+        /// <summary>
+        /// Execute one or more scripts
+        /// </summary>
+        /// <param name="t">The transaction containing/referenced by the executed script</param>
+        /// <param name="scripts">The script(s) you want to execute. Always order unlocking before locking script!</param>
+        /// <returns>ExecutionResult</returns>
         public ExecutionResult Execute(ref Transaction t, params IScript[] scripts) =>
             Execute(ref t, out _, scripts);
         public ExecutionResult Execute(ref Transaction t, out byte[]? output, params IScript[] scripts)
         {
-            var stack = new ExecutionStack { Transaction = t };
+            var stack = new ExecutionStack(t, CurrentBlockHeight);
 
             for (int i = 0; i < scripts.Length; i++)
             {
-                var s = scripts[i];
+                var s = scripts[i].Clone(); //Clone the script, because the interpreter empties the script
                 stack.SetScript(ref s); //reference is needed to grab data from script
                 
                 while (s.Length > 0)
@@ -60,7 +73,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                     {
                         output = stack.FirstOrDefault();
 #if DEBUG
-                        throw e;
+                        throw;
 #endif
                         if (e is KeyNotFoundException) return ExecutionResult.UNKNOWN_CODE;
                         return ExecutionResult.UNKNOWN_ERROR;
