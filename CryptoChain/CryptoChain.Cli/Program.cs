@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using CryptoChain.Core.Abstractions;
@@ -24,12 +27,50 @@ namespace CryptoChain.CLI
     {
         public static async Task Main(string[] args)
         {
-           
+            
+            var idx = new BlockIndexes("/home/maurict/Desktop/blocks/blocks.idx");
+            var fsb = new FileBlockStore("/home/maurict/Desktop/blocks", idx , false);
+            
+            Stopwatch sw = Stopwatch.StartNew();
+            Console.WriteLine(fsb.BlockHeight);
+
+
+            using var e = fsb.All().GetEnumerator();
+            while (e.MoveNext()) //Memory problem!!!
+            {
+                //do sth
+            }
+            e.Dispose();
+            
+            Console.WriteLine(sw.Elapsed);
+
+
+            Console.WriteLine("Getting block");
+            Block latest = await fsb.GetBlock(fsb.BlockHeight);
+            Console.WriteLine("Done!");
+
+            return;
+            byte[] data = new byte[1000];
+            List<Block> blocks = new List<Block>(10000);
+
+            for (int i = 0; i < 1000; i++)
+            {
+                sw.Restart();
+                for (int j = 0; j < 10000; j++)
+                {
+                    fill(data);
+                    var b = await Miner.CreateBlock(new BlockHeader(latest.Hash, Hash.SHA_256(data), new Target()), data, BlockDataIdentifier.RAW_DATA);
+                    blocks.Add(b);
+                    latest = b;
+                }
+
+                Console.WriteLine("Writing...");
+                await fsb.AddBlocks(blocks.ToArray());
+                blocks.Clear();
+                Console.WriteLine("Written 10000 blocks "+sw.Elapsed);
+            }
             
             return;
-            var bi = new BlockIndexes("/home/maurict/Desktop/blocks/blocks.idx");
-            var ti = new TransactionIndexes("/home/maurict/Desktop/blocks/transactions.idx");
-            
             
 
             return;
@@ -72,6 +113,12 @@ namespace CryptoChain.CLI
             var block3 = await Miner.CreateBlock(new TransactionList() {tx3, tx4}, block2.Hash, new Target(30));
             //await blockStore.AddBlock(block3);*/
 
+        }
+
+        static void fill(byte[] buffer)
+        {
+            using var rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(buffer);
         }
     }
 }

@@ -36,10 +36,11 @@ namespace CryptoChain.Core.Blocks
         public static async Task<Blocks.Block?> CreateBlock(BlockHeader header, byte[] data, BlockDataIdentifier dataType, CancellationToken token = new(),
             int threadCount = 0)
         {
-            var worker = new Worker(header, threadCount);
+            using var worker = new Worker(header, threadCount);
             var res = await Task.Run(() => worker.Start(token), token);
             if (res == null)
                 return null;
+            worker.Dispose();
             return new Block(data, res, dataType);
         }
         
@@ -47,7 +48,7 @@ namespace CryptoChain.Core.Blocks
         /// <summary>
         /// The worker class provides the miner itself
         /// </summary>
-        private class Worker
+        private class Worker : IDisposable
         {
             private readonly byte[] _data;
             private const int NonceIdx = 4 + Constants.BlockHashLength + Constants.TransactionHashLength + 4 + 4;
@@ -55,6 +56,7 @@ namespace CryptoChain.Core.Blocks
             private readonly Target _target;
             private uint _nonce;
             private readonly DateTime _time;
+            private ManualResetEvent _done;
 
             public Worker(BlockHeader header, int threadCount = 0)
             {
@@ -69,7 +71,7 @@ namespace CryptoChain.Core.Blocks
             public BlockHeader? Start(CancellationToken token)
             {
                 var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
-                using var done = new ManualResetEvent(false);
+                _done = new ManualResetEvent(false);
                 var running = _threadCount;
 
                 BlockHeader? foundHeader = null;
@@ -88,7 +90,7 @@ namespace CryptoChain.Core.Blocks
                         }
 
                         if (0 == Interlocked.Decrement(ref running))
-                            done.Set();
+                            _done.Set();
                     }).Start();
                 }
 
@@ -96,7 +98,7 @@ namespace CryptoChain.Core.Blocks
                 var sw = Stopwatch.StartNew();
                 do
                 {
-                    if(done.WaitOne(1000)) break;
+                    if(_done.WaitOne(1000)) break;
                     Console.Write($"\r[{_time:HH:mm} {_nonce}] {_nonce/sw.ElapsedMilliseconds/1000}M H/S");
                 } while (true);
 #else
@@ -124,6 +126,11 @@ namespace CryptoChain.Core.Blocks
                 }
 
                 return null;
+            }
+
+            public void Dispose()
+            {
+                _done.Dispose();
             }
         }
     }

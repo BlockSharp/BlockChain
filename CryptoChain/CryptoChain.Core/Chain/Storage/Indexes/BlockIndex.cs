@@ -5,7 +5,7 @@ using CryptoChain.Core.Cryptography.Hashing;
 namespace CryptoChain.Core.Chain.Storage.Indexes
 {
     /// <summary>
-    /// 34 MB for 1 million items. So this index can be stored in RAM
+    /// 36 MB for 1 million items. So this index can be stored in RAM
     /// This is stored in an index file. Every item is exactly 36 bytes
     /// </summary>
     public class BlockIndex : ISerializable
@@ -25,6 +25,12 @@ namespace CryptoChain.Core.Chain.Storage.Indexes
         public override string ToString()
         {
             return $"Compressed Hash: {Convert.ToHexString(CompressedHash)}\nHeight: {Meta.BlockHeight}\nFile: {Meta.File}\nPosition : {Meta.Position}";
+        }
+
+        public BlockIndex(string compressedHash, BlockIndexMeta meta)
+        {
+            CompressedHash = Convert.FromBase64String(compressedHash);
+            Meta = meta;
         }
 
         public BlockIndex(byte[] hash, uint height, int file, long position)

@@ -30,14 +30,14 @@ namespace CryptoChain.Core.Abstractions
         /// </summary>
         /// <param name="blockHeight">The desired blockHeight</param>
         /// <returns>The desired block</returns>
-        public Task<Block> GetBlock(uint blockHeight);
+        public Task<Block?> GetBlock(uint blockHeight);
 
-        /// <summary>
+        /*/// <summary>
         /// Get header from specific block height
         /// </summary>
         /// <param name="blockHeight">The desired height</param>
         /// <returns>a blockHeader</returns>
-        public BlockHeader GetHeader(uint blockHeight);
+        public BlockHeader? GetHeader(uint blockHeight);*/
 
         /// <summary>
         /// Get all headers from the store
@@ -45,13 +45,13 @@ namespace CryptoChain.Core.Abstractions
         /// <returns>List of all blockHeaders present</returns>
         public IEnumerable<BlockHeader> GetHeaders();
 
-        /// <summary>
+        /*/// <summary>
         /// Get range of headers
         /// </summary>
         /// <param name="from">Minimum block height</param>
         /// <param name="to">Maximum block height</param>
         /// <returns>IEnumerable of headers</returns>
-        public IEnumerable<BlockHeader> HeaderRange(uint from, uint to);
+        public IEnumerable<BlockHeader> HeaderRange(uint from, uint to);*/
         
         /// <summary>
         /// Enumerate over all blocks. Use with care!
@@ -70,9 +70,9 @@ namespace CryptoChain.Core.Abstractions
         /// <summary>
         /// Add a block to the storage system
         /// </summary>
-        /// <param name="block">The block to be added</param>
-        /// <returns>The height of the placed block</returns>
-        public Task<uint> AddBlock(Block block);
+        /// <param name="blocks">The block(s) to be added</param>
+        /// <returns>The current block height</returns>
+        public Task AddBlocks(params Block[] blocks);
         
         /// <summary>
         /// Remove block from the storage system
