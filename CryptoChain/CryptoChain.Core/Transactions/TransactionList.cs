@@ -45,8 +45,9 @@ namespace CryptoChain.Core.Transactions
         {
             TransactionCount = BitConverter.ToInt32(serialized);
             var items = Serialization.MultipleFromBuffer(serialized, 4).ToList();
-            foreach (var i in items)
-                Add(new Transaction(i));
+            AddRange(items.Select(x => new Transaction(x)));
+            /*foreach (var i in items)
+                Add(new Transaction(i));*/
         }
 
         public byte[] Serialize()
@@ -54,11 +55,11 @@ namespace CryptoChain.Core.Transactions
             TransactionCount = Count;
             byte[] buffer = new byte[Length];
             Buffer.BlockCopy(BitConverter.GetBytes(TransactionCount), 0, buffer, 0, 4);
-            var items = new List<ISerializable>();
+            /*var items = new List<ISerializable>();
             foreach (var i in this)
-                items.Add(i);
+                items.Add(i);*/
             
-            buffer.AddSerializableRange(items, 4);
+            buffer.AddSerializableRange(this, 4);
             return buffer;
         }
 

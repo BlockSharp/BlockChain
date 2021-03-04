@@ -18,22 +18,16 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
         /// <param name="rg">The (seeded) randomGenerator</param>
         /// <param name="bitSize">The bitsize of the prime. Default = 1024</param>
         /// <param name="millerRabin">Indicates if you want to use millerRabin tests</param>
-        /// <param name="logToConsole">Enable logging</param>
         /// <returns>(prime: BigInteger, iterations: long => indicates how much rounds it took before the prime was found)</returns>
-        public static (BigInteger prime, uint iterations) GeneratePrime(ref RandomGenerator rg, int bitSize = 1024, bool millerRabin = true, bool logToConsole = true)
+        public static (BigInteger prime, uint iterations) GeneratePrime(ref RandomGenerator rg, int bitSize = 1024, bool millerRabin = true)
         {
-#if !DEBUG
-            logToConsole = false;
-#endif
-            
             var primeUtils = new PrimeUtils(ref rg);
             var sw = Stopwatch.StartNew();
             uint iterations = 0;
 
             for (int i = 0;; i++)
             {
-                if(logToConsole)
-                    Console.WriteLine(i);
+                DebugUtils.Log(i.ToString());
                 
                 BigInteger candidate = primeUtils.GetLowLevelPrime(bitSize);
                 iterations = rg.Iterations;
@@ -44,7 +38,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
                 
                 if (isPrime)
                 {
-                    if(logToConsole) Console.WriteLine($"PRIME FOUND in {sw.Elapsed}!! " + candidate);
+                    DebugUtils.WriteLine($"PRIME FOUND in {sw.Elapsed}!! " + candidate, DebugUtils.MessageState.SUCCESS);
                     return (candidate, iterations);
                 }
             }

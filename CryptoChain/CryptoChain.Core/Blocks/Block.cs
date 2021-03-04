@@ -71,12 +71,9 @@ namespace CryptoChain.Core.Blocks
         public Block(byte[] serialized)
         {
             Type = (BlockDataIdentifier)serialized[0];
-            int idx = 1;
-            DataLength = BitConverter.ToInt32(serialized, idx);
-            idx += 4;
-            Header = new BlockHeader(Serialization.FromBuffer(serialized, idx, false, serialized.Length - DataLength));
-            idx += (serialized.Length - DataLength) - idx;
-            Data = Serialization.FromBuffer(serialized, idx, false);
+            DataLength = BitConverter.ToInt32(serialized, 1);
+            Header = new BlockHeader(serialized[5..^DataLength]);
+            Data = serialized[^DataLength..];
         }
 
         /// <summary>

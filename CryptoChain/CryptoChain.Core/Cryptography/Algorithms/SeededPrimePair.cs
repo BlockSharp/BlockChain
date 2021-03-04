@@ -100,9 +100,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         {
             var random = new RandomGenerator(Seed);
             random.Skip(IterationsP);
-            var p = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true, false);
+            var p = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true);
             random.Skip(IterationsQ);
-            var q = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true, false);
+            var q = RsaGenerator.GeneratePrime(ref random, KeySize / 2, true);
             _p = p.prime;
             _q = q.prime;
         }

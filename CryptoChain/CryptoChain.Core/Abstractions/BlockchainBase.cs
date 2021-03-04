@@ -40,6 +40,10 @@ namespace CryptoChain.Core.Abstractions
         /// <returns>ValidationResult</returns>
         public async Task<ValidationResult> Validate(Transaction transaction)
         {
+            //Get desired information
+            transaction.BlockHeight = Transactions.GetBlockHeight(transaction.TxId);
+            var blockHeight = Blocks.BlockHeight;
+            
             // Check if transaction is coinbase
             if (transaction.IsCoinbase)
                 return ValidationResult.TX_IS_COINBASE;
@@ -72,7 +76,7 @@ namespace CryptoChain.Core.Abstractions
                 inSum += selOutput.Amount;
 
                 // Verify lockTime of referenced transaction
-                if (!inputTx.VerifyLockTime(Blocks.BlockHeight))
+                if (!inputTx.VerifyLockTime(blockHeight))
                     return ValidationResult.TX_LOCK_TIME_ERROR;
                     
                 // Check if input's selected output isn't spent on another place (if UTXO)

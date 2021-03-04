@@ -39,7 +39,7 @@ namespace CryptoChain.Core.Helpers
         /// <param name="items">The items to be serialized</param>
         /// <param name="offset">The starting offset. Will be incremented</param>
         /// <returns>The offset after the serialization</returns>
-        public static int AddSerializableRange(this byte[] buffer, ICollection<ISerializable> items, int offset = 0)
+        public static int AddSerializableRange(this byte[] buffer, IEnumerable<ISerializable> items, int offset = 0)
         {
             foreach (var s in items)
                 offset = buffer.AddSerializable(s, offset);
@@ -69,11 +69,13 @@ namespace CryptoChain.Core.Helpers
                 if (count <= 0)
                     count = buffer.Length - offset;
             }
-            
-            byte[] result = new byte[count];
+
+            outOffset = offset + count;
+            return buffer[offset..outOffset];
+            /*byte[] result = new byte[count];
             Buffer.BlockCopy(buffer, offset, result, 0, count);
             outOffset = offset + count;
-            return result;
+            return result;*/
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CryptoChain.Core.Blocks;
+using CryptoChain.Core.Chain.Storage.Indexes;
 using CryptoChain.Core.Transactions;
 
 namespace CryptoChain.Core.Abstractions
@@ -25,7 +27,7 @@ namespace CryptoChain.Core.Abstractions
         /// <param name="blockId">The block's id</param>
         /// <param name="index">The index of the transaction in the block</param>
         /// <returns>The desired transaction</returns>
-        public Task<Transaction> GetTransaction(byte[] blockId, int index);
+        public Task<Transaction?> GetTransaction(byte[] blockId, int index);
         
         /// <summary>
         /// Add a new transaction to the storage system/indexing file
@@ -45,10 +47,30 @@ namespace CryptoChain.Core.Abstractions
             => GetUnspent(txId).Contains(vOut);
 
         /// <summary>
+        /// Get height of the block containing this transaction
+        /// </summary>
+        /// <param name="txId">The transaction's id</param>
+        /// <returns>0 if block not found, else block height</returns>
+        public uint GetBlockHeight(byte[] txId);
+        
+        /// <summary>
+        /// Get block containing a transaction
+        /// </summary>
+        /// <param name="txId">The transaction id</param>
+        /// <returns>The block containing the transaction</returns>
+        public Task<Block?> GetContainingBlock(byte[] txId);
+
+        /// <summary>
         /// Get all unspent transaction outputs in a dictionary
         /// </summary>
-        /// <returns>Dictionary [TxID (byte[]), Array with unspent vOut's (indexes of outputs))</returns>
-        public Dictionary<byte[], ushort[]> ListUnspent();
+        /// <returns>Dictionary [TxID string, base64), Array with unspent vOut's (indexes of outputs))</returns>
+        public Dictionary<string, List<ushort>> ListUnspent();
+
+        /// <summary>
+        /// List unspent transaction output (UTXO) indexes
+        /// </summary>
+        /// <returns>List with UtxoIndexes</returns>
+        public IEnumerable<UtxoIndex> ListUtxo();
 
         /// <summary>
         /// Get unspent output indexes (vOut) from a transaction

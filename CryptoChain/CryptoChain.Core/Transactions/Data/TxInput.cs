@@ -46,14 +46,16 @@ namespace CryptoChain.Core.Transactions.Data
         /// <param name="serialized">The serialized TxInput</param>
         public TxInput(byte[] serialized)
         {
-            TxId = Serialization.FromBuffer(serialized, 0, false, Constants.TransactionHashLength);
+            //TxId = Serialization.FromBuffer(serialized, 0, false, Constants.TransactionHashLength);
+            TxId = serialized[..Constants.TransactionHashLength];
             int idx = Constants.TransactionHashLength;
             VOut = BitConverter.ToUInt16(serialized, idx);
             idx += 2;
             ScriptLength = BitConverter.ToInt32(serialized, idx);
             idx += 4;
             //if doesnt work: provide ScriptLength
-            UnlockingScript = new Script(Serialization.FromBuffer(serialized, idx, false));
+            //UnlockingScript = new Script(Serialization.FromBuffer(serialized, idx, false));
+            UnlockingScript = new Script(serialized[idx..]);
         }
         
         public byte[] Serialize()

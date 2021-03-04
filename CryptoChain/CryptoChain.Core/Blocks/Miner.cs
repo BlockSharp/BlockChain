@@ -56,7 +56,7 @@ namespace CryptoChain.Core.Blocks
             private readonly Target _target;
             private uint _nonce;
             private readonly DateTime _time;
-            private ManualResetEvent _done;
+            private readonly ManualResetEvent _done;
 
             public Worker(BlockHeader header, int threadCount = 0)
             {
@@ -66,13 +66,14 @@ namespace CryptoChain.Core.Blocks
                 _threadCount = threadCount <= 0 ? Environment.ProcessorCount : threadCount;
                 _data = header.Serialize();
                 _target = header.Target;
+                _done = new ManualResetEvent(false);
             }
 
             public BlockHeader? Start(CancellationToken token)
             {
                 var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
-                _done = new ManualResetEvent(false);
                 var running = _threadCount;
+                _done.Reset();
 
                 BlockHeader? foundHeader = null;
                 _nonce = 0;
@@ -99,7 +100,7 @@ namespace CryptoChain.Core.Blocks
                 do
                 {
                     if(_done.WaitOne(1000)) break;
-                    Console.Write($"\r[{_time:HH:mm} {_nonce}] {_nonce/sw.ElapsedMilliseconds/1000}M H/S");
+                    Console.Write($"\r[{_time:HH:mm} {_nonce}] {_nonce/sw.ElapsedMilliseconds}K H/S");
                 } while (true);
 #else
                 done.WaitOne();
@@ -112,7 +113,7 @@ namespace CryptoChain.Core.Blocks
             }
 
             private void SetNonce(byte[] data, uint nonce)
-                => BitConverter.GetBytes(nonce).CopyTo(data, NonceIdx);
+                => Buffer.BlockCopy(BitConverter.GetBytes(nonce), 0, data, NonceIdx, 4);
 
             private byte[]? WorkerThread(CancellationToken token)
             {
@@ -120,8 +121,7 @@ namespace CryptoChain.Core.Blocks
                 for (uint n = 0; _nonce < UInt32.MaxValue && !token.IsCancellationRequested; n = Interlocked.Increment(ref _nonce))
                 {
                     SetNonce(data, n);
-                    var hash = Hash.HASH_256(data);
-                    if (_target.IsValid(hash))
+                    if (_target.IsValid(Hash.HASH_256(data)))
                         return data;
                 }
 

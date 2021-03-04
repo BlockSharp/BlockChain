@@ -133,14 +133,21 @@ namespace CryptoChain.Core.Transactions
             => Inputs.Count == 1 && Outputs.Count == 1 && Inputs.First().TxId.All(x => x == 0) && Inputs.First().VOut == UInt16.MaxValue;
 
         /// <summary>
+        /// Prepare transaction for serialization. Set important variables
+        /// </summary>
+        public void Prepare()
+        {
+            TxInCount = (ushort)Inputs.Count;
+            TxOutCount = (ushort)Outputs.Count;
+        }
+        
+        /// <summary>
         /// Serialize the transaction
         /// </summary>
         /// <returns>byte[Length]</returns>
         public byte[] Serialize()
         {
-            TxInCount = (byte)Inputs.Count;
-            TxOutCount = (byte)Outputs.Count;
-            
+            Prepare();
             byte[] buffer = new byte[Length];
             Buffer.BlockCopy(BitConverter.GetBytes(Version), 0, buffer, 0, 4);
             BitConverter.GetBytes(TxInCount).CopyTo(buffer, 4);

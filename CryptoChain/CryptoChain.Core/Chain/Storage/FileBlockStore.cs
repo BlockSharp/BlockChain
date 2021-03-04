@@ -1,83 +1,86 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Blocks;
 using CryptoChain.Core.Chain.Storage.Indexes;
-using CryptoChain.Core.Cryptography.Hashing;
+using CryptoChain.Core.Helpers;
+using LiteDB;
 
 namespace CryptoChain.Core.Chain.Storage
 {
-    public class FileBlockStore : IBlockStore
+    public class FileBlockStore : IBlockStore, IDisposable
     {
         private readonly string _path;
-        private BlockIndexes _blockIndexes;
-        private List<BlockFile> _blockFiles;
+        private readonly LiteDatabase _indexDb;
+        public readonly ILiteCollection<BlockIndex> _blockIndexes;
+        private readonly List<BlockFile> _blockFiles;
 
-        private readonly bool _memoryBlockIndex;
-        private Dictionary<string, BlockIndexMeta> memoryIndexes;
-        
-
-        public FileBlockStore(string path, BlockIndexes indexes, bool memoryBlockIndex = true)
+        public FileBlockStore(string path)
         {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
             _path = path;
-            _blockIndexes = indexes;
+            _indexDb = new LiteDatabase(Path.Combine(path, "block_idx.db"));
+            _blockIndexes = _indexDb.GetCollection<BlockIndex>("block_idx");
+            _blockIndexes.EnsureIndex(x => x.Height);
             _blockFiles = new List<BlockFile>();
-            _memoryBlockIndex = memoryBlockIndex;
-            
             Index();
-            
-            if (memoryBlockIndex)
-                memoryIndexes = _blockIndexes.ToDictionary();
         }
 
         private void Index()
         {
-            for (int i = 0; i <= 999999; i++)
+            Stopwatch sw = Stopwatch.StartNew();
+            int i;
+            for (i = 0; i <= 999999; i++)
             {
                 var bf = new BlockFile(_path, i);
                 if(!bf.Exists)
                     break;
-                Console.WriteLine("Indexed ["+bf.Number+"] "+bf.From+"-"+bf.To);
                 _blockFiles.Add(bf);
             }
+            DebugUtils.Info($"Indexed {i} blockFiles finished in {sw.Elapsed}");
         }
 
         public async Task CreateIndexes()
         {
-            //1. delete file
             await Task.Run(() =>
             {
-                foreach (var f in _blockFiles)
-                    _blockIndexes.Write(f.CreateIndexes().ToArray());
+                _indexDb.DropCollection("block_idx");
+                Stopwatch sw = Stopwatch.StartNew();
+                
+                var indexes = new List<BlockIndex>(100);
+                int j = 0;
+                for (int i = 0; i < _blockFiles.Count; i++)
+                {
+                    var f = _blockFiles[i];
+                    DebugUtils.Log("Creating indexes for blockFile #"+f.Number);
+                    indexes.AddRange(f.CreateIndexes());
+                    if (j++ >= 100)
+                    {
+                        j = 0;
+                        _blockIndexes.InsertBulk(indexes);
+                        indexes.Clear();
+                    }
+                }
+
+                if (indexes.Any())
+                    _blockIndexes.InsertBulk(indexes);
+                
+                DebugUtils.Info("Creating indexes finished in "+sw.Elapsed);
             });
         }
-
-        private string GetCompressed(byte[] hash)
-            => Convert.ToBase64String(Hash.SHA_1(hash));
-
+        
         public uint BlockHeight => _blockFiles.Any() ? _blockFiles.Max(x => x.To) : 0;
 
-        private IEnumerable<BlockIndex> Indexes()
-            => _memoryBlockIndex ? memoryIndexes.Select(x => new BlockIndex(x.Key, x.Value)) : _blockIndexes.Read(); 
-        
-        private BlockIndexMeta? GetMeta(byte[] hash)
-        {
-            var compHash = Hash.SHA_1(hash);
-            var compr = GetCompressed(hash);
-            return _memoryBlockIndex
-                ? (memoryIndexes.ContainsKey(compr) ? memoryIndexes[GetCompressed(hash)] : null)
-                : Indexes().FirstOrDefault(x => x.CompressedHash.SequenceEqual(compHash))?.Meta;
-        }
+        private BlockIndex? GetMeta(byte[] hash)
+            => _blockIndexes.FindById(hash);
 
-        private BlockIndexMeta? GetMeta(uint blockHeight)
-        {
-            return _memoryBlockIndex
-                ? memoryIndexes.Values.FirstOrDefault(x => x.BlockHeight == blockHeight)
-                : Indexes().FirstOrDefault(x => x.Meta.BlockHeight == blockHeight)?.Meta;
-        }
+        private BlockIndex? GetMeta(uint blockHeight)
+            => _blockIndexes.FindOne(x => x.Height == blockHeight);
 
         public async Task<Block?> GetBlock(byte[] hash)
         {
@@ -88,7 +91,7 @@ namespace CryptoChain.Core.Chain.Storage
         }
 
         public uint GetHeight(byte[] hash)
-            => GetMeta(hash)?.BlockHeight ?? 0;
+            => GetMeta(hash)?.Height ?? 0;
 
         public async Task<Block?> GetBlock(uint blockHeight)
         {
@@ -102,7 +105,7 @@ namespace CryptoChain.Core.Chain.Storage
             => _blockFiles.SelectMany(x => x.ReadHeaders());
 
         public IEnumerable<Block> All()
-            => _blockFiles.SelectMany(x => x.Read());
+            => _blockFiles.OrderBy(x => x.To).SelectMany(x => x.Read());
 
         public IEnumerable<Block> Range(uint from, uint to)
         {
@@ -137,16 +140,18 @@ namespace CryptoChain.Core.Chain.Storage
                 }
 
                 var res = await _blockFiles[idx].Write(block);
-                _blockIndexes.Write(res);
-                
-                if(_memoryBlockIndex)
-                    memoryIndexes.Add(GetCompressed(block.Hash), res[0].Meta);
+                _blockIndexes.InsertBulk(res);
             }
         }
 
         public Task RemoveBlock(byte[] hash, bool cascade = true)
         {
             throw new System.NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            _indexDb.Dispose();
         }
     }
 }

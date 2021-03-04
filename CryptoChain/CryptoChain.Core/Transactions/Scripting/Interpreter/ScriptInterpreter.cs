@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter
 {
@@ -42,6 +43,25 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         /// <returns>ExecutionResult</returns>
         public ExecutionResult Execute(ref Transaction t, params IScript[] scripts) =>
             Execute(ref t, out _, scripts);
+
+        /// <summary>
+        /// Execute scripts outside transaction context
+        /// </summary>
+        /// <param name="scripts">The scripts to be executed</param>
+        /// <returns>ExecutionResult</returns>
+        public ExecutionResult Execute(params IScript[] scripts)
+        {
+            var tx = new Transaction();
+            return Execute(ref tx, scripts);
+        }
+
+        /// <summary>
+        /// Execute scripts from an transaction upon a transaction
+        /// </summary>
+        /// <param name="t">The transaction containing/referenced by the scripts</param>
+        /// <param name="output">The execution stack first item after executing. Useful when using OP_RETURN</param>
+        /// <param name="scripts">The scripts to be evaluated</param>
+        /// <returns>ExecutionResult</returns>
         public ExecutionResult Execute(ref Transaction t, out byte[]? output, params IScript[] scripts)
         {
             var stack = new ExecutionStack(t, CurrentBlockHeight);
@@ -56,13 +76,10 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                     try
                     {
                         Opcode op = s.Next();
-#if DEBUG
-                        Console.WriteLine("Executing: " + op);
-#endif
+                        DebugUtils.Info("Executing: " + op);
                         var res = _operations[op].Execute(ref stack);
-#if DEBUG
-                        Console.Write(stack.ToString());
-#endif
+                        DebugUtils.Write(stack.ToString());
+
                         if (res != null)
                         {
                             output = stack.FirstOrDefault();
@@ -72,10 +89,8 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                     catch(Exception e)
                     {
                         output = stack.FirstOrDefault();
-#if DEBUG
-                        throw;
-#endif
                         if (e is KeyNotFoundException) return ExecutionResult.UNKNOWN_CODE;
+                        DebugUtils.WriteLine(e.ToString(), DebugUtils.MessageState.ERROR);
                         return ExecutionResult.UNKNOWN_ERROR;
                     }
                 }

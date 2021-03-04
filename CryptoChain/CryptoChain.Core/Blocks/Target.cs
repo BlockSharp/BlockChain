@@ -93,5 +93,8 @@ namespace CryptoChain.Core.Blocks
 
         public override string ToString()
             => new(Convert.ToHexString(Value).Reverse().ToArray());
+
+        public bool Equals(Target other)
+            => ToBits().SequenceEqual(other.ToBits());
     }
 }

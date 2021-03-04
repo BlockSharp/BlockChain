@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Cryptography.Algorithms.RSA
 {
@@ -168,7 +169,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
             using var csp = new RSACryptoServiceProvider();
             foreach (var sizes in csp.LegalKeySizes)
             {
-                Console.WriteLine("min: "+sizes.MinSize+" max: "+sizes.MaxSize);
+                DebugUtils.Log("min: "+sizes.MinSize+" max: "+sizes.MaxSize);
                 if (keySize >= sizes.MinSize && keySize <= sizes.MaxSize)
                 {
                     if (keySize % sizes.SkipSize != 0)

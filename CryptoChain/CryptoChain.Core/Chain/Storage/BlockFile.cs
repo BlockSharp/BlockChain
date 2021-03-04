@@ -111,7 +111,7 @@ namespace CryptoChain.Core.Chain.Storage
             fs.Seek(0, SeekOrigin.End);
             foreach (var b in blocks)
             {
-                indexes.Add(new BlockIndex(b.Hash, ++nr, Number, fs.Position));
+                indexes.Add(new BlockIndex {File = Number, Hash = b.Hash, Height = ++nr, Position = fs.Position});
                 await fs.WriteAsync(b.Serialize());
             }
 
@@ -177,7 +177,7 @@ namespace CryptoChain.Core.Chain.Storage
                 var header = new BlockHeader(buffer);
                 fs.Position += BitConverter.ToInt32(sizeBuffer);
 
-                yield return new BlockIndex(header.Hash, height++, Number, pos);
+                yield return new BlockIndex {File = Number, Hash = header.Hash, Height = height++, Position = pos};
             }
             fs.Close();
         }

@@ -35,7 +35,8 @@ namespace CryptoChain.Core.Transactions.Data
         {
             Amount = BitConverter.ToUInt64(serialized);
             ScriptLength = BitConverter.ToInt32(serialized, 8);
-            LockingScript = new Script(Serialization.FromBuffer(serialized, 12, false));
+            //LockingScript = new Script(Serialization.FromBuffer(serialized, 12, false));
+            LockingScript = new Script(serialized[12..]);
         }
         
         public byte[] Serialize()

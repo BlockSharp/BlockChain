@@ -67,7 +67,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         }
 
         /// <summary>
-        /// Helps with debugging. Prints current stack to console in human-readable format
+        /// Helps with debugging. Prints current stack to string in human-readable format
         /// </summary>
         public override string ToString()
         {

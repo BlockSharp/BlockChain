@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CryptoChain.Core.Cryptography.Hashing;
 
@@ -85,8 +86,10 @@ namespace CryptoChain.Core.Transactions
             {
                 bool next = path.Dequeue();
                 //Get sibling, needed for the proof
-                proof.Add((!next ? node.Right.Hash : node.Left.Hash, !next));
-                node = node.Navigate(next);
+                proof.Add((!next
+                    ? node.Right?.Hash ?? throw new ArgumentException("Referenced Right child does not exist") 
+                    : node.Left?.Hash ?? throw new ArgumentException("Referenced Left child does not exist"), !next));
+                node = node.Navigate(next) ?? throw new ArgumentException("Node referenced in path could not be found");
             }
 
             proof.Reverse();
