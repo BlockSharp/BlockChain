@@ -6,27 +6,27 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
     public class Point : ISerializable
     {
-        public BigInteger X { get; }
-        public BigInteger Y { get; }
+        protected BigInteger? _x;
+        protected BigInteger? _y;
 
-        public static Point Infinity => new (0,0);
+        public BigInteger X => _x ?? throw new ArgumentException("Point does not contain X");
+        public BigInteger Y => _y ?? throw new ArgumentException("Point does not contain Y");
 
-        public static bool IsInfinity(Point point)
-            => point.Equals(Infinity);
+        //Delete these when finished with new curve system
+        public static Point Infinity => new (null, null);
+        public bool IsInfinity => Equals(Infinity);
         
-        public Point(BigInteger x, BigInteger y)
+        public Point(BigInteger? x, BigInteger? y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
         }
 
         public Point(byte[] serialized)
         {
             int xlen = BitConverter.ToInt32(serialized);
-            byte[] x = serialized[4..(4 + xlen)];
-            byte[] y = serialized[(4 + xlen)..];
-            X = new BigInteger(x);
-            Y = new BigInteger(y);
+            _x = new BigInteger(serialized[4..(4 + xlen)]);
+            _y = new BigInteger(serialized[(4 + xlen)..]);
         }
 
         public int CompressedLength => X.GetByteCount() + 1;
@@ -80,19 +80,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             return buffer;
         }
 
-        public override bool Equals(object? obj)
-        {
-            if (obj == null) return false;
-            if (obj.GetType() != GetType())
-                return false;
-            var p = (Point)obj;
-            return p.Equals(this);
-        }
+        public bool Equals(Point other)
+            => _x.Equals(other._x) && _y.Equals(other._y);
 
-        protected bool Equals(Point other)
-            => X.Equals(other.X) && Y.Equals(other.Y);
-
-        public override int GetHashCode()
-            => HashCode.Combine(X, Y);
+        public override string ToString() => $"X: 0x{_x?.ToString("x2")}, Y: 0x{_y?.ToString("x2")}";
     }
 }

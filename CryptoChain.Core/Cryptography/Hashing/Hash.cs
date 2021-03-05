@@ -10,6 +10,12 @@ namespace CryptoChain.Core.Cryptography.Hashing
             return sha.ComputeHash(input);
         }
 
+        public static byte[] SHA_512(byte[] input)
+        {
+            using var sha = SHA512.Create();
+            return sha.ComputeHash(input);
+        }
+
         public static byte[] SHA_1(byte[] input)
         {
             using var sha = SHA1.Create();

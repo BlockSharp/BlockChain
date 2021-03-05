@@ -26,10 +26,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             _curve.EnsureContains(point1);
             _curve.EnsureContains(point2);
 
-            if (Point.IsInfinity(point1))
+            if (point1.IsInfinity)
                 return point2;
 
-            if (Point.IsInfinity(point2))
+            if (point2.IsInfinity)
                 return point1;
 
             var x1 = point1.X;
@@ -66,7 +66,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             _curve.EnsureContains(point);
 
             // -0 = 0
-            if (Point.IsInfinity(point))
+            if (point.IsInfinity)
                 return point;
 
             var x = point.X;
@@ -77,14 +77,15 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             _curve.EnsureContains(result);
             return result;
         }
-        
+
+        public Point ScalarMult(Point point, BigInteger k) => ScalarMult(k, point);
         public Point ScalarMult(BigInteger k, Point point)
         {
             _curve.EnsureContains(point);
 
             var n = _curve.N;
 
-            if (k % n == 0 || Point.IsInfinity(point))
+            if (k % n == 0 || point.IsInfinity)
                 return Point.Infinity;
 
             // k * point = -k * (-point)
@@ -102,7 +103,6 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
                 }
 
                 addend = Add(addend, addend);
-
                 k >>= 1;
             }
 
@@ -110,7 +110,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             return result;
         }
 
-        public BigInteger Modular(BigInteger k, BigInteger p)
+        public static BigInteger Modular(BigInteger k, BigInteger p)
         {
             BigInteger r = k % p;
             return r < 0 ? r + p : r;

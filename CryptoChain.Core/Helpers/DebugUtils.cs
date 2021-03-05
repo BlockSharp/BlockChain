@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace CryptoChain.Core.Helpers
 {
@@ -21,17 +24,20 @@ namespace CryptoChain.Core.Helpers
             }
         }
 
-        public static void Log(string message) => WriteLine(message, MessageState.LOG);
-        public static void Info(string message) => WriteLine(message, MessageState.INFO);
+        public static void Log(BigInteger nr) => Log("0x" + nr.ToString("x2"));
+        public static void Log(object message) => WriteLine(message, MessageState.LOG);
+        public static void Warn(object message) => WriteLine(message, MessageState.WARNING);
+        public static void Info(object message) => WriteLine(message, MessageState.INFO);
+        public static void ImHere([CallerMemberName] string callingMethod = "",[CallerLineNumber]int line = 0) 
+            => WriteLine($"I am here: {callingMethod}() ln: {line}", MessageState.INFO);
 
-
-        public static void WriteLine(string message, ConsoleColor color = ConsoleColor.Gray)
+        public static void WriteLine(object message, ConsoleColor color = ConsoleColor.Gray)
             => Write(message + "\n", color);
 
-        public static void WriteLine(string message, MessageState state)
+        public static void WriteLine(object message, MessageState state)
             => Write(message + "\n", state);
 
-        public static void Write(string message, ConsoleColor color = ConsoleColor.Gray)
+        public static void Write(object message, ConsoleColor color = ConsoleColor.Gray)
         {
             if(!IsDebug)
                 return;
@@ -41,7 +47,7 @@ namespace CryptoChain.Core.Helpers
             Console.ResetColor();
         }
 
-        public static void Write(string message, MessageState state)
+        public static void Write(object message, MessageState state)
             => Write($"[{state.ToString()}] {message}", state switch
             {
                 MessageState.INFO => ConsoleColor.Blue,
@@ -51,5 +57,15 @@ namespace CryptoChain.Core.Helpers
                 MessageState.SUCCESS => ConsoleColor.Green,
                 _ => ConsoleColor.Gray
             });
+
+        public static TimeSpan TimeAverage(Action function, int iterations = 100)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            for (int i = 0; i < iterations; i++)
+            {
+                function();
+            }
+            return sw.Elapsed / iterations;
+        }
     }
 }

@@ -23,9 +23,6 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             }
             return a;
         }
-
-        public static BigInteger GCD(BigInteger a, BigInteger b)
-            => BigInteger.GreatestCommonDivisor(a, b);
         
         /// <summary>
         /// Calculate Least Common Multiple
@@ -75,7 +72,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         /// <returns>True if co-prime (Greatest Common Factor = 1)</returns>
         public static bool AreCoPrime(BigInteger a, BigInteger b)
             => GCF(a, b) == 1;
-        
+
         public static BigInteger Sqrt(this BigInteger n)
         {
             if (n == 0) return 0;
@@ -84,7 +81,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
                 int bitLength = Convert.ToInt32(Math.Ceiling(BigInteger.Log(n, 2)));
                 BigInteger root = BigInteger.One << (bitLength / 2);
 
-                while (!isSqrt(n, root))
+                while (!IsSqrt(n, root))
                 {
                     root += n / root;
                     root /= 2;
@@ -96,7 +93,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             throw new ArithmeticException("NaN");
         }
 
-        private static bool isSqrt(BigInteger n, BigInteger root)
+        private static bool IsSqrt(BigInteger n, BigInteger root)
         {
             BigInteger lowerBound = root*root;
             BigInteger upperBound = (root + 1)*(root + 1);
@@ -104,5 +101,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             return (n >= lowerBound && n < upperBound);
         }
 
+        public static BigInteger Mod(BigInteger k, BigInteger p)
+        {
+            BigInteger r = k % p;
+            return r < 0 ? r + p : r;
+        }
     }
 }
