@@ -1,8 +1,7 @@
 using System;
 using System.Numerics;
-using CryptoChain.Core.Helpers;
 
-namespace CryptoChain.Core.Cryptography.Algorithms.ECC
+namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
 {
     public class CurveField
     {
@@ -95,6 +94,24 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
         public static CurveField operator -(CurveField self)
             => new (-self.Value, self.Modulus);
+
+        public static bool operator ==(CurveField one, CurveField other)
+            => one.Value == other.Value;
+
+        public static bool operator !=(CurveField one, CurveField other) 
+            => !(one == other);
+
+        public static bool operator ==(BigInteger one, CurveField other)
+            => one == other.Value;
+
+        public static bool operator !=(BigInteger one, CurveField other) 
+            => !(one == other);
+
+        public static bool operator ==(CurveField one, BigInteger other)
+            => one.Value == other;
+
+        public static bool operator !=(CurveField one, BigInteger other) 
+            => !(one == other);
 
         public CurveField Pow(BigInteger exponent)
             => new (BigInteger.ModPow(Value, exponent, Modulus), Modulus);

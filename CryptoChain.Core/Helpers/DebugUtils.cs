@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -25,9 +26,8 @@ namespace CryptoChain.Core.Helpers
         }
 
         public static void Log(BigInteger nr) => Log("0x" + nr.ToString("x2"));
-        public static void Log(object message) => WriteLine(message, MessageState.LOG);
-        public static void Warn(object message) => WriteLine(message, MessageState.WARNING);
-        public static void Info(object message) => WriteLine(message, MessageState.INFO);
+        public static void Log(params object[] message) => WriteLine(string.Join(' ', message).TrimEnd(), MessageState.LOG);
+        public static void Info(params object[] message) => WriteLine(string.Join(' ', message).TrimEnd(), MessageState.INFO);
         public static void ImHere([CallerMemberName] string callingMethod = "",[CallerLineNumber]int line = 0) 
             => WriteLine($"I am here: {callingMethod}() ln: {line}", MessageState.INFO);
 

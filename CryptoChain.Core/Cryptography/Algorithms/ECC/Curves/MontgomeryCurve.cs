@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
 {
-    public class MontgomeryCurve : CurveBase
+    public class MontgomeryCurve : Curve
     {
         /// <summary>
         /// Coefficient A of the curve equation By^2 = x^3 + Ax^2 + x
@@ -52,5 +52,11 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         public override Point InfinityPoint => new (null, null);
         public override bool IsInfinity(Point p)
             => p.Equals(InfinityPoint);
+
+        public override byte[] Compress(Point p)
+            => throw new System.NotImplementedException();
+
+        public override Point Decompress(byte[] compressed)
+            => throw new System.NotImplementedException();
     }
 }

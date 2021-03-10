@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.Numerics;
+using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Cryptography.Algorithms
 {
@@ -42,9 +44,16 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         /// </summary>
         /// <param name="a">The first number (must be co-prime)</param>
         /// <param name="m">The other number (must be co-prime)</param>
+        /// <param name="checkForNegative">Indicates if you want to invert the operation if a is negative</param>
         /// <returns>The modular multiplicative inverse</returns>
-        public static BigInteger ModInverse(BigInteger a, BigInteger m)
+        public static BigInteger ModInverse(BigInteger a, BigInteger m, bool checkForNegative = true)
         {
+            if (a == 0)
+                throw new DivideByZeroException("Can't divide by zero");
+
+            if (checkForNegative && a < 0)
+                return m - ModInverse(-a, m);
+            
             BigInteger m0 = m, y = 0, x = 1;
             if (m == BigInteger.One) return 0;
 
@@ -105,6 +114,17 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         {
             BigInteger r = k % p;
             return r < 0 ? r + p : r;
+        }
+
+        public static BigInteger FromHex(string hex)
+        {
+            if (hex.StartsWith("0x"))
+                hex = hex.Substring(2);
+            
+            if (hex.Length % 2 == 1 || hex[0] != '0')
+                hex = "0" + hex; //else its negative
+            
+            return BigInteger.Parse(hex, NumberStyles.HexNumber);
         }
     }
 }

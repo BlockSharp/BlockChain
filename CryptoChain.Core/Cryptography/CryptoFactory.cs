@@ -2,7 +2,6 @@ using System;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography.Algorithms;
 using CryptoChain.Core.Cryptography.Algorithms.ECC;
-using CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA;
 using CryptoChain.Core.Cryptography.Algorithms.RSA;
 
 namespace CryptoChain.Core.Cryptography

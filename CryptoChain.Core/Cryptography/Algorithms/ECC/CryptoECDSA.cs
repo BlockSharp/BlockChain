@@ -3,20 +3,20 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms.ECC.Curves;
 
-namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
+namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
     public class CryptoECDSA : ISignAlgorithm
     {
         public bool IsPrivate { get; }
         public ICryptoKey Key { get; }
 
-        private readonly CurveMath _math;
         private readonly RandomGenerator _random;
 
         public CryptoECDSA(EccKey key)
         {
-            _math = new CurveMath(key.Curve);
+            //_math = new CurveMath(key.Curve);
             _random = new RandomGenerator {Active = false};  //disable insecure random. Very important!
             Key = key;
             IsPrivate = key.IsPrivate;
@@ -31,7 +31,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
         public byte[] Sign(byte[] data, HashAlgorithm algorithm)
         {
             var key = (EccKey)Key;
-            if (!key.IsPrivate)
+            if (!key.IsPrivate || key.Scalar == null)
                 throw new ArgumentException("Cannot sign data with a public key");
             
             using (algorithm)
@@ -41,9 +41,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
                 while (true)
                 {
                     var k = _random.RandomInRange(0, key.Curve.N - 1);
-                    var rp = _math.ScalarMult(k, key.Curve.G);
+                    var rp = key.Curve.ScalarMult(key.Curve.G, k);
                     var r = rp.X % key.Curve.N;
-                    var p = new BigInteger(key.PrivateKey);
+                    var p = new BigInteger(key.Scalar);
                     if(r == BigInteger.Zero)
                         continue;
                 
@@ -93,12 +93,44 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.ECDSA
                 var u1 = (h * c) % key.Curve.N;
                 var u2 = (r * c) % key.Curve.N;
 
-                var xy = _math.ScalarMult(u1, key.Curve.G);
-                xy = _math.Add(xy, _math.ScalarMult(u2, key.PublicPoint));
+                var xy = key.Curve.ScalarMult(key.Curve.G, u1);
+                xy = key.Curve.Add(xy, key.Curve.ScalarMult(key.PublicPoint, u2));
                 var v = xy.X % key.Curve.N;
                 
                 return v == r;
             }
         }
+
+        /*
+        public byte[] SignX(byte[] data)
+        {
+            var key = (EccKey) Key;
+            using var sha = SHA256.Create();
+            var h = sha.ComputeHash(data);
+            var e = new BigInteger(h);
+            var k = new RandomGenerator().RandomInRange(0, key.Curve.N);
+            var rmp = key.Curve.ScalarMult(key.Curve.G, k);
+            var r = rmp.X % key.Curve.N;
+            Debug.Assert(r != 0);
+            var s = new CurveField(e + new BigInteger(key.Scalar) * r, key.Curve.N) / k;
+            var sig = new Point(r, s.Value);
+            return sig.Serialize();
+        }
+
+        public bool VerifyX(byte[] data, byte[] signature)
+        {
+            using var sha = SHA256.Create();
+            var key = (EccKey)Key;
+            var h = sha.ComputeHash(data);
+            var e = new BigInteger(h);
+            var sig = new Point(signature);
+            var (rr, ss) = (sig.X, new CurveField(sig.Y, key.Curve.N));
+            var w = ss.Inverse();
+            var u1 = (e * w).Value;
+            var u2 = (rr * w).Value;
+            var pt = key.Curve.Add(key.Curve.ScalarMult(key.Curve.G, u1),key.Curve.ScalarMult(key.PublicPoint, u2));
+            var x1 = pt.X % key.Curve.N;
+            return x1 == rr;
+        }*/
     }
 }

@@ -1,16 +1,34 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using CryptoChain.Core.Abstractions;
+using CryptoChain.Core.Cryptography.Algorithms.ECC.Curves;
+using CryptoChain.Core.Cryptography.Hashing;
+using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
+    /// <summary>
+    /// Elliptic Curve Key
+    /// First byte in compressed form is the FLAG:
+    /// 0x00: private key (just containing private key scalar)
+    /// 0x01: contains only seed for EdDSA to generate private key from
+    /// 0x02 & 0x03: compressed public key point
+    /// 0x04: uncompressed public key point
+    /// </summary>
     public class EccKey : ICryptoKey
     {
-        public int Length => 2 + (IsPrivate ? PrivateKey.Length : PublicPoint.CompressedLength);
+        /// <summary>
+        /// Length is not representative. It can be smaller due to point compression
+        /// </summary>
+        public int Length => 1 + (IsPrivate ? PrivateKey.Length : PublicKey.Length);
         public Curve Curve { get; }
-        public Point PublicPoint { get; }
-
+        public Point PublicPoint { get; private set; }
+        public byte[]? Scalar { get; private set; }
+        
         public EccKey PublicEccKey => new (Curve, PublicPoint);
+        public byte[]? Seed { get; private set; }
         
         /// <summary>
         /// Serialize ECC key
@@ -18,14 +36,44 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         /// <returns>byte[] with serialized key</returns>
         public byte[] Serialize()
         {
-            byte[] buffer = new byte[Length];
-            buffer[0] = IsPrivate ? 0x01 : 0x00;
-            buffer[1] = Curve.Id;
-            if(IsPrivate)
-                PrivateKey.CopyTo(buffer, 2);
-            else
-                PublicPoint.Compress().CopyTo(buffer, 2);
-            return buffer;
+            if (IsPrivate && Scalar != null)
+            {
+                if (Seed == null)
+                {
+                    byte[] buffer = new byte[2 + Scalar.Length];
+                    buffer[0] = Curve.Id;
+                    buffer[1] = 0x00;
+                    Scalar.CopyTo(buffer, 2);
+                    return buffer;
+                }
+                else
+                {
+                    byte[] buffer = new byte[1 + Seed.Length];
+                    buffer[0] = Curve.Id;
+                    buffer[1] = 0x01;
+                    Seed.CopyTo(buffer, 1);
+                    return buffer;
+                }
+            }
+
+            //If not private, try public key compression
+            try
+            {
+                byte[] compressed = Curve.Compress(PublicPoint);
+                byte[] buffer = new byte[1 + compressed.Length];
+                buffer[0] = Curve.Id;
+                compressed.CopyTo(buffer,1);
+                return buffer; //compressed already contains 0x03 or 0x04 flag
+            }
+            catch (NotImplementedException)
+            {
+                byte[] serialized = PublicPoint.Serialize();
+                byte[] buffer = new byte[2 + serialized.Length];
+                buffer[0] = Curve.Id;
+                buffer[1] = 0x04;
+                serialized.CopyTo(buffer, 2);
+                return serialized;
+            }
         }
 
         /// <summary>
@@ -34,26 +82,48 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         /// <param name="serialized">The serialized EccKey</param>
         public EccKey(byte[] serialized)
         {
-            IsPrivate = serialized[0] == 0x01;
-            Curve = Curve.GetById(serialized[1]);
-            byte[] data = serialized[2..];
-            if (IsPrivate)
+            Curve = CurveCollection.GetById(serialized[0]);
+            
+            byte flag = serialized[1];
+            if (flag == 0x00)
             {
-                var ecc = new EccKey(Curve, data);
-                PrivateKey = data;
-                PublicPoint = ecc.PublicPoint;
+                Scalar = serialized[2..];
             }
-            else
+            else if (flag == 0x01)
             {
-                PublicPoint = Point.Decompress(data, Curve);
+                Seed = serialized[1..];
+                GenerateScalar();
             }
+            else if (flag == 0x02 || flag == 0x03)
+            {
+                PublicPoint = Curve.Decompress(serialized[1..]);
+            }
+            else if (flag == 0x04)
+            {
+                PublicPoint = new Point(serialized[2..]);
+            }
+
+            //Assign public point if not already done
+            PublicPoint ??= Curve.ScalarMult(Curve.G,
+                new BigInteger(Scalar ?? throw new ArgumentException("Cant calculate public point without scalar")));
         }
 
-        public bool IsPrivate { get; }
-        public byte[] PublicKey => PublicEccKey.Serialize();
-        public byte[] PrivateKey { get; } = new byte[0];
-        public int KeySize => (int)Curve.LengthInBits;
+        public bool IsPrivate => Scalar != null;
         
+        private byte[]? _privateKey;
+        private byte[]? _publicKey;
+        
+        public byte[] PublicKey 
+            => _publicKey ??= ToArray(false);
+
+        public byte[] PrivateKey
+            => !IsPrivate ? throw new ArgumentException("Key is not a private key")
+            : _privateKey ??= ToArray();
+
+        /// <summary>
+        /// Get key size
+        /// </summary>
+        public int KeySize => (int)Curve.N.GetBitLength() / 2;
 
         /// <summary>
         /// Initialize new EccKey
@@ -67,9 +137,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
                 throw new ArgumentException("Private key is not in the valid range p > 0 && p < curve.N");
             
             Curve = curve;
-            PrivateKey = privateKey;
-            PublicPoint = new CurveMath(Curve).ScalarMult(p, curve.G) ?? throw new InvalidOperationException();
-            IsPrivate = true;
+            Scalar = privateKey;
+            PublicPoint = Curve.ScalarMult(curve.G, p);
         }
 
         /// <summary>
@@ -91,6 +160,42 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             PublicPoint = publicPoint;
         }
 
+        /// <summary>
+        /// Generate scalar/private key from seed
+        /// <param name="seed">Optional: seed if not already set</param>
+        /// </summary>
+        public void GenerateScalar(byte[]? seed = null)
+        {
+            Seed ??= seed;
+            if (Seed == null)
+                throw new ArgumentNullException(nameof(Seed));
+
+            var h = Hash.SHA_512(Seed);
+
+            //Little helper function
+            BigInteger BitAt(byte[] data, long pos)
+                => (data[pos / 8] >> (int)(pos % 8)) & 1;
+
+            BigInteger a = 0;
+            for (int i = 0; i < Curve.P.GetBitLength(); i++)
+                a += BitAt(h, i) << i;
+            
+            
+            if (Curve.Flag.HasFlag(CurveFlags.NEED_SET_PSG))
+            {
+                a &= ~(Curve.H - 1);
+            }
+
+            if (Curve.Flag.HasFlag(CurveFlags.NEED_SET_MSB))
+            {
+                var bit = (int)Curve.N.GetBitLength() + 1;
+                a |= BigInteger.One << bit;
+            }
+            
+            Scalar = a.ToByteArray();
+            PublicPoint = Curve.ScalarMult(Curve.G, new BigInteger(Scalar));
+        }
+        
         public string ToXmlString(bool withPrivate = true)
         {
             throw new NotImplementedException();
@@ -102,6 +207,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         }
 
         public byte[] ToArray(bool withPrivate = true)
-            => Serialize();
+        {
+            DebugUtils.Log("Called ToArray");
+            return withPrivate ? Serialize() : PublicEccKey.Serialize();
+        }
     }
 }

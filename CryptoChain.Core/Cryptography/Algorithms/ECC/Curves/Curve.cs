@@ -8,7 +8,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
     /// <summary>
     /// Elliptic Curve base class.
     /// </summary>
-    public abstract class CurveBase
+    public abstract class Curve
     {
         /// <summary>
         /// The curve's name
@@ -34,6 +34,16 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         /// Cofactor of the generator subgroup.
         /// </summary>
         public int H { get; set; }
+        
+        /// <summary>
+        /// The number of the curve in CryptoChain's curve database
+        /// </summary>
+        public byte Id { get; set; }
+        
+        /// <summary>
+        /// The flag, used to set some values
+        /// </summary>
+        public CurveFlags Flag { get; set; }
         
         /// <summary>
         /// Indicates if a point is on the curve
@@ -80,10 +90,21 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         /// <returns>True if the point equals the infinity point</returns>
         public abstract bool IsInfinity(Point p);
 
-        public void PrintInfinity()
-        {
-            Console.WriteLine(InfinityPoint);
-        }
+        /// <summary>
+        /// Compress a public key point. Note that not all curves will support this.
+        /// When a curve doesnt support compression, it will throw an NotImplementedException
+        /// </summary>
+        /// <param name="p">The public key point to compress</param>
+        /// <returns>Compressed data with flag</returns>
+        public abstract byte[] Compress(Point p);
+
+        /// <summary>
+        /// Decompress a compressed point. Note that not all curves will support this
+        /// When a curve doesnt support compression, it will throw an NotImplementedException
+        /// </summary>
+        /// <param name="compressed">The compressed point</param>
+        /// <returns>The decompressed public key point including the flag on position 0</returns>
+        public abstract Point Decompress(byte[] compressed);
 
         /// <summary>
         /// Multiply point by scalar
@@ -94,12 +115,18 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         public Point ScalarMult(Point p, BigInteger scalar)
         {
             EnsureContains(p);
-            
+
             if (scalar % N == 0 || IsInfinity(p))
+            {
+                DebugUtils.WriteLine("Infinity!",DebugUtils.MessageState.WARNING);
                 return Point.Infinity;
+            }
 
             if (scalar < 0)
-                 return ScalarMult(Negate(p), -scalar);
+            {
+                DebugUtils.WriteLine("Negative!",DebugUtils.MessageState.WARNING);
+                return ScalarMult(Negate(p), -scalar);
+            }
             
             var res = InfinityPoint;
             var n = p;
