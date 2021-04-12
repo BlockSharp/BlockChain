@@ -19,6 +19,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
         public uint BlockHeight { get; }
         public Algorithm CurrentAlgorithm { get; set; }
         public Dictionary<byte, byte[]> Variables { get; set; }
+        public Opcode CurrentCode { get; set; }
 
         public ExecutionStack(Transaction t, uint currentBlockHeight = 0)
         {

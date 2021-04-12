@@ -65,6 +65,18 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
                 G = new Point(Mathematics.FromHex("0x216936d3cd6e53fec0a4e231fdd6dc5c692cc7609525a7b2c9562d608f25d51a"),
                     Mathematics.FromHex("0x6666666666666666666666666666666666666666666666666666666666666658")),
                 Flag = CurveFlags.NEED_SET_MSB | CurveFlags.NEED_SET_PSG
+            },
+            new TwistedEdwardsCurve()
+            {
+                Name = "Ed448",
+                Id = 101,
+                A = 1,
+                D = -39081,
+                P = Mathematics.FromHex("0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+                N = Mathematics.FromHex("0x3fffffffffffffffffffffffffffffffffffffffffffffffffffffff7cca23e9c44edb49aed63690216cc2728dc58f552378c292ab5844f3"),
+                H = 4,
+                G = new Point(Mathematics.FromHex("0x4F1970C66BED0DED221D15A622BF36DA9E146570470F1767EA6DE324A3D3A46412AE1AF72AB66511433B80E18B00938E2626A82BC70CC05E"),
+                    Mathematics.FromHex("0x693F46716EB6BC248876203756C9C7624BEA73736CA3984087789C1E05A0C2D73AD3FF1CE67C39C4FDBD132C4ED7C8AD9808795BF230FA14"))
             }
         };
     }

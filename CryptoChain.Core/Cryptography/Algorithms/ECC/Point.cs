@@ -25,20 +25,24 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
         public Point(byte[] serialized)
         {
-            int xlen = BitConverter.ToInt32(serialized);
-            _x = new BigInteger(serialized[4..(4 + xlen)]);
-            _y = new BigInteger(serialized[(4 + xlen)..]);
+            byte xlen = serialized[0];
+            _x = new BigInteger(serialized[1..(1 + xlen)]);
+            _y = new BigInteger(serialized[(1 + xlen)..]);
         }
 
-        public int Length => 4 + X.GetByteCount() + Y.GetByteCount();
+        public int Length => 1 + X.GetByteCount() + Y.GetByteCount();
         public byte[] Serialize()
         {
             byte[] buffer = new byte[Length];
             var x = X.ToByteArray();
             var y = Y.ToByteArray();
-            Buffer.BlockCopy(BitConverter.GetBytes(x.Length), 0, buffer, 0, 4);
-            x.CopyTo(buffer, 4);
-            y.CopyTo(buffer, 4 + x.Length);
+            
+            if (x.Length > byte.MaxValue)
+                throw new ArgumentException("Point cannot be greater than 255 bytes");
+            
+            buffer[0] = (byte) x.Length;
+            x.CopyTo(buffer, 1);
+            y.CopyTo(buffer, 1 + x.Length);
             return buffer;
         }
 

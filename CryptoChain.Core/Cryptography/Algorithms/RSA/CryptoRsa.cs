@@ -92,8 +92,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.RSA
         /// <param name="data">The data to be validated with the signed data</param>
         /// <param name="signedData">byte[32] signed data</param>
         /// <returns>true or false</returns>
-        public bool Verify(byte[] data, byte[] signedData) => Verify(data, SHA256.Create(), signedData);
-        public bool Verify(byte[] data, HashAlgorithm algorithm, byte[] signedData)
+        public bool Verify(byte[] data, byte[] signedData) => Verify(data, signedData, SHA256.Create());
+        public bool Verify(byte[] data, byte[] signedData, HashAlgorithm algorithm)
             => _provider.VerifyData(data, algorithm, signedData);
         
         /// <summary>

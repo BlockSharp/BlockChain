@@ -20,6 +20,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
 
         public override Point Add(Point p, Point q)
         {
+            //TODO: Convert to field calculations
+            
             //P is at infinity, O + Q = Q
             if (IsInfinity(p))
                 return q;

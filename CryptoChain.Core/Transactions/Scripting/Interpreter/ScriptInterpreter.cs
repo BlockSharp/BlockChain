@@ -77,6 +77,7 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter
                     {
                         Opcode op = s.Next();
                         DebugUtils.Info("Executing: " + op);
+                        stack.CurrentCode = op;
                         var res = _operations[op].Execute(ref stack);
                         DebugUtils.Write(stack.ToString());
 

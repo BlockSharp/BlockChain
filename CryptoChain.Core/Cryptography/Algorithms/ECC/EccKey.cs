@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography.Algorithms.ECC.Curves;
 using CryptoChain.Core.Cryptography.Hashing;
-using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
@@ -20,14 +17,22 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
     public class EccKey : ICryptoKey
     {
         /// <summary>
-        /// Length is not representative. It can be smaller due to point compression
+        /// Length is not representative.
         /// </summary>
-        public int Length => 1 + (IsPrivate ? PrivateKey.Length : PublicKey.Length);
-        public Curve Curve { get; }
+        public int Length => -1;
+        public Curve Curve { get; private set; }
         public Point PublicPoint { get; private set; }
+        
+        /// <summary>
+        /// The key's private scalar (private key)
+        /// </summary>
         public byte[]? Scalar { get; private set; }
         
         public EccKey PublicEccKey => new (Curve, PublicPoint);
+        
+        /// <summary>
+        /// The private key seed (used in EdDSA to generate scalar)
+        /// </summary>
         public byte[]? Seed { get; private set; }
         
         /// <summary>
@@ -36,8 +41,11 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         /// <returns>byte[] with serialized key</returns>
         public byte[] Serialize()
         {
-            if (IsPrivate && Scalar != null)
+            if (IsPrivate)
             {
+                if (Scalar == null)
+                    throw new ArgumentException("Cant serialize private key, scalar is null");
+                
                 if (Seed == null)
                 {
                     byte[] buffer = new byte[2 + Scalar.Length];
@@ -48,10 +56,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
                 }
                 else
                 {
-                    byte[] buffer = new byte[1 + Seed.Length];
+                    byte[] buffer = new byte[2 + Seed.Length];
                     buffer[0] = Curve.Id;
                     buffer[1] = 0x01;
-                    Seed.CopyTo(buffer, 1);
+                    Seed.CopyTo(buffer, 2);
                     return buffer;
                 }
             }
@@ -59,6 +67,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             //If not private, try public key compression
             try
             {
+                if (Curve.Name != "Ed25519")
+                    throw new NotImplementedException();
+                
                 byte[] compressed = Curve.Compress(PublicPoint);
                 byte[] buffer = new byte[1 + compressed.Length];
                 buffer[0] = Curve.Id;
@@ -72,7 +83,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
                 buffer[0] = Curve.Id;
                 buffer[1] = 0x04;
                 serialized.CopyTo(buffer, 2);
-                return serialized;
+                return buffer;
             }
         }
 
@@ -83,24 +94,24 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         public EccKey(byte[] serialized)
         {
             Curve = CurveCollection.GetById(serialized[0]);
+            var flag = serialized[1];
             
-            byte flag = serialized[1];
-            if (flag == 0x00)
+            switch (flag)
             {
-                Scalar = serialized[2..];
-            }
-            else if (flag == 0x01)
-            {
-                Seed = serialized[1..];
-                GenerateScalar();
-            }
-            else if (flag == 0x02 || flag == 0x03)
-            {
-                PublicPoint = Curve.Decompress(serialized[1..]);
-            }
-            else if (flag == 0x04)
-            {
-                PublicPoint = new Point(serialized[2..]);
+                case 0x00:
+                    Scalar = serialized[2..];
+                    break;
+                case 0x01:
+                    Seed = serialized[2..];
+                    GenerateScalar();
+                    break;
+                case 0x02:
+                case 0x03:
+                    PublicPoint = Curve.Decompress(serialized[1..]);
+                    break;
+                case 0x04:
+                    PublicPoint = new Point(serialized[2..]);
+                    break;
             }
 
             //Assign public point if not already done
@@ -159,6 +170,25 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             Curve = curve;
             PublicPoint = publicPoint;
         }
+        
+        private EccKey(){}
+
+        /// <summary>
+        /// Generate new EdDSA key pair from seed
+        /// </summary>
+        /// <param name="curve">The curve to be used</param>
+        /// <param name="seed">The seed, optional. If left empty it will be generated</param>
+        /// <returns>EccKey containing EdDSA key pair</returns>
+        public static EccKey GenerateEdDsa(Curve curve, byte[]? seed = null)
+        {
+            var key = new EccKey
+            {
+                Curve = curve,
+                Seed = seed ?? RandomGenerator.Secure.GetBytes((int) (curve.P.GetBitLength() + 1 / 8))
+            };
+            key.GenerateScalar();
+            return key;
+        }
 
         /// <summary>
         /// Generate scalar/private key from seed
@@ -172,15 +202,10 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 
             var h = Hash.SHA_512(Seed);
 
-            //Little helper function
-            BigInteger BitAt(byte[] data, long pos)
-                => (data[pos / 8] >> (int)(pos % 8)) & 1;
-
             BigInteger a = 0;
             for (int i = 0; i < Curve.P.GetBitLength(); i++)
-                a += BitAt(h, i) << i;
-            
-            
+                a += Mathematics.BitAt(h, i) << i;
+
             if (Curve.Flag.HasFlag(CurveFlags.NEED_SET_PSG))
             {
                 a &= ~(Curve.H - 1);
@@ -197,19 +222,12 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         }
         
         public string ToXmlString(bool withPrivate = true)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public string ToPemString(bool withPrivate = true)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
 
         public byte[] ToArray(bool withPrivate = true)
-        {
-            DebugUtils.Log("Called ToArray");
-            return withPrivate ? Serialize() : PublicEccKey.Serialize();
-        }
+            => withPrivate ? Serialize() : PublicEccKey.Serialize();
     }
 }

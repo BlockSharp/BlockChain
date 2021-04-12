@@ -7,5 +7,6 @@ namespace CryptoChain.Core.Cryptography.Algorithms
         //1-9 = other
         //10-15 = ECC
         ECDSA = 10,
+        EdDSA = 11,
     }
 }

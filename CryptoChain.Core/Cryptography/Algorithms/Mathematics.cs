@@ -112,10 +112,18 @@ namespace CryptoChain.Core.Cryptography.Algorithms
 
         public static BigInteger Mod(BigInteger k, BigInteger p)
         {
+            if (p == 0)
+                return 0;
+            
             BigInteger r = k % p;
             return r < 0 ? r + p : r;
         }
 
+        /// <summary>
+        /// Get biginteger from hexadecimal string
+        /// </summary>
+        /// <param name="hex">The hex string</param>
+        /// <returns>Biginteger</returns>
         public static BigInteger FromHex(string hex)
         {
             if (hex.StartsWith("0x"))
@@ -126,5 +134,14 @@ namespace CryptoChain.Core.Cryptography.Algorithms
             
             return BigInteger.Parse(hex, NumberStyles.HexNumber);
         }
+        
+        /// <summary>
+        /// Get bit at specific position in data
+        /// </summary>
+        /// <param name="data">The data</param>
+        /// <param name="pos">The position</param>
+        /// <returns>1 or 0</returns>
+        public static BigInteger BitAt(byte[] data, long pos)
+            => (data[pos / 8] >> (int)(pos % 8)) & 1;
     }
 }

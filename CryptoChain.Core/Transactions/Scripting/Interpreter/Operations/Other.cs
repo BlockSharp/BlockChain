@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CryptoChain.Core.Abstractions;
 using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Helpers;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
 {
@@ -61,5 +62,9 @@ namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations
         [OpCode(Opcode = Opcode.ALG_ECDSA)]
         public static void SetAlgorithmEcdsa(ref ExecutionStack stack)
             => stack.CurrentAlgorithm = Algorithm.ECDSA;
+        
+        [OpCode(Opcode = Opcode.ALG_EDDSA)]
+        public static void SetAlgorithmEddsa(ref ExecutionStack stack)
+            => stack.CurrentAlgorithm = Algorithm.EdDSA;
     }
 }

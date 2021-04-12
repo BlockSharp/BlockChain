@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CryptoChain.Core.Cryptography;
 using CryptoChain.Core.Cryptography.Algorithms;
+using CryptoChain.Core.Cryptography.Algorithms.ECC;
 using CryptoChain.Core.Cryptography.Algorithms.RSA;
 
 namespace CryptoChain.Core.Transactions.Scripting.Interpreter.Operations

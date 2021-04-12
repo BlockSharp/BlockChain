@@ -34,8 +34,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
             
             /*
             //Convert points to fields
-            var px = new CurveField(p.X, P);
-            var py = new CurveField(p.Y, P);
+            var px = new ModP(p.X, P);
+            var py = new ModP(p.Y, P);
             
             //P == Q, double point
             if (p.Equals(q))
@@ -46,8 +46,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
                 return new Point(newX.New(P), newY.New(P));
             }
             
-            var qx = new CurveField(q.X, P);
-            var qy = new CurveField(q.Y, P);
+            var qx = new ModP(q.X, P);
+            var qy = new ModP(q.Y, P);
             
             //P != Q, point addition
             var s1 = (py - qy) / (px - qx);

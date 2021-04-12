@@ -15,7 +15,7 @@ namespace CryptoChain.Core.Cryptography
         private readonly byte[] _data;
         private uint _nextSkip;
         public uint Iterations { get; private set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
         
         private const int SaltLength = 16;
         
@@ -41,6 +41,9 @@ namespace CryptoChain.Core.Cryptography
             _data = new byte[32 + seed.Length];
             Active = true;
         }
+
+        public static RandomGenerator Secure
+            => new() {Active = false};
 
         public void Skip(uint amount)
             => _nextSkip = amount;

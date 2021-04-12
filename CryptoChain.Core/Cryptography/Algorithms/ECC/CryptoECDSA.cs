@@ -1,26 +1,22 @@
 using System;
-using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
 using CryptoChain.Core.Abstractions;
-using CryptoChain.Core.Cryptography.Algorithms.ECC.Curves;
 
 namespace CryptoChain.Core.Cryptography.Algorithms.ECC
 {
     public class CryptoECDSA : ISignAlgorithm
     {
-        public bool IsPrivate { get; }
         public ICryptoKey Key { get; }
-
         private readonly RandomGenerator _random;
-
+        
         public CryptoECDSA(EccKey key)
         {
-            //_math = new CurveMath(key.Curve);
-            _random = new RandomGenerator {Active = false};  //disable insecure random. Very important!
+            _random = RandomGenerator.Secure;  //disable insecure random. Very important!
             Key = key;
-            IsPrivate = key.IsPrivate;
         }
+        
+        //TODO: public key restore from signature? (P2PKH would be better)
 
         /// <summary>
         /// Sign the data using SHA256 as hashing algorithm
@@ -67,8 +63,8 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
         /// <param name="data">The data to be verified</param>
         /// <param name="signedData">The signature</param>
         /// <returns>True if combination of data and signature is right</returns>
-        public bool Verify(byte[] data, byte[] signedData) => Verify(data, SHA256.Create(), signedData);
-        public bool Verify(byte[] data, HashAlgorithm algorithm, byte[] signedData)
+        public bool Verify(byte[] data, byte[] signedData) => Verify(data, signedData, SHA256.Create());
+        public bool Verify(byte[] data, byte[] signedData, HashAlgorithm algorithm)
         {
             using (algorithm)
             {
@@ -112,7 +108,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             var rmp = key.Curve.ScalarMult(key.Curve.G, k);
             var r = rmp.X % key.Curve.N;
             Debug.Assert(r != 0);
-            var s = new CurveField(e + new BigInteger(key.Scalar) * r, key.Curve.N) / k;
+            var s = new ModP(e + new BigInteger(key.Scalar) * r, key.Curve.N) / k;
             var sig = new Point(r, s.Value);
             return sig.Serialize();
         }
@@ -124,7 +120,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC
             var h = sha.ComputeHash(data);
             var e = new BigInteger(h);
             var sig = new Point(signature);
-            var (rr, ss) = (sig.X, new CurveField(sig.Y, key.Curve.N));
+            var (rr, ss) = (sig.X, new ModP(sig.Y, key.Curve.N));
             var w = ss.Inverse();
             var u1 = (e * w).Value;
             var u2 = (rr * w).Value;

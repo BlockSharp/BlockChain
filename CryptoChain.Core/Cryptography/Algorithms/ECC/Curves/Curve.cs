@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using CryptoChain.Core.Helpers;
 
@@ -18,17 +18,18 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         /// <summary>
         /// Prime modulus
         /// </summary>
-        public BigInteger P { get; set; }
+        public BigInteger P { get; init; }
         
         /// <summary>
         /// Order of the subgroup that is created by the generator point G
         /// </summary>
-        public BigInteger N { get; set; }
+        public BigInteger N { get; init; }
         
         /// <summary>
         /// Generator point G of the curve
         /// </summary>
-        public Point G { get; set; }
+        [AllowNull]
+        public Point G { get; init; }
         
         /// <summary>
         /// Cofactor of the generator subgroup.
@@ -91,7 +92,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         public abstract bool IsInfinity(Point p);
 
         /// <summary>
-        /// Compress a public key point. Note that not all curves will support this.
+        /// Compress a public key point (or signature, in case of EdDSA). Note that not all curves will support this.
         /// When a curve doesnt support compression, it will throw an NotImplementedException
         /// </summary>
         /// <param name="p">The public key point to compress</param>
@@ -99,7 +100,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
         public abstract byte[] Compress(Point p);
 
         /// <summary>
-        /// Decompress a compressed point. Note that not all curves will support this
+        /// Decompress a compressed point (or signature, in case of EdDSA). Note that not all curves will support this
         /// When a curve doesnt support compression, it will throw an NotImplementedException
         /// </summary>
         /// <param name="compressed">The compressed point</param>
@@ -124,8 +125,9 @@ namespace CryptoChain.Core.Cryptography.Algorithms.ECC.Curves
 
             if (scalar < 0)
             {
-                DebugUtils.WriteLine("Negative!",DebugUtils.MessageState.WARNING);
+                DebugUtils.WriteLine("Negative! (curveBase)",DebugUtils.MessageState.WARNING);
                 return ScalarMult(Negate(p), -scalar);
+                //return ScalarMult(new Point(p.X, Mathematics.Mod(-p.Y, P)), -scalar);
             }
             
             var res = InfinityPoint;

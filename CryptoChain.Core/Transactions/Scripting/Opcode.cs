@@ -36,7 +36,7 @@ namespace CryptoChain.Core.Transactions.Scripting
         ALG_RSA = 130, 
         //Other algorithms: 131-139
         //ECC algorithms: 140 - 145
-        ALG_ECDSA = 140,
+        ALG_ECDSA = 140, ALG_EDDSA = 141,
         //146-200
         SET_VAR = 201, GET_VAR = 202, 
         /*IF, FI, ELSE, ELSE_IF, IF_VAR, ELSE_IF_VAR, WHILE, LOOP, BREAK,

@@ -9,7 +9,7 @@ namespace CryptoChain.Core.Cryptography.Algorithms
     /// </summary>
     public class PrimeUtils
     {
-        private RandomGenerator _generator;
+        private readonly RandomGenerator _generator;
 
         public PrimeUtils(ref RandomGenerator rg)
             => _generator = rg;
